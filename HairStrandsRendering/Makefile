@@ -14,8 +14,8 @@
 #CXX = g++
 #CXX = clang++
 
-EXE = example_glfw_opengl3
-IMGUI_DIR = ../..
+EXE = HairStrandsRendering
+IMGUI_DIR = /Users/yuefan/Documents/3rdparty/imgui
 SOURCES = main.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp

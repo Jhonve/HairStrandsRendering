@@ -37,3 +37,7 @@
 # Folfers
 .vs/
 x64/
+.vscode/
+
+# exe
+HairStrandsRendering/HairStrandsRendering
