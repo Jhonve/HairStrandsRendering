@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\3rdparty\imgui\backends;C:\Users\yuefan\3rdparty\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\yuefan\3rdparty\glew-2.1.0\include;C:\Users\yuefan\3rdparty\glm;C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\3rdparty\imgui\backends;C:\Users\yuefan\3rdparty\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\3rdparty\imgui\backends;C:\Users\yuefan\3rdparty\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\yuefan\3rdparty\glm;C:\Users\yuefan\3rdparty\glew-2.1.0\include;C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\3rdparty\imgui\backends;C:\Users\yuefan\3rdparty\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -122,8 +122,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\yuefan\3rdparty\glfw-3.3.8\build\src\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\yuefan\3rdparty\glew-2.1.0\lib\Release\x64;C:\Users\yuefan\3rdparty\glfw-3.3.8\build\src\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,12 +140,33 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\yuefan\3rdparty\glfw-3.3.8\build\src\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\yuefan\3rdparty\glew-2.1.0\lib\Release\x64;C:\Users\yuefan\3rdparty\glfw-3.3.8\build\src\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="render\Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imconfig.h" />
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imgui.h" />
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imgui_internal.h" />
+    <ClInclude Include="render\Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="frag_simple_face.frag" />
+    <None Include="vert_simple_face.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

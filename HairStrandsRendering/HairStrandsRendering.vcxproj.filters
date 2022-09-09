@@ -13,10 +13,80 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{e8282e82-2f5f-4c2f-bb6c-4a1955f15e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imguigl">
+      <UniqueIdentifier>{3c0b853f-0cd4-401d-8e8f-f7edb3e26838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{a3cc9584-f0be-462a-9b08-b2f69ac70c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{10e18f04-c926-4000-8a11-3a5956620674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elements">
+      <UniqueIdentifier>{dc922065-2795-485a-ab5c-132441b79a95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>imguigl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>imguigl</Filter>
+    </ClCompile>
+    <ClCompile Include="render\Shader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_glfw.h">
+      <Filter>imguigl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>imguigl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>imguigl</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Shader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="frag_simple_face.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="vert_simple_face.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
