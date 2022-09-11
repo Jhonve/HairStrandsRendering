@@ -12,17 +12,17 @@ enum class InputButton
 class WinInput
 {
 public:
-  static InputButton GetPressedButton(GLFWwindow* window)
-  {
-    InputButton result = InputButton::None;
-
-    if (glfwGetMouseButton(window, 0) == GLFW_PRESS)
-      return InputButton::Left;
-    else if (glfwGetMouseButton(window, 1) == GLFW_PRESS)
-      return InputButton::Right;
-    else if (glfwGetMouseButton(window, 2) == GLFW_PRESS)
-      return InputButton::Middle;
-    
-    return InputButton::None;
-  }
+    static InputButton GetPressedButton(GLFWwindow* window)
+    {
+        InputButton result = InputButton::None;
+  
+        if (glfwGetMouseButton(window, 0) == GLFW_PRESS)
+            return InputButton::Left;
+        else if (glfwGetMouseButton(window, 1) == GLFW_PRESS)
+            return InputButton::Right;
+        else if (glfwGetMouseButton(window, 2) == GLFW_PRESS)
+            return InputButton::Middle;
+        
+        return InputButton::None;
+    }
 };

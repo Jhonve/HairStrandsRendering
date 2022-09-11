@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../render/Shader.h"
+#include "Shader.h"
 
 class Element
 {
