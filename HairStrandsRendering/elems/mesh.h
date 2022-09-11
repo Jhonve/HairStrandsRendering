@@ -1,67 +1,59 @@
 #pragma once
 
-#include "pch.h"
-
 #include "render/render_base.h"
-#include "vertex_holder.h"
+#include "elems/vertex.h"
 #include "elems/element.h"
 
-namespace nelems
+class Mesh : public Element
 {
-  class Mesh : public Element
-  {
-    
-  public:
+  
+public:
 
     Mesh() = default;
-
+  
     virtual ~Mesh();
-
+  
     bool load(const std::string& filepath);
-
-    void add_vertex(const VertexHolder& vertex) { mVertices.push_back(vertex);  }
-
-    void add_vertex_index(unsigned int vertex_idx) { mVertexIndices.push_back(vertex_idx); }
-
-    std::vector<unsigned int> get_vertex_indices() { return mVertexIndices; }
-
-    void update(nshaders::Shader* shader) override
+  
+    void add_vertex(const Vertex& vertex) { m_vertices.push_back(vertex);  }
+  
+    void add_vertex_index(unsigned int vertex_idx) { m_vertex_indices.push_back(vertex_idx); }
+  
+    std::vector<unsigned int> get_vertex_indices() { return m_vertex_indices; }
+  
+    void update(Shader* shader) override
     {
-      // pbr color
-      shader->set_vec3(mColor, "albedo");
-
-      shader->set_f1(mRoughness, "roughness");
-      shader->set_f1(mMetallic, "metallic");
-      shader->set_f1(1.0f, "ao");
-
+        // pbr color
+        shader->set_vec3(m_color, "albedo");
+  
+        shader->set_f1(m_roughness, "roughness");
+        shader->set_f1(m_metallic, "metallic");
+        shader->set_f1(1.0f, "ao");
+  
     }
     
-    glm::vec3 mColor = { 1.0f, 0.0f, 0.0f };
-    float mRoughness = 0.2f;
-    float mMetallic = 0.1f;
-
+    glm::vec3 m_color = { 1.0f, 0.0f, 0.0f };
+    float m_roughness = 0.2f;
+    float m_metallic = 0.1f;
+  
     void init();
-
+  
     void create_buffers();
-
+  
     void delete_buffers();
-
+  
     void render();
-
+  
     void bind();
-
+  
     void unbind();
 
-  private:
-    
+private:
+  
     // Buffers manager
-    std::unique_ptr<nrender::VertexIndexBuffer> mRenderBufferMgr;
+    std::unique_ptr<VertexIndexBuffer> m_render_buffer_mgr;
     
     // Vertices and indices
-    std::vector<VertexHolder> mVertices;
-    std::vector<unsigned int> mVertexIndices;
-
-
-  };
-}
-
+    std::vector<Vertex> m_vertices;
+    std::vector<unsigned int> m_vertex_indices;
+};

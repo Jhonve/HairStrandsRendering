@@ -1,77 +1,49 @@
 #pragma once
 
-#include "elems/vertex_holder.h"
+#include "elems/vertex.h"
 
-#include "window/window.h"
-
-namespace nrender
+class VertexIndexBuffer
 {
-  class VertexIndexBuffer
-  {
-  public:
-    VertexIndexBuffer() : mVBO{ 0 }, mVAO{ 0 }, mIBO{ 0 }
+public:
+    VertexIndexBuffer() : m_VBO{ 0 }, m_VAO{ 0 }, m_IBO{ 0 }
     {}
-
-    virtual void create_buffers(const std::vector<nelems::VertexHolder>& vertices, const std::vector<unsigned int>& indices) = 0;
-
+  
+    virtual void create_buffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) = 0;
+  
     virtual void delete_buffers() = 0;
-
+  
     virtual void bind() = 0;
-
+  
     virtual void unbind() = 0;
-
+  
     virtual void draw(int index_count) = 0;
 
-  protected:
-    GLuint mVBO;
-    GLuint mVAO;
-    GLuint mIBO;
-  };
+protected:
+    GLuint m_VBO;
+    GLuint m_VAO;
+    GLuint m_IBO;
+};
 
-  class FrameBuffer
-  {
-  public:
-    FrameBuffer() : mFBO { 0 }, mDepthId {0}
+class FrameBuffer
+{
+public:
+    FrameBuffer() : m_FBO { 0 }, m_depth_id {0}
     {}
-
+  
     virtual void create_buffers(int32_t width, int32_t height) = 0;
-
+  
     virtual void delete_buffers() = 0;
-
+  
     virtual void bind() = 0;
-
+  
     virtual void unbind() = 0;
-
+  
     virtual uint32_t get_texture() = 0;
 
-  protected:
-    uint32_t mFBO = 0;
-    uint32_t mTexId = 0;
-    uint32_t mDepthId = 0;
-    int32_t mWidth = 0;
-    int32_t mHeight = 0;
-  };
-
-  class RenderContext
-  {
-
-  public:
-
-    RenderContext() : mWindow(nullptr) {}
-
-    virtual bool init(nwindow::IWindow* window)
-    {
-      mWindow = window;
-      return true;
-    }
-
-    virtual void pre_render() = 0;
-
-    virtual void post_render() = 0;
-
-    virtual void end() = 0;
-
-  protected:
-    nwindow::IWindow* mWindow;
-  };
-}
+protected:
+    uint32_t m_FBO = 0;
+    uint32_t m_tex_id = 0;
+    uint32_t m_depth_id = 0;
+    int32_t m_width = 0;
+    int32_t m_height = 0;
+};

@@ -18,7 +18,7 @@ EXE = HairStrandsRendering
 IMGUI_DIR = /Users/yuefan/Documents/3rdparty/imgui
 GLEW_DIR = /Users/yuefan/Documents/3rdparty/glew-2.1.0/include
 GLM_DIR = /Users/yuefan/Documents/3rdparty/glm
-SOURCES = main.cpp render/Shader.cpp
+SOURCES = main.cpp render/shader.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
@@ -75,7 +75,7 @@ endif
 %.o:%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-Shader.o:render/Shader.cpp
+shader.o:render/shader.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:$(IMGUI_DIR)/%.cpp

@@ -1,16 +1,15 @@
 #pragma once
 
-namespace nelems
+#include <vector>
+#include <GL/glew.h>
+
+class Face
 {
-  class Face
-  {
-  private:
-    std::vector<GLuint> mVertexIndices;
+private:
+  std::vector<GLuint> m_vertex_idx;
 
-  public:
+public:
 
-    void add_vertex_index(GLuint index) { mVertexIndices.push_back(index); }
+  void add_vertex_index(GLuint index) { m_vertex_idx.push_back(index); }
 
-  };
-}
-
+};
