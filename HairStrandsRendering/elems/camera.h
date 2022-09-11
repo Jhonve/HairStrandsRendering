@@ -3,9 +3,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
-#include "input.h"
-#include "element.h"
-#include "Shader.h"
+#include "elems/input.h"
+#include "elems/element.h"
+#include "render/shader.h"
 
 class Camera : public Element
 {

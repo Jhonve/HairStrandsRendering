@@ -1,6 +1,7 @@
 #pragma once
 
 #include "elems/vertex.h"
+#include <GL/glew.h>
 
 class VertexIndexBuffer
 {

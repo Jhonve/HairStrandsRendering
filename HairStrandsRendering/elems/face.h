@@ -6,10 +6,10 @@
 class Face
 {
 private:
-  std::vector<GLuint> m_vertex_idx;
+    std::vector<GLuint> m_vertex_idx;
 
 public:
 
-  void add_vertex_index(GLuint index) { m_vertex_idx.push_back(index); }
+    void add_vertex_index(GLuint index) { m_vertex_idx.push_back(index); }
 
 };

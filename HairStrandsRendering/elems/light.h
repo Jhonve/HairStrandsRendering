@@ -1,7 +1,7 @@
 #pragma once
 
-#include "element.h"
-#include "Shader.h"
+#include "elems/element.h"
+#include "render/shader.h"
 
 class Light : public Element
 {
