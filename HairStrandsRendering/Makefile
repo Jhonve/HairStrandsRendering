@@ -16,16 +16,18 @@
 
 EXE = HairStrandsRendering
 IMGUI_DIR = /Users/yuefan/Documents/3rdparty/imgui
-SOURCES = main.cpp
+GLEW_DIR = /Users/yuefan/Documents/3rdparty/glew-2.1.0/include
+GLM_DIR = /Users/yuefan/Documents/3rdparty/glm
+SOURCES = main.cpp render/Shader.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(GLM_DIR) -I$(GLEW_DIR)
 CXXFLAGS += -g -Wall -Wformat
-LIBS =
+LIBS = -L$(GLEW_DIR)/../lib -lGLEW
 
 ##---------------------------------------------------------------------
 ## OPENGL ES
@@ -71,6 +73,9 @@ endif
 ##---------------------------------------------------------------------
 
 %.o:%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+Shader.o:render/Shader.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:$(IMGUI_DIR)/%.cpp
