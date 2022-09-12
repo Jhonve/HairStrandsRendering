@@ -1,17 +1,18 @@
-#include "pch.h"
-
 #include "ui_context.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-namespace nrender
-{
+#include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-  bool UIContext::init(nwindow::IWindow* window)
-  {
+bool UIContext::init(ImWindow* window)
+{
+#ifdef _WIN32
     __super::init(window);
+#else
+    m_window = window;
+#endif
 
     // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 410";
@@ -53,19 +54,18 @@ namespace nrender
     ImGuiStyle& style = ImGui::GetStyle();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-      style.WindowRounding = 0.0f;
-      style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)mWindow->get_native_window(), true);
+    ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)m_window->get_native_window(), true);
     ImGui_ImplOpenGL3_Init(glsl_version);
     return true;
-  }
+}
 
-  void UIContext::pre_render()
-  {
-
+void UIContext::pre_render()
+{
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -73,9 +73,9 @@ namespace nrender
 
     // Create the docking environment
     ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar |
-      ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-      ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
-      ImGuiWindowFlags_NoBackground;
+        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+        ImGuiWindowFlags_NoBackground;
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->Pos);
@@ -92,11 +92,10 @@ namespace nrender
 
     ImGui::DockSpace(dockSpaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
     ImGui::End();
+}
 
-  }
-
-  void UIContext::post_render()
-  {
+void UIContext::post_render()
+{
     // Rendering
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -105,18 +104,16 @@ namespace nrender
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-      GLFWwindow* backup_current_context = glfwGetCurrentContext();
-      ImGui::UpdatePlatformWindows();
-      ImGui::RenderPlatformWindowsDefault();
-      glfwMakeContextCurrent(backup_current_context);
+        GLFWwindow* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
     }
-  }
+}
 
-  void UIContext::end()
-  {
+void UIContext::end()
+{
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-  }
-
 }

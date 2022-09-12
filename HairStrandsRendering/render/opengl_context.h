@@ -2,18 +2,15 @@
 
 #include "render_base.h"
 
-namespace nrender
+class OpenGLContext : public RenderContext
 {
-  class OpenGL_Context : public RenderContext
-  {
-  public:
+public:
 
-    bool init(nwindow::IWindow* window) override;
+    bool init(ImWindow* window) override;
 
     void pre_render() override;
 
     void post_render() override;
 
     void end() override;
-  };
-}
+};

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "window.h"
 #include "elems/vertex.h"
 #include <GL/glew.h>
 
@@ -47,4 +48,26 @@ protected:
     uint32_t m_depth_id = 0;
     int32_t m_width = 0;
     int32_t m_height = 0;
+};
+
+class RenderContext
+{
+
+public:
+    RenderContext() : m_window(nullptr) {}
+
+    virtual bool init(ImWindow* window)
+    {
+        m_window = window;
+        return true;
+    }
+
+    virtual void pre_render() = 0;
+
+    virtual void post_render() = 0;
+
+    virtual void end() = 0;
+
+protected:
+    ImWindow* m_window;
 };
