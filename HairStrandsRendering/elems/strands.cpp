@@ -17,11 +17,15 @@ Strands::~Strands()
 Strands::points Strands::load_bin(const std::string& filepath)
 {
     points strands_points;
+#ifdef _WIN32
     FILE* f; 
     fopen_s(&f, filepath.c_str(), "rb");
+#else
+    FILE* f = fopen(filepath.c_str(), "rb");
+#endif
     if (!f)
     {
-        fprintf(stderr, "Couldn't open %s\n", filepath);
+        fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
         return strands_points;
     }
 
@@ -64,11 +68,15 @@ Strands::points Strands::load_bin(const std::string& filepath)
 Strands::points Strands::load_usc_data(const std::string& filepath)
 {
     points strands_points;
-    FILE* f;
+#ifdef _WIN32
+    FILE* f; 
     fopen_s(&f, filepath.c_str(), "rb");
+#else
+    FILE* f = fopen(filepath.c_str(), "rb");
+#endif
     if (!f)
     {
-        fprintf(stderr, "Couldn't open %s\n", filepath);
+        fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
         return strands_points;
     }
 
