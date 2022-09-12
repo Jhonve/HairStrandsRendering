@@ -17,7 +17,7 @@ public:
         m_frame_buffer = std::make_unique<OpenGLFrameBuffer>();
         m_frame_buffer->create_buffers(800, 600);
         m_shader = std::make_unique<Shader>();
-        m_shader->load("shaders/vs.shader", "shaders/fs_pbr.shader");
+        m_shader->load("shaders/vert_face.vert", "shaders/frag_pbr_face.frag");
         m_light = std::make_unique<Light>();
   
         m_camera = std::make_unique<Camera>(glm::vec3(0, 0, 3), 45.0f, 1.3f, 0.1f, 100.0f);

@@ -27,10 +27,10 @@ public:
     void update(Shader* shader) override
     {
         glm::mat4 model{ 1.0f };
-        shader->set_mat4(model, "model");
-        shader->set_mat4(m_view_matrix, "view");
-        shader->set_mat4(get_projection(), "projection");
-        shader->set_vec3(m_position, "camPos");
+        shader->set_mat4(model, "model_mat");
+        shader->set_mat4(m_view_matrix, "view_mat");
+        shader->set_mat4(get_projection(), "proj_mat");
+        shader->set_vec3(m_position, "cam_pos");
     }
     
     void set_aspect(float aspect)

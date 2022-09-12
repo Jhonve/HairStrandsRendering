@@ -192,8 +192,10 @@
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="frag_simple_face.frag" />
-    <None Include="vert_simple_face.vert" />
+    <None Include="shaders\frag_fixed_face.frag" />
+    <None Include="shaders\frag_pbr_face.frag" />
+    <None Include="shaders\frag_simple_face.frag" />
+    <None Include="shaders\vert_face.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,7 +16,7 @@ public:
         m_current_file = "< ... >";
 
         m_file_dialog.SetTitle("Open mesh");
-        m_file_dialog.SetFileFilters({ ".fbx", ".obj" });
+        m_file_dialog.SetFileFilters({ ".fbx", ".obj", ".ply", ".off"});
     }
 
     void render(SceneView* mScene);

@@ -157,10 +157,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="frag_simple_face.frag">
+    <None Include="shaders\frag_fixed_face.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="vert_simple_face.vert">
+    <None Include="shaders\vert_face.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\frag_simple_face.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\frag_pbr_face.frag">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
