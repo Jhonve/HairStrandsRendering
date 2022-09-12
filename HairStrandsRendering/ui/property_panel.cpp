@@ -8,7 +8,7 @@ void PropertyPanel::render(SceneView* scene_view)
     if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (ImGui::Button("Open..."))
-            m_file_dialog.Open();
+            m_mesh_file_dialog.Open();
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_current_file.c_str());
     }
@@ -30,14 +30,14 @@ void PropertyPanel::render(SceneView* scene_view)
   
     ImGui::End();
   
-    m_file_dialog.Display();
-    if (m_file_dialog.HasSelected())
+    m_mesh_file_dialog.Display();
+    if (m_mesh_file_dialog.HasSelected())
     {
-        auto file_path = m_file_dialog.GetSelected().string();
+        auto file_path = m_mesh_file_dialog.GetSelected().string();
         m_current_file = file_path.substr(file_path.find_last_of("/\\") + 1);
   
         m_mesh_load_callback(file_path);
   
-        m_file_dialog.ClearSelected();
+        m_mesh_file_dialog.ClearSelected();
     }
 }

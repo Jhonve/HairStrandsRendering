@@ -2,6 +2,7 @@
 
 #include "window.h"
 #include "elems/vertex.h"
+#include "elems/strand.h"
 #include <GL/glew.h>
 
 class VertexIndexBuffer
@@ -10,7 +11,31 @@ public:
     VertexIndexBuffer() : m_VBO{ 0 }, m_VAO{ 0 }, m_IBO{ 0 }
     {}
   
-    virtual void create_buffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) = 0;
+    virtual void create_buffers(const std::vector<Vertex>& vertices,
+        const std::vector<unsigned int>& indices) = 0;
+  
+    virtual void delete_buffers() = 0;
+  
+    virtual void bind() = 0;
+  
+    virtual void unbind() = 0;
+  
+    virtual void draw(int index_count) = 0;
+
+protected:
+    GLuint m_VBO;
+    GLuint m_VAO;
+    GLuint m_IBO;
+};
+
+class StrandsIndexBuffer
+{
+public:
+    StrandsIndexBuffer() : m_VBO{ 0 }, m_VAO{ 0 }, m_IBO{ 0 }
+    {}
+  
+    virtual void create_buffers(const std::vector<Strand>& strands,
+        const std::vector<std::vector<unsigned int>>& indices) = 0;
   
     virtual void delete_buffers() = 0;
   

@@ -14,8 +14,8 @@ public:
     {
         m_current_file = "< ... >";
 
-        m_file_dialog.SetTitle("Open mesh");
-        m_file_dialog.SetFileFilters({ ".ply", ".fbx", ".obj", ".off"});
+        m_mesh_file_dialog.SetTitle("Open mesh");
+        m_mesh_file_dialog.SetFileFilters({ ".ply", ".fbx", ".obj", ".off"});
     }
 
     void render(SceneView* mScene);
@@ -27,7 +27,7 @@ public:
 
 private:
     // create a file browser instance
-    ImGui::FileBrowser m_file_dialog;
+    ImGui::FileBrowser m_mesh_file_dialog;
 
     std::function<void(const std::string&)> m_mesh_load_callback;
 

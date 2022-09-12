@@ -5,7 +5,6 @@
 
 class Vertex
 {
-
 public:
     Vertex() : m_pos(), m_normal() {}
   

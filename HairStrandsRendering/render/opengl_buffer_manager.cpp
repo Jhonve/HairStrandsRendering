@@ -57,6 +57,43 @@ void OpenGLVertexIndexBuffer::draw(int index_count)
     unbind();
 }
 
+// TODO OpenGLStrandsIndexBuffer
+void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<Strand>& strands,
+        const std::vector<std::vector<unsigned int>>& indices)
+{
+}
+
+void OpenGLStrandsIndexBuffer::delete_buffers()
+{
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &m_IBO);
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteVertexArrays(1, &m_VAO);
+}
+
+void OpenGLStrandsIndexBuffer::bind()
+{
+    glBindVertexArray(m_VAO);
+}
+
+void OpenGLStrandsIndexBuffer::unbind()
+{
+    glBindVertexArray(0);
+}
+
+void OpenGLStrandsIndexBuffer::draw(int index_count)
+{
+    bind();
+
+    // the vertices as line loop
+    glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
+
+    unbind();
+}
+
 
 void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
 {

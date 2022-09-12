@@ -7,7 +7,7 @@ public:
     Application(const std::string& app_name)
     {
         m_window = std::make_unique<GLWindow>();
-        m_window->init(1024, 720, app_name);
+        m_window->init(1580, 1280, app_name);
     }
   
     static Application& Instance() { return *m_instance; }
@@ -28,7 +28,7 @@ private:
 
 int main()
 {
-    auto app = std::make_unique<Application>("StrandsViewe");
+    auto app = std::make_unique<Application>("StrandsViewer");
     app->loop();
 
     return 0;

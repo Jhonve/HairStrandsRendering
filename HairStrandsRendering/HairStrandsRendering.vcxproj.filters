@@ -128,16 +128,10 @@
     <ClInclude Include="elems\camera.h">
       <Filter>Elements</Filter>
     </ClInclude>
-    <ClInclude Include="elems\face.h">
-      <Filter>Elements</Filter>
-    </ClInclude>
     <ClInclude Include="elems\light.h">
       <Filter>Elements</Filter>
     </ClInclude>
     <ClInclude Include="elems\mesh.h">
-      <Filter>Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="elems\vertex.h">
       <Filter>Elements</Filter>
     </ClInclude>
     <ClInclude Include="viewer.h">
@@ -161,18 +155,36 @@
     <ClInclude Include="elems\strands.h">
       <Filter>Elements</Filter>
     </ClInclude>
+    <ClInclude Include="elems\vertex.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\strand.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\frag_fixed_face.frag">
+    <None Include="shaders\frag_fixed_mesh.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\vert_face.vert">
+    <None Include="shaders\vert_mesh.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\frag_simple_face.frag">
+    <None Include="shaders\frag_simple_mesh.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\frag_pbr_face.frag">
+    <None Include="shaders\frag_pbr_mesh.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vert_strands.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\frag_strands.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vert_composite.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\frag_composite.frag">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

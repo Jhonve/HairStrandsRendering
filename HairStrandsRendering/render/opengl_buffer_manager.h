@@ -8,7 +8,27 @@ public:
     OpenGLVertexIndexBuffer() : VertexIndexBuffer()
     {}
   
-    void create_buffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) override;
+    void create_buffers(const std::vector<Vertex>& vertices,
+        const std::vector<unsigned int>& indices) override;
+  
+    void delete_buffers() override;
+  
+    void bind() override;
+  
+    void unbind() override;
+  
+    void draw(int index_count) override;
+
+};
+
+class OpenGLStrandsIndexBuffer : public StrandsIndexBuffer
+{
+public:
+    OpenGLStrandsIndexBuffer() : StrandsIndexBuffer()
+    {}
+  
+    void create_buffers(const std::vector<Strand>& strands,
+        const std::vector<std::vector<unsigned int>>& indices) override;
   
     void delete_buffers() override;
   

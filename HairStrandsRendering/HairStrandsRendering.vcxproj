@@ -175,7 +175,7 @@
     <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imgui_internal.h" />
     <ClInclude Include="elems\camera.h" />
     <ClInclude Include="elems\element.h" />
-    <ClInclude Include="elems\face.h" />
+    <ClInclude Include="elems\strand.h" />
     <ClInclude Include="elems\strands.h" />
     <ClInclude Include="elems\input.h" />
     <ClInclude Include="elems\light.h" />
@@ -194,10 +194,14 @@
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\frag_fixed_face.frag" />
-    <None Include="shaders\frag_pbr_face.frag" />
-    <None Include="shaders\frag_simple_face.frag" />
-    <None Include="shaders\vert_face.vert" />
+    <None Include="shaders\frag_composite.frag" />
+    <None Include="shaders\frag_fixed_mesh.frag" />
+    <None Include="shaders\frag_pbr_mesh.frag" />
+    <None Include="shaders\frag_simple_mesh.frag" />
+    <None Include="shaders\frag_strands.frag" />
+    <None Include="shaders\vert_composite.vert" />
+    <None Include="shaders\vert_mesh.vert" />
+    <None Include="shaders\vert_strands.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
