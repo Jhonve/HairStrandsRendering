@@ -12,10 +12,13 @@ class PropertyPanel
 public:
     PropertyPanel()
     {
-        m_current_file = "< ... >";
-
+        m_mesh_current_file = "< ... >";
         m_mesh_file_dialog.SetTitle("Open mesh");
         m_mesh_file_dialog.SetFileFilters({ ".ply", ".fbx", ".obj", ".off"});
+
+        m_strands_current_file = "< ... >";
+        m_strands_file_dialog.SetTitle("Open strands");
+        m_strands_file_dialog.SetFileFilters({ ".bin", ".data"});
     }
 
     void render(SceneView* mScene);
@@ -25,11 +28,19 @@ public:
         m_mesh_load_callback = callback;
     }
 
+    void set_strands_load_callback(const std::function<void(const std::string&)>& callback)
+    {
+        m_strands_load_callback = callback;
+    }
+
+
 private:
     // create a file browser instance
+    std::string m_mesh_current_file;
     ImGui::FileBrowser m_mesh_file_dialog;
-
     std::function<void(const std::string&)> m_mesh_load_callback;
 
-    std::string m_current_file;
+    std::string m_strands_current_file;
+    ImGui::FileBrowser m_strands_file_dialog;
+    std::function<void(const std::string&)> m_strands_load_callback;
 };

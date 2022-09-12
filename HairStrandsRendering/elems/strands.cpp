@@ -58,6 +58,7 @@ Strands::points Strands::load_bin(const std::string& filepath)
         }
     }
     fclose(f);
+    return strands_points;
 }
 
 Strands::points Strands::load_usc_data(const std::string& filepath)
@@ -97,16 +98,18 @@ Strands::points Strands::load_usc_data(const std::string& filepath)
         }
     }
     fclose(f);
-
+    return strands_points;
 }
 
 bool Strands::load(const std::string& filepath)
 {
 	// check suffix
-	if (filepath[filepath.length() - 1] == 'n') // .bin
-		load_bin(filepath);
+    if (filepath[filepath.length() - 1] == 'n') // .bin
+        m_points = load_bin(filepath);
 	else
-		load_usc_data(filepath);
+		m_points = load_usc_data(filepath);
+
+    return true;
 }
 
 void Strands::create_buffers()

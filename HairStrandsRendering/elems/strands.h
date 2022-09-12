@@ -46,6 +46,9 @@ private:
     std::unique_ptr<StrandsIndexBuffer> m_render_buffer_mgr;
     
     // Vertices and indices
+    std::vector<Strand> m_strands;
+    points m_points;
+
     std::vector<Vertex> m_vertices;
     std::vector<unsigned int> m_vertex_indices;
 };

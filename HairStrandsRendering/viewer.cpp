@@ -14,6 +14,8 @@ bool GLWindow::init(int width, int height, const std::string& title)
     m_property_pannel = std::make_unique<PropertyPanel>();
     m_property_pannel->set_mesh_load_callback(
       [this](std::string filepath) { m_scene_view->load_mesh(filepath); });
+    m_property_pannel->set_strands_load_callback(
+      [this](std::string filepath) { m_scene_view->load_strands(filepath); });
 
     return m_is_running;
 }
