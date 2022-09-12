@@ -1,4 +1,4 @@
-#include "ui_context.h"
+#include "render/ui_context.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -15,7 +15,7 @@ bool UIContext::init(ImWindow* window)
 #endif
 
     // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 410";
+    const char* glsl_version = "#version 450";
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();

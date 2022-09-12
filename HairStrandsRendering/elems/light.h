@@ -1,12 +1,10 @@
 #pragma once
 
 #include "elems/element.h"
-#include "render/shader.h"
 
 class Light : public Element
 {
 public:
-
     Light()
     {
       m_color = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -27,5 +25,4 @@ public:
     glm::vec3 m_color;
 
     float m_strength;
-
 };

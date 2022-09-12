@@ -5,12 +5,10 @@
 
 #include "elems/input.h"
 #include "elems/element.h"
-#include "render/shader.h"
 
 class Camera : public Element
 {
 public:
-
     Camera(const glm::vec3& position, float fov, float aspect, float near, float far)
     {
         m_position = position;
@@ -88,7 +86,7 @@ public:
     void reset()
     {
         m_focus = { 0.0f, 0.0f, 0.0f };
-        //mDistance = 5.0f;
+        m_distance = 3.0f;
         update_view_matrix();
     }
     
@@ -108,11 +106,10 @@ public:
         }	
         else if (button == InputButton::Middle)
         {
-            // TODO: Adjust pan speed for distance
             glm::vec2 delta = (pos2d - m_current_pos2d) * 0.003f;
     
-            m_focus += -get_right() * delta.x * m_distance;
-            m_focus += get_up() * delta.y * m_distance;
+            m_focus += -get_right() * delta.x * m_distance * 0.3f;
+            m_focus += get_up() * delta.y * m_distance * 0.3f;
     
             update_view_matrix();
     }
@@ -152,5 +149,4 @@ private:
     const glm::vec3 m_forward = { 0.0f, 0.0f, -1.0f };
 
     const float m_rot_speed = 2.0f;
-
 };

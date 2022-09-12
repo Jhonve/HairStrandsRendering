@@ -10,13 +10,12 @@
 class PropertyPanel
 {
 public:
-
     PropertyPanel()
     {
         m_current_file = "< ... >";
 
         m_file_dialog.SetTitle("Open mesh");
-        m_file_dialog.SetFileFilters({ ".fbx", ".obj", ".ply", ".off"});
+        m_file_dialog.SetFileFilters({ ".ply", ".fbx", ".obj", ".off"});
     }
 
     void render(SceneView* mScene);

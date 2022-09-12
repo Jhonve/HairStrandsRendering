@@ -81,6 +81,9 @@
     <ClCompile Include="ui\scene_view.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="elems\strands.cpp">
+      <Filter>Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\3rdparty\imgui\imconfig.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="ui\imguiplugins\ImFileBrowser.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\strands.h">
+      <Filter>Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

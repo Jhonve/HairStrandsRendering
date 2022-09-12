@@ -1,4 +1,4 @@
-#include "mesh.h"
+#include "elems/mesh.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>

@@ -8,13 +8,10 @@ bool GLWindow::init(int width, int height, const std::string& title)
     m_title = title;
 
     m_render_ctx->init(this);
-
     m_UI_ctx->init(this);
 
     m_scene_view = std::make_unique<SceneView>();
-
     m_property_pannel = std::make_unique<PropertyPanel>();
-
     m_property_pannel->set_mesh_load_callback(
       [this](std::string filepath) { m_scene_view->load_mesh(filepath); });
 
@@ -24,7 +21,6 @@ bool GLWindow::init(int width, int height, const std::string& title)
 GLWindow::~GLWindow()
 {
     m_UI_ctx->end();
-
     m_render_ctx->end();
 }
 

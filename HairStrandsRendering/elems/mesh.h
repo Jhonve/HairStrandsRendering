@@ -8,9 +8,7 @@
 
 class Mesh : public Element
 {
-  
 public:
-
     Mesh() = default;
   
     virtual ~Mesh();
@@ -31,7 +29,6 @@ public:
         shader->set_f1(m_roughness, "roughness");
         shader->set_f1(m_metallic, "metallic");
         shader->set_f1(1.0f, "ao");
-  
     }
     
     glm::vec3 m_color = { 1.0f, 0.0f, 0.0f };
@@ -51,7 +48,6 @@ public:
     void unbind();
 
 private:
-  
     // Buffers manager
     std::unique_ptr<VertexIndexBuffer> m_render_buffer_mgr;
     

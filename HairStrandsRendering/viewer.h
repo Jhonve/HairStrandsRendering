@@ -64,5 +64,4 @@ private:
     std::unique_ptr<SceneView> m_scene_view;
 
     bool m_is_running;
-
 };

@@ -11,5 +11,4 @@ private:
 public:
 
     void add_vertex_index(GLuint index) { m_vertex_idx.push_back(index); }
-
 };

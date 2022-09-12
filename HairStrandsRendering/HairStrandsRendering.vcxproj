@@ -156,6 +156,7 @@
     <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\..\..\..\3rdparty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="elems\mesh.cpp" />
+    <ClCompile Include="elems\strands.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="render\opengl_buffer_manager.cpp" />
     <ClCompile Include="render\opengl_context.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="elems\camera.h" />
     <ClInclude Include="elems\element.h" />
     <ClInclude Include="elems\face.h" />
+    <ClInclude Include="elems\strands.h" />
     <ClInclude Include="elems\input.h" />
     <ClInclude Include="elems\light.h" />
     <ClInclude Include="elems\mesh.h" />
