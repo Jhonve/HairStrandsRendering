@@ -199,7 +199,7 @@ private:
 
 int main()
 {
-    auto app = std::make_unique<Application>("JMeshBox");
+    auto app = std::make_unique<Application>("StrandsViewe");
     app->loop();
 
     return 0;

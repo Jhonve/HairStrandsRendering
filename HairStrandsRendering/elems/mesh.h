@@ -4,6 +4,8 @@
 #include "elems/vertex.h"
 #include "elems/element.h"
 
+#include <memory>   // required on windows
+
 class Mesh : public Element
 {
   

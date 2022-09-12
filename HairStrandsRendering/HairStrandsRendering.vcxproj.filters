@@ -28,6 +28,9 @@
     <Filter Include="Elements">
       <UniqueIdentifier>{dc922065-2795-485a-ab5c-132441b79a95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{f9805dea-bb70-487c-b8f5-0edc340d1257}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,8 +57,29 @@
     <ClCompile Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>imguigl</Filter>
     </ClCompile>
-    <ClCompile Include="render\Shader.cpp">
+    <ClCompile Include="render\opengl_buffer_manager.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\opengl_context.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\shader.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\ui_context.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="elems\mesh.cpp">
+      <Filter>Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="viewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\property_panel.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\scene_view.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,8 +101,59 @@
     <ClInclude Include="..\..\..\..\..\3rdparty\imgui\backends\imgui_impl_opengl3_loader.h">
       <Filter>imguigl</Filter>
     </ClInclude>
-    <ClInclude Include="render\Shader.h">
+    <ClInclude Include="render\render_base.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\element.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\input.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="render\opengl_buffer_manager.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\opengl_context.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\shader.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\ui_context.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\camera.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\face.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\light.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\mesh.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\vertex.h">
+      <Filter>Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="viewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\property_panel.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\scene_view.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\utils_imgui_widgets.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\imguiplugins\ImFileBrowser.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
