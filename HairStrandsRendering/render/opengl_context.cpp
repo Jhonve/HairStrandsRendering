@@ -58,12 +58,10 @@ bool OpenGLContext::init(ImWindow* window)
     glfwSetWindowCloseCallback(glWindow, on_window_close_callback);
     glfwMakeContextCurrent(glWindow);
 
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-    {
-        /* Problem: glewInit failed, something is seriously wrong. */
-        fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
-        return false;
+    glfwInit();
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        printf( "Failed to initialize OpenGL context");
+        return -1;
     }
 
     glEnable(GL_DEPTH_TEST);

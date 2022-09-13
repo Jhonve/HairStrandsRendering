@@ -1,7 +1,7 @@
 #pragma once
 
+#include "glad/glad.h"
 #include <string>
-#include <GL/glew.h>
 #include <glm/glm.hpp>
 
 // Utitlity class to load, compile and attach a vertex- and fragment shader to a program
