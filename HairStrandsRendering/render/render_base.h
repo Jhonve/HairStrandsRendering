@@ -3,7 +3,7 @@
 #include "window.h"
 #include "elems/vertex.h"
 #include "elems/strand.h"
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 class VertexIndexBuffer
 {
