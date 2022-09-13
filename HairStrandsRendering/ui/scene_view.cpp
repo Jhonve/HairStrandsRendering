@@ -7,7 +7,7 @@ void SceneView::resize(int32_t width, int32_t height)
     m_size.x = width;
     m_size.y = height;
   
-    m_face_frame_buffer->create_buffers((int32_t)m_size.x, (int32_t) m_size.y);
+    m_frame_buffers->create_buffers((int32_t)m_size.x, (int32_t) m_size.y);
 }
 
 void SceneView::on_mouse_move(double x, double y, InputButton button)
@@ -42,7 +42,7 @@ void SceneView::render()
 
     m_light->update(m_face_shader.get());
 
-    m_face_frame_buffer->bind();
+    m_frame_buffers->bind();
 
     if (m_mesh)
     {
@@ -50,7 +50,7 @@ void SceneView::render()
         m_mesh->render();
     }
 
-    m_face_frame_buffer->unbind();
+    m_frame_buffers->unbind();
 
     // TODO use another shader program here
     /*
@@ -68,7 +68,7 @@ void SceneView::render()
     m_camera->update(m_face_shader.get());
 
     // add rendered texture to ImGUI scene window
-    uint64_t texture_id = m_face_frame_buffer->get_texture();
+    uint64_t texture_id = m_frame_buffers->get_texture();
     ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
     ImGui::End();

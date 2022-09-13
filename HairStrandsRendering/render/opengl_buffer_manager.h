@@ -45,9 +45,21 @@ class OpenGLFrameBuffer : public FrameBuffer
 public:
 
     void create_buffers(int32_t width, int32_t height) override;
-    void create_rgbaui_buffer(int32_t width, int32_t height);
-    void create_rgbaf_buffer(int32_t width, int32_t height);
-    void create_depth_buffer(int32_t width, int32_t height);
+
+    void delete_buffers() override;
+
+    void bind() override;
+
+    void unbind() override;
+  
+    uint32_t get_texture() override;
+};
+
+class OpenGLFrameBuffers : public FrameBuffers
+{
+public:
+
+    void create_buffers(int32_t width, int32_t height) override;
 
     void delete_buffers() override;
 
@@ -58,5 +70,32 @@ public:
     uint32_t get_texture() override;
 
 protected:
-    uint32_t m_depth_tex_id = 0;
+    GLFBO m_mesh_FBO;
+    GLTexture m_mesh_color_tex;
+    GLTexture m_mesh_depth_tex;
+
+    GLFBO m_strands_FBO;
+    GLTexture m_strands_color_tex;
+    GLTexture m_strands_depth_tex;
+
+    GLFBO m_trsp_slab_FBO;
+    GLTexture m_trsp_slab_color_tex;
+
+    GLFBO m_trsp_occ_FBO;
+    GLTexture m_trsp_occ_color_tex;
+
+    GLFBO m_trsp_depth_range_FBO;
+    GLTexture m_trsp_depth_range_color_tex;
+
+    GLFBO m_shadow_opacity_FBO;
+    GLTexture m_shadow_opacity_color_tex;
+
+    GLFBO m_shadow_depth_FBO;
+    GLTexture m_shadow_depth_color_tex;
+    GLTexture m_shadow_depth_depth_tex;
+
+    int m_frame_width;
+    int m_frame_height;
+    int m_shadow_width;
+    int m_shadow_height;
 };

@@ -12,23 +12,18 @@ class SceneView
 {
 public:
     SceneView() : 
-        m_camera(nullptr), m_light(nullptr), m_size(1600, 1600),
-        m_face_frame_buffer(nullptr), m_face_shader(nullptr),
-        m_strands_frame_buffer(nullptr), m_strands_shader(nullptr),
-        m_comp_frame_buffer(nullptr), m_comp_shader(nullptr)
+        m_camera(nullptr), m_light(nullptr), m_size(1600, 1600), m_frame_buffers(nullptr),
+        m_face_shader(nullptr), m_strands_shader(nullptr), m_comp_shader(nullptr)
     {
-        m_face_frame_buffer = std::make_unique<OpenGLFrameBuffer>();
-        m_face_frame_buffer->create_buffers(m_size.x, m_size.y);
+        m_frame_buffers = std::make_unique<OpenGLFrameBuffer>();
+        m_frame_buffers->create_buffers(m_size.x, m_size.y);
+
         m_face_shader = std::make_unique<Shader>();
         m_face_shader->load("shaders/vert_mesh.vert", "shaders/frag_pbr_mesh.frag");
 
-        m_strands_frame_buffer = std::make_unique<OpenGLFrameBuffer>();
-        m_strands_frame_buffer->create_buffers(m_size.x, m_size.y);
         m_strands_shader = std::make_unique<Shader>();
         m_strands_shader->load("shaders/vert_strands.vert", "shaders/frag_strands.frag");
 
-        m_comp_frame_buffer = std::make_unique<OpenGLFrameBuffer>();
-        m_comp_frame_buffer->create_buffers(m_size.x, m_size.y);
         m_comp_shader = std::make_unique<Shader>();
         m_comp_shader->load("shaders/vert_composite.vert", "shaders/frag_composite.frag");
 
@@ -79,10 +74,8 @@ private:
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Strands> m_strands;
 
-    std::unique_ptr<OpenGLFrameBuffer> m_face_frame_buffer;
+    std::unique_ptr<OpenGLFrameBuffer> m_frame_buffers;
     std::unique_ptr<Shader> m_face_shader;
-    std::unique_ptr<OpenGLFrameBuffer> m_strands_frame_buffer;
     std::unique_ptr<Shader> m_strands_shader;
-    std::unique_ptr<OpenGLFrameBuffer> m_comp_frame_buffer;
     std::unique_ptr<Shader> m_comp_shader;
 };
