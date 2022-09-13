@@ -144,6 +144,11 @@
 #include "imgui_impl_opengl3_loader.h"
 #endif
 
+#ifdef IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#include <glad/glad.h>
+#endif // IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+
+
 // Vertex arrays are not supported on ES2/WebGL1 unless Emscripten which uses an extension
 #ifndef IMGUI_IMPL_OPENGL_ES2
 #define IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
