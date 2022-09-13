@@ -1,4 +1,4 @@
-#include <GL/glew.h>    // including this firstly avoiding error: gl.h included before glew.h
+#include "glad/glad.h"
 #include "ui/scene_view.h"
 #include "imgui.h"
 
