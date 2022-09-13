@@ -55,7 +55,7 @@ class FrameBuffer
 public:
     FrameBuffer() : m_FBO { 0 } {}
   
-    virtual void create_buffers(int32_t width, int32_t height) = 0;
+    virtual void create_buffers(int width, int height) = 0;
   
     virtual void delete_buffers() = 0;
   
@@ -69,33 +69,9 @@ protected:
     uint32_t m_FBO = 0;
     uint32_t m_color_tex_id = 0;
     uint32_t m_depth_tex_id = 0;
-    int32_t m_width = 0;
-    int32_t m_height = 0;
+    int m_width = 0;
+    int m_height = 0;
 };
-
-class FrameBuffers
-{
-public:
-    FrameBuffers() : m_FBO { 0 } {}
-  
-    virtual void create_buffers(int32_t width, int32_t height) = 0;
-  
-    virtual void delete_buffers() = 0;
-  
-    virtual void bind() = 0;
-  
-    virtual void unbind() = 0;
-  
-    virtual uint32_t get_texture() = 0;
-
-protected:
-    uint32_t m_FBO = 0;
-    uint32_t m_color_tex_id = 0;
-    uint32_t m_depth_tex_id = 0;
-    int32_t m_width = 0;
-    int32_t m_height = 0;
-};
-
 
 class GLTexture
 {

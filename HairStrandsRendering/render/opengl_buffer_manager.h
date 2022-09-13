@@ -44,7 +44,7 @@ class OpenGLFrameBuffer : public FrameBuffer
 {
 public:
 
-    void create_buffers(int32_t width, int32_t height) override;
+    void create_buffers(int width, int height) override;
 
     void delete_buffers() override;
 
@@ -55,19 +55,26 @@ public:
     uint32_t get_texture() override;
 };
 
-class OpenGLFrameBuffers : public FrameBuffers
+class OpenGLFrameBuffers
 {
 public:
+    OpenGLFrameBuffers();
+    ~OpenGLFrameBuffers();
+    
+    void set_frame_size(int width, int height);
+    void set_shadow_size(int width, int height);
 
-    void create_buffers(int32_t width, int32_t height) override;
+    bool create_textures(int width, int height);
+    bool createFramebufferObjects();
+    bool attachFramebufferObjectsTextures();
 
-    void delete_buffers() override;
-
-    void bind() override;
-
-    void unbind() override;
-  
-    uint32_t get_texture() override;
+    GLFBO& get_bust_FBO();
+    GLFBO& get_hair_FBO();
+    GLFBO& get_transparency_slab_FBO();
+    GLFBO& get_transparency_occupancy_FBO();
+    GLFBO& get_transparency_depth_range_FBO();
+    GLFBO& get_shadow_opacity_FBO();
+    GLFBO& get_shadow_depth_FBO();
 
 protected:
     GLFBO m_mesh_FBO;
@@ -94,8 +101,8 @@ protected:
     GLTexture m_shadow_depth_color_tex;
     GLTexture m_shadow_depth_depth_tex;
 
-    int m_frame_width;
-    int m_frame_height;
-    int m_shadow_width;
-    int m_shadow_height;
+    int m_frame_width = 0;
+    int m_frame_height = 0;
+    int m_shadow_width = 0;
+    int m_shadow_height = 0;
 };

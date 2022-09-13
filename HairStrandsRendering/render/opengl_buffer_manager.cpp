@@ -1,6 +1,10 @@
 #include "render/opengl_buffer_manager.h"
 #include "glad/glad.h"
 
+/*
+* Vertex buffer class for mesh vertex
+*/
+
 void OpenGLVertexIndexBuffer::create_buffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
     glGenVertexArrays(1, &m_VAO);
@@ -56,6 +60,10 @@ void OpenGLVertexIndexBuffer::draw(int index_count)
 
     unbind();
 }
+
+/*
+* Vertex buffer class for strands vertex
+*/
 
 void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<StrandVertex>& vertices,
         const std::vector<unsigned int>& indices)
@@ -117,6 +125,10 @@ void OpenGLStrandsIndexBuffer::draw(int index_count)
     unbind();
 }
 
+
+/*
+* Fragment buffer class for simple mesh vertex
+*/
 
 void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
 {
@@ -189,5 +201,41 @@ uint32_t OpenGLFrameBuffer::get_texture()
     return m_color_tex_id;
 }
 
-// TODO
-// Do I need more FBO for all the frame buffer
+/*
+* Fragment buffers class
+*/
+OpenGLFrameBuffers::OpenGLFrameBuffers()
+{
+}
+
+OpenGLFrameBuffers::~OpenGLFrameBuffers()
+{
+    m_mesh_FBO.delete_FBO();
+    m_mesh_color_tex.delete_texture();
+    m_mesh_depth_tex.delete_texture();
+
+    m_strands_FBO.delete_FBO();
+    m_strands_color_tex.delete_texture();
+    m_strands_depth_tex.delete_texture();
+    
+    m_trsp_slab_FBO.delete_FBO();
+    m_trsp_slab_color_tex.delete_texture();
+
+    m_trsp_occ_FBO.delete_FBO();
+    m_trsp_occ_color_tex.delete_texture();
+
+    m_trsp_depth_range_FBO.delete_FBO();
+    m_trsp_depth_range_color_tex.delete_texture();
+
+    m_shadow_opacity_FBO.delete_FBO();
+    m_shadow_opacity_color_tex.delete_texture();
+    
+    m_shadow_depth_FBO.delete_FBO();
+    m_shadow_depth_color_tex.delete_texture();
+    m_shadow_depth_depth_tex.delete_texture();
+}
+
+bool OpenGLFrameBuffers::create_textures(int width, int height)
+{
+    return false;
+}

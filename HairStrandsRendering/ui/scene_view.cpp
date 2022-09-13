@@ -2,12 +2,12 @@
 #include "ui/scene_view.h"
 #include "imgui.h"
 
-void SceneView::resize(int32_t width, int32_t height)
+void SceneView::resize(int width, int height)
 {
     m_size.x = width;
     m_size.y = height;
   
-    m_frame_buffers->create_buffers((int32_t)m_size.x, (int32_t) m_size.y);
+    m_frame_buffers->create_buffers((int)m_size.x, (int) m_size.y);
 }
 
 void SceneView::on_mouse_move(double x, double y, InputButton button)

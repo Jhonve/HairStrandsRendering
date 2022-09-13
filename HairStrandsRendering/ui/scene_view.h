@@ -39,7 +39,7 @@ public:
   
     Light* get_light() { return m_light.get(); }
   
-    void resize(int32_t width, int32_t height);
+    void resize(int width, int height);
   
     void render();
   
