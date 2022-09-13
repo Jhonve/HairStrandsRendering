@@ -49,7 +49,6 @@ void main()
     vs_out.color = color;
 
     vs_out.view = normalize(view_point - position);
-    // Tangent = normalize(tanget);
 	vs_out.tangent = normalize(mat3(transpose(inverse(model_mat))) * tanget);
 
     vs_out.light_view_depth_1 = -(light_view_mat_1 * model_mat * vec4(position, 1.0f)).z;

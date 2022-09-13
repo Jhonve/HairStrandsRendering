@@ -45,6 +45,9 @@ class OpenGLFrameBuffer : public FrameBuffer
 public:
 
     void create_buffers(int32_t width, int32_t height) override;
+    void create_rgbaui_buffer(int32_t width, int32_t height);
+    void create_rgbaf_buffer(int32_t width, int32_t height);
+    void create_depth_buffer(int32_t width, int32_t height);
 
     void delete_buffers() override;
 
@@ -53,4 +56,7 @@ public:
     void unbind() override;
   
     uint32_t get_texture() override;
+
+protected:
+    uint32_t m_depth_tex_id = 0;
 };

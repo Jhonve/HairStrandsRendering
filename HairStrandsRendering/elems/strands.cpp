@@ -183,5 +183,5 @@ void Strands::unbind()
   
 void Strands::render()
 {
-    // TODO
+    m_render_buffer_mgr->draw((int) m_vertex_indices.size());
 }

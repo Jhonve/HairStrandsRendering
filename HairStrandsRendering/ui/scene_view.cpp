@@ -61,15 +61,15 @@ void SceneView::render()
 
     ImGui::Begin("Scene");
 
-    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    m_size = { viewportPanelSize.x, viewportPanelSize.y };
+    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
+    m_size = { viewport_panelsize.x, viewport_panelsize.y };
 
     m_camera->set_aspect(m_size.x / m_size.y);
     m_camera->update(m_face_shader.get());
 
     // add rendered texture to ImGUI scene window
-    uint64_t textureID = m_face_frame_buffer->get_texture();
-    ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    uint64_t texture_id = m_face_frame_buffer->get_texture();
+    ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
     ImGui::End();
 }

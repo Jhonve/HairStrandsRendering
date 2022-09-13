@@ -57,7 +57,6 @@ void OpenGLVertexIndexBuffer::draw(int index_count)
     unbind();
 }
 
-// TODO OpenGLStrandsIndexBuffer
 void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<StrandVertex>& vertices,
         const std::vector<unsigned int>& indices)
 {
@@ -129,8 +128,10 @@ void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
 
     glGenFramebuffers(1, &m_FBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_tex_id);
-    glBindTexture(GL_TEXTURE_2D, m_tex_id);
+    
+    // rgb texture
+    glCreateTextures(GL_TEXTURE_2D, 1, &m_color_tex_id);
+    glBindTexture(GL_TEXTURE_2D, m_color_tex_id);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -138,21 +139,22 @@ void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_tex_id, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_color_tex_id, 0);
+    
+    // depth texture
+    glCreateTextures(GL_TEXTURE_2D, 1, &m_depth_tex_id);
+    glBindTexture(GL_TEXTURE_2D, m_depth_tex_id);
 
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_depth_id);
-    glBindTexture(GL_TEXTURE_2D, m_depth_id);
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, m_width, m_height);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_depth_id, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_depth_tex_id, 0);
 
     GLenum buffers[4] = { GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(m_tex_id, buffers);
+    glDrawBuffers(m_color_tex_id, buffers);
 
     unbind();
 }
@@ -162,10 +164,10 @@ void OpenGLFrameBuffer::delete_buffers()
     if (m_FBO)
     {
         glDeleteFramebuffers(GL_FRAMEBUFFER, &m_FBO);
-        glDeleteTextures(1, &m_tex_id);
-        glDeleteTextures(1, &m_depth_id);
-        m_tex_id = 0;
-        m_depth_id = 0;
+        glDeleteTextures(1, &m_color_tex_id);
+        glDeleteTextures(1, &m_depth_tex_id);
+        m_color_tex_id = 0;
+        m_depth_tex_id = 0;
     }
 
 }
@@ -184,5 +186,8 @@ void OpenGLFrameBuffer::unbind()
 
 uint32_t OpenGLFrameBuffer::get_texture()
 {
-    return m_tex_id;
+    return m_color_tex_id;
 }
+
+// TODO
+// Do I need more FBO for all the frame buffer
