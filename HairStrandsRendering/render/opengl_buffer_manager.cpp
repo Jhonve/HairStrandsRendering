@@ -105,9 +105,9 @@ void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
 
     glGenFramebuffers(1, &m_FBO);
     glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_tex_id);
-    glBindTexture(GL_TEXTURE_2D, m_tex_id);
 
+    glCreateTextures(GL_TEXTURE_2D, 1, &m_tex_id);  // bug on macos
+    glBindTexture(GL_TEXTURE_2D, m_tex_id);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -124,7 +124,6 @@ void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_depth_id, 0);
 
     GLenum buffers[4] = { GL_COLOR_ATTACHMENT0 };
