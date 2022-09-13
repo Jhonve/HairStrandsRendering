@@ -16,7 +16,7 @@
 
 EXE = HairStrandsRendering
 IMGUI_DIR = /Users/yuefan/Documents/3rdparty/imgui
-GLEW_DIR = /Users/yuefan/Documents/3rdparty/glew-2.1.0/include
+GLEW_DIR = /Users/yuefan/Documents/3rdparty/glew-2.2.0/include
 GLM_DIR = /Users/yuefan/Documents/3rdparty/glm
 # SOURCES = main.cpp viewer.cpp render/shader.cpp render/opengl_buffer_manager.cpp render/opengl_context.cpp render/ui_context.cpp elems/mesh.cpp ui/property_panel.cpp ui/scene_view.cpp
 SOURCES = $(wildcard ./*.cpp) $(wildcard elems/*.cpp) $(wildcard render/*.cpp) $(wildcard ui/*.cpp)
@@ -28,7 +28,7 @@ LINUX_GL_LIBS = -lGL
 
 CXXFLAGS = -std=c++17 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(GLM_DIR) -I$(GLEW_DIR)
 CXXFLAGS += -g -Wall -Wformat
-LIBS = -L$(GLEW_DIR)/../lib -lGLEW -lassimp
+LIBS = -lGLEW -lassimp
 
 ##---------------------------------------------------------------------
 ## OPENGL ES

@@ -51,6 +51,7 @@ public:
 
 
 private:
+    bool m_is_running;
     GLFWwindow* m_window;
 
     // Render contexts
@@ -62,6 +63,4 @@ private:
     std::unique_ptr<PropertyPanel> m_property_pannel;
 
     std::unique_ptr<SceneView> m_scene_view;
-
-    bool m_is_running;
 };

@@ -1,4 +1,4 @@
-#include "Viewer.h"
+#include "viewer.h"
 #include "elems/camera.h"
 
 class Application

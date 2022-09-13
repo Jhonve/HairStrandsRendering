@@ -80,9 +80,9 @@ private:
     std::shared_ptr<Strands> m_strands;
 
     std::unique_ptr<OpenGLFrameBuffer> m_face_frame_buffer;
-    std::unique_ptr<OpenGLFrameBuffer> m_strands_frame_buffer;
-    std::unique_ptr<OpenGLFrameBuffer> m_comp_frame_buffer;
     std::unique_ptr<Shader> m_face_shader;
+    std::unique_ptr<OpenGLFrameBuffer> m_strands_frame_buffer;
     std::unique_ptr<Shader> m_strands_shader;
+    std::unique_ptr<OpenGLFrameBuffer> m_comp_frame_buffer;
     std::unique_ptr<Shader> m_comp_shader;
 };

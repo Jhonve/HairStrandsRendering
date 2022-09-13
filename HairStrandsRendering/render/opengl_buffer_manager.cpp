@@ -1,5 +1,5 @@
 #include "render/opengl_buffer_manager.h"
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 void OpenGLVertexIndexBuffer::create_buffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
