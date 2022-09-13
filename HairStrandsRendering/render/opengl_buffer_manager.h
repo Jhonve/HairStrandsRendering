@@ -27,8 +27,8 @@ public:
     OpenGLStrandsIndexBuffer() : StrandsIndexBuffer()
     {}
   
-    void create_buffers(const std::vector<Strand>& strands,
-        const std::vector<std::vector<unsigned int>>& indices) override;
+    void create_buffers(const std::vector<StrandVertex>& vertices,
+        const std::vector<unsigned int>& indices) override;
   
     void delete_buffers() override;
   

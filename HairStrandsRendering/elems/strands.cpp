@@ -1,11 +1,44 @@
 #include "elems/strands.h"
+#include "elems/random_color.h"
 #include "render/opengl_buffer_manager.h"
 
 void Strands::init()
-{
+{   
+    int index_count = 0;
+    for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
+    {
+        int num_points = m_points[i_strand].size();
+        
+        // add point and tangent
+        int random_color = k_strands_colors[i_strand % k_num_strands_colors];
+        glm::vec3 color = glm::vec3((random_color >> 16) / 255.0f, ((random_color >> 8) % 256) / 255.0f, (random_color % 256) / 255.0f);
+
+        for (int j_point = 0; j_point < num_points - 1; j_point++)
+        {
+            StrandVertex strand_vertex;
+            strand_vertex.m_pos = m_points[i_strand][j_point];
+            strand_vertex.m_color = color;
+
+            glm::vec3 tangent = m_points[i_strand][j_point + 1] -  m_points[i_strand][j_point];
+            strand_vertex.m_tangent = tangent;
+            
+            m_strands_vertices.push_back(strand_vertex);
+
+            m_vertex_indices.push_back(index_count);
+            m_vertex_indices.push_back(index_count + 1);
+            index_count++;
+        }
+
+        StrandVertex strand_vertex;
+        strand_vertex.m_pos = m_points[i_strand][num_points - 1];
+        strand_vertex.m_color = color;
+        strand_vertex.m_tangent = m_strands_vertices[m_strands_vertices.size() - 1].m_tangent;
+        m_strands_vertices.push_back(strand_vertex);
+        index_count++;
+    }
+    
+    // init buffer
     m_render_buffer_mgr = std::make_unique<OpenGLStrandsIndexBuffer>();
-  
-    // TODO
     create_buffers();
 }
 
@@ -59,6 +92,7 @@ Strands::points Strands::load_bin(const std::string& filepath)
         if (valid_strand)
         {
             strands_points.push_back(strand_points);
+            m_num_strands++;
         }
     }
     fclose(f);
@@ -103,6 +137,8 @@ Strands::points Strands::load_usc_data(const std::string& filepath)
                 fread(&strand_points[j_point].z, 4, 1, f);
             }
             strands_points.push_back(strand_points);
+            m_num_strands++;
+            m_num_points += num_points;
         }
     }
     fclose(f);
@@ -116,13 +152,18 @@ bool Strands::load(const std::string& filepath)
         m_points = load_bin(filepath);
 	else
 		m_points = load_usc_data(filepath);
-
-    return true;
+    
+    if (m_num_strands > 0)
+    {
+        init();
+        return true;
+    }
+    return false;
 }
 
 void Strands::create_buffers()
 {
-    // TODO
+    m_render_buffer_mgr->create_buffers(m_strands_vertices, m_vertex_indices);
 }
   
 void Strands::delete_buffers()

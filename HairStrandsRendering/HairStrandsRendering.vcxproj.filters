@@ -143,9 +143,6 @@
     <ClInclude Include="elems\vertex.h">
       <Filter>Elements</Filter>
     </ClInclude>
-    <ClInclude Include="elems\strand.h">
-      <Filter>Elements</Filter>
-    </ClInclude>
     <ClInclude Include="glad\glad.h">
       <Filter>glad</Filter>
     </ClInclude>
@@ -178,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_opengl3_loader.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\random_color.h">
+      <Filter>Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

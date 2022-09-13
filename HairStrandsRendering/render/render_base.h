@@ -2,7 +2,6 @@
 
 #include "window.h"
 #include "elems/vertex.h"
-#include "elems/strand.h"
 #include <glad/glad.h>
 
 class VertexIndexBuffer
@@ -34,8 +33,8 @@ public:
     StrandsIndexBuffer() : m_VBO{ 0 }, m_VAO{ 0 }, m_IBO{ 0 }
     {}
   
-    virtual void create_buffers(const std::vector<Strand>& strands,
-        const std::vector<std::vector<unsigned int>>& indices) = 0;
+    virtual void create_buffers(const std::vector<StrandVertex>& vertices,
+        const std::vector<unsigned int>& indices) = 0;
   
     virtual void delete_buffers() = 0;
   

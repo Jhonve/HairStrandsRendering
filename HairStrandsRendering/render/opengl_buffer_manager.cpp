@@ -58,15 +58,39 @@ void OpenGLVertexIndexBuffer::draw(int index_count)
 }
 
 // TODO OpenGLStrandsIndexBuffer
-void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<Strand>& strands,
-        const std::vector<std::vector<unsigned int>>& indices)
+void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<StrandVertex>& vertices,
+        const std::vector<unsigned int>& indices)
 {
+    glGenVertexArrays(1, &m_VAO);
+  
+    glGenBuffers(1, &m_IBO);
+    glGenBuffers(1, &m_VBO);
+  
+    glBindVertexArray(m_VAO);
+  
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(StrandVertex), vertices.data(), GL_STATIC_DRAW);
+  
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+  
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)0);
+  
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_tangent));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_color));
+  
+    glBindVertexArray(0);
 }
 
 void OpenGLStrandsIndexBuffer::delete_buffers()
 {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_IBO);
@@ -89,7 +113,7 @@ void OpenGLStrandsIndexBuffer::draw(int index_count)
     bind();
 
     // the vertices as line loop
-    glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_LINES, index_count, GL_UNSIGNED_INT, nullptr);
 
     unbind();
 }

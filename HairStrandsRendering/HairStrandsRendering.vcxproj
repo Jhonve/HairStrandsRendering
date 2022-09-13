@@ -170,7 +170,7 @@
   <ItemGroup>
     <ClInclude Include="elems\camera.h" />
     <ClInclude Include="elems\element.h" />
-    <ClInclude Include="elems\strand.h" />
+    <ClInclude Include="elems\random_color.h" />
     <ClInclude Include="elems\strands.h" />
     <ClInclude Include="elems\input.h" />
     <ClInclude Include="elems\light.h" />

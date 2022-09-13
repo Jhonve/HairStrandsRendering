@@ -2,7 +2,7 @@
 
 #include "render/render_base.h"
 #include "elems/element.h"
-#include "elems/strand.h"
+#include "elems/vertex.h"
 
 #include <memory>   // required on windows
 
@@ -10,8 +10,6 @@ class Strands : public Element
 {
 public:
     typedef std::vector<std::vector<glm::vec3>> points;
-    typedef std::vector<std::vector<glm::vec3>> tagents;
-    typedef std::vector<std::vector<glm::vec3>> colors;
 
 public:
 	Strands() = default;
@@ -46,9 +44,10 @@ private:
     std::unique_ptr<StrandsIndexBuffer> m_render_buffer_mgr;
     
     // Vertices and indices
-    std::vector<Strand> m_strands;
+    int m_num_strands = 0;
+    int m_num_points = 0;
     points m_points;
 
-    std::vector<Vertex> m_vertices;
+    std::vector<StrandVertex> m_strands_vertices;
     std::vector<unsigned int> m_vertex_indices;
 };
