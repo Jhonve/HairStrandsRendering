@@ -164,6 +164,10 @@ void OpenGLFrameBuffer::create_buffers(int width, int height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_depth_tex_id, 0);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        printf("ERROR::BUFFERMANAGER:: Framebuffer is not complete for depth texture!\n");
+    }
 
     GLenum buffers[4] = { GL_COLOR_ATTACHMENT0 };
     glDrawBuffers(m_color_tex_id, buffers);
@@ -250,7 +254,7 @@ bool OpenGLFrameBuffers::create_textures()
         m_shadow_depth_depth_tex.create_depth_texture(m_shadow_width, m_shadow_height, GL_LINEAR);
 
     if (!create_sucess)
-        printf("Error: create textures wrong!\n");
+        printf("ERROR::BUFFERMANAGER:: create textures wrong!\n");
     return create_sucess;
 }
 
@@ -294,4 +298,6 @@ bool OpenGLFrameBuffers::create_buffers(int width, int height)
     create_textures();
     create_FBO();
     attach_FBO_textures();
+
+    return true;
 }

@@ -161,7 +161,7 @@ public:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        storage_texture(0, GL_DEPTH_COMPONENT24, width, height);
+        storage_texture(1, GL_DEPTH24_STENCIL8, width, height);
         unbind_texture();
         return true;
     }
@@ -266,7 +266,7 @@ public:
     bool create_FBO()
     {
         glGenFramebuffers(1, &m_FBOID);
-        printf("Create FBO Success, ID is %d\n", m_FBOID);
+        // printf("Create FBO Success, ID is %d\n", m_FBOID);
         return m_FBOID != 0;
     }
 
@@ -277,7 +277,7 @@ public:
         return true;
     }
 
-    GLuint getFBO()
+    GLuint get_FBO()
     {
         return m_FBOID;
     }
@@ -346,7 +346,7 @@ public:
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_texture.get_texture(), 0);
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
-            printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
+            printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete for color texture!\n");
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         return true;
@@ -356,10 +356,10 @@ public:
     {
         m_depth_tex = &depth_texture;
         glBindFramebuffer(GL_FRAMEBUFFER, m_FBOID);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_texture.get_texture(), 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depth_texture.get_texture(), 0);
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
-            printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
+            printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete for depth texture!\n");
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         return true;
