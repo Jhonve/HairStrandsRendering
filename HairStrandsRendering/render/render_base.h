@@ -161,7 +161,11 @@ public:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        #if defined(__APPLE__)
+        image_texture(0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
+        #else
         storage_texture(1, GL_DEPTH24_STENCIL8, width, height);
+        #endif
         unbind_texture();
         return true;
     }
@@ -356,7 +360,11 @@ public:
     {
         m_depth_tex = &depth_texture;
         glBindFramebuffer(GL_FRAMEBUFFER, m_FBOID);
+        #if defined(__APPLE__)
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_texture.get_texture(), 0);
+        #else
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depth_texture.get_texture(), 0);
+        #endif
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
             printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete for depth texture!\n");

@@ -89,6 +89,19 @@ void Shader::set_f3(float a, float b, float c, const std::string& name)
     glUniform3f(param_loc, a, b, c);
 }
 
+#if defined(__APPLE__)
+void Shader::set_vec3(const glm::vec3& vec3, const std::string& name)
+{
+    GLint param_loc = glGetUniformLocation(get_program_id(), name.c_str());
+    glUniform3f(param_loc, vec3.x, vec3.y, vec3.z);
+}
+
+void Shader::set_vec4(const glm::vec4& vec4, const std::string& name)
+{
+    GLint param_loc = glGetUniformLocation(get_program_id(), name.c_str());
+    glUniform4f(param_loc, vec4.w, vec4.x, vec4.y, vec4.z);
+}
+#else
 void Shader::set_vec3(const glm::vec3& vec3, const std::string& name)
 {
     GLint param_loc = glGetUniformLocation(get_program_id(), name.c_str());
@@ -100,3 +113,4 @@ void Shader::set_vec4(const glm::vec4& vec4, const std::string& name)
     GLint param_loc = glGetUniformLocation(get_program_id(), name.c_str());
     glProgramUniform4fv(get_program_id(), param_loc, 1, glm::value_ptr(vec4));
 }
+#endif

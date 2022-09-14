@@ -13,13 +13,10 @@ class SceneView
 public:
     SceneView() : 
         m_camera(nullptr), m_light(nullptr), m_size(1600, 1600), m_frame_buffers(nullptr),
-        m_frame_buffer(nullptr), m_face_shader(nullptr), m_strands_shader(nullptr), m_comp_shader(nullptr)
+        m_face_shader(nullptr), m_strands_shader(nullptr), m_comp_shader(nullptr)
     {
         m_frame_buffers = std::make_unique<OpenGLFrameBuffers>();
         m_frame_buffers->create_buffers(m_size.x, m_size.y);
-
-        m_frame_buffer = std::make_unique<OpenGLFrameBuffer>();
-        m_frame_buffer->create_buffers(m_size.x, m_size.y);
 
         m_face_shader = std::make_unique<Shader>();
         m_face_shader->load("shaders/vert_mesh.vert", "shaders/frag_pbr_mesh.frag");
@@ -78,7 +75,6 @@ private:
     std::shared_ptr<Strands> m_strands;
 
     std::unique_ptr<OpenGLFrameBuffers> m_frame_buffers;
-    std::unique_ptr<OpenGLFrameBuffer> m_frame_buffer;
     std::unique_ptr<Shader> m_face_shader;
     std::unique_ptr<Shader> m_strands_shader;
     std::unique_ptr<Shader> m_comp_shader;

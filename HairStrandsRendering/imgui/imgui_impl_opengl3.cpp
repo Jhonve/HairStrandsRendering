@@ -150,6 +150,8 @@
 
 
 // Vertex arrays are not supported on ES2/WebGL1 unless Emscripten which uses an extension
+#if defined(__APPLE__)
+#else
 #ifndef IMGUI_IMPL_OPENGL_ES2
 #define IMGUI_IMPL_OPENGL_USE_VERTEX_ARRAY
 #elif defined(__EMSCRIPTEN__)
@@ -158,6 +160,7 @@
 #define glGenVertexArrays       glGenVertexArraysOES
 #define glDeleteVertexArrays    glDeleteVertexArraysOES
 #define GL_VERTEX_ARRAY_BINDING GL_VERTEX_ARRAY_BINDING_OES
+#endif
 #endif
 
 // Desktop GL 2.0+ has glPolygonMode() which GL ES and WebGL don't have.
