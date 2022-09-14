@@ -19,13 +19,13 @@ public:
         m_frame_buffers->create_buffers(m_size.x, m_size.y);
 
         m_face_shader = std::make_unique<Shader>();
-        m_face_shader->load("shaders/vert_mesh.vert", "shaders/frag_pbr_mesh.frag");
+        m_face_shader->load("shaders/mesh.vert", "shaders/mesh_pbr.frag");
 
         m_strands_shader = std::make_unique<Shader>();
-        m_strands_shader->load("shaders/vert_strands.vert", "shaders/frag_strands.frag");
+        m_strands_shader->load("shaders/strands.vert", "shaders/strands.frag");
 
         m_comp_shader = std::make_unique<Shader>();
-        m_comp_shader->load("shaders/vert_composite.vert", "shaders/frag_composite.frag");
+        m_comp_shader->load("shaders/composite.vert", "shaders/composite.frag");
 
         m_light = std::make_unique<Light>();
         m_camera = std::make_unique<Camera>(glm::vec3(0, 0, 3), 45.0f, 1.3f, 0.1f, 100.0f);
