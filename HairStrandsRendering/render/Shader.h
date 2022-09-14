@@ -18,11 +18,8 @@ public:
 
     // Load a vertex and a fragment shader from file
     bool load(const std::string& vert_shader_file, const std::string& frag_shader_file);
-
-    // Use the program
     void use();
-
-    // Delete the program
+    void disuse();
     void unload();
 
     unsigned int get_program_id() { return m_program_id; }

@@ -17,10 +17,20 @@ public:
     {
         m_frame_buffers = std::make_unique<OpenGLFrameBuffers>();
         m_frame_buffers->create_buffers(m_size.x, m_size.y);
+        
+        m_depth_range_shader = std::make_unique<Shader>();
+        m_depth_range_shader->load("shaders/depth_range.vert", "shaders/depth_range.frag");
+        m_occ_shader = std::make_unique<Shader>();
+        m_occ_shader->load("shaders/occ.vert", "shaders/occ.frag");
+        m_slab_shader = std::make_unique<Shader>();
+        m_slab_shader->load("shaders/slab.vert", "shaders/slab.frag");
+        m_shadow_depth_shader = std::make_unique<Shader>();
+        m_shadow_depth_shader->load("shaders/depth.vert", "shaders/depth.frag");
+        m_shadow_opacity_shader = std::make_unique<Shader>();
+        m_shadow_opacity_shader->load("shaders/shadow.vert", "shaders/shadow.frag");
 
         m_mesh_shader = std::make_unique<Shader>();
         m_mesh_shader->load("shaders/mesh.vert", "shaders/mesh_pbr.frag");
-
         m_strands_shader = std::make_unique<Shader>();
         m_strands_shader->load("shaders/strands.vert", "shaders/strands.frag");
 
@@ -34,6 +44,11 @@ public:
   
     ~SceneView()
     {
+        m_depth_range_shader->unload();
+        m_occ_shader->unload();
+        m_slab_shader->unload();
+        m_shadow_depth_shader->unload();
+        m_shadow_opacity_shader->unload();
         m_mesh_shader->unload();
         m_strands_shader->unload();
         m_comp_shader->unload();
@@ -63,6 +78,10 @@ public:
 
     void resize(int width, int height);
     void render();
+    void render_transparency();
+    void render_shadow();
+    void render_mesh();
+    void render_strands();
 
 private:
     std::unique_ptr<Camera> m_camera;
@@ -74,6 +93,12 @@ private:
     std::shared_ptr<Strands> m_strands;
 
     std::unique_ptr<OpenGLFrameBuffers> m_frame_buffers;
+
+    std::unique_ptr<Shader> m_depth_range_shader;
+    std::unique_ptr<Shader> m_occ_shader;
+    std::unique_ptr<Shader> m_slab_shader;
+    std::unique_ptr<Shader> m_shadow_depth_shader;
+    std::unique_ptr<Shader> m_shadow_opacity_shader;
     std::unique_ptr<Shader> m_mesh_shader;
     std::unique_ptr<Shader> m_strands_shader;
     std::unique_ptr<Shader> m_comp_shader;

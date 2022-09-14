@@ -12,7 +12,7 @@ void OpenGLVertexIndexBuffer::create_buffers(const std::vector<Vertex>& vertices
     glGenBuffers(1, &m_IBO);
     glGenBuffers(1, &m_VBO);
   
-    glBindVertexArray(m_VAO);
+    bind();
   
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
@@ -27,7 +27,8 @@ void OpenGLVertexIndexBuffer::create_buffers(const std::vector<Vertex>& vertices
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_normal));
   
     glBindVertexArray(0);
-
+    
+    unbind();
 }
 
 void OpenGLVertexIndexBuffer::delete_buffers()

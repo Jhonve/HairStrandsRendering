@@ -38,16 +38,15 @@ void SceneView::load_strands(const std::string& filepath)
 
 void SceneView::render()
 {
-    m_mesh_shader->use();
-
-    m_light->update(m_mesh_shader.get());
-
-    m_frame_buffers->get_mesh_FBO().bind_FBO();
     int frame_width, frame_height;
     m_frame_buffers->get_mesh_FBO().get_texture_size(frame_width, frame_height);
     glViewport(0, 0, frame_width, frame_height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    m_frame_buffers->get_mesh_FBO().bind_FBO();
+    m_mesh_shader->use();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_light->update(m_mesh_shader.get());
     if (m_mesh)
     {
         m_mesh->update(m_mesh_shader.get());
@@ -76,4 +75,142 @@ void SceneView::render()
     ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
     ImGui::End();
+}
+
+void SceneView::render_transparency()
+{
+
+}
+
+void SceneView::render_shadow()
+{   
+    int frame_width, frame_height;
+    m_frame_buffers->get_shadow_depth_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+    
+    // renfer strands depth with lights
+    m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
+    m_shadow_depth_shader->use();
+    
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthRange(0.0, 1.0);
+    glDepthFunc(GL_LEQUAL);
+    glClearColor(1e30f, 1e30f, 1e30f, 1e30f);
+    glClearDepth(1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
+
+    for (int i_light = 0; i_light < m_lights->m_num_lights; i_light++)
+    {
+        glViewport((i_light % 2) * frame_width / 2,
+                   (i_light / 2) * frame_height / 2,
+                   frame_width / 2,
+                   frame_height / 2);
+        
+        glm::mat4 model{ 1.0f };
+        m_shadow_depth_shader->set_mat4(model, "model_mat");
+        m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
+        m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
+
+        if (m_strands)
+        {
+            // TODO
+        }
+    }
+
+    glDisable(GL_DEPTH_TEST);
+    m_shadow_depth_shader->disuse();
+    m_frame_buffers->get_shadow_depth_FBO().unbind_FBO();
+
+    // Copy can be replace by glBlitNamedFramebuffer
+    m_frame_buffers->get_shadow_depth_FBO().bind_FBO_read();
+    m_frame_buffers->get_shadow_opacity_FBO().bind_FBO_draw();
+    glBlitFramebuffer(0, 0, frame_width, frame_height, 0, 0, frame_width, frame_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    m_frame_buffers->get_shadow_depth_FBO().unbind_FBO_read();
+    m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO_draw();
+
+    // renfer mesh depth with lights
+    m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
+    m_shadow_depth_shader->use();
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthRange(0., 1.);
+    glDepthFunc(GL_LEQUAL);
+    glClearDepth(1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_FALSE);
+
+    for (int i_light = 0; i_light < m_lights->m_num_lights; i_light++)
+    {
+        glViewport((i_light % 2) * frame_width / 2,
+                   (i_light / 2) * frame_height / 2,
+                   frame_width / 2,
+                   frame_height / 2);
+        
+        glm::mat4 model{ 1.0f };
+        m_shadow_depth_shader->set_mat4(model, "model_mat");
+        m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
+        m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
+
+        if (m_mesh)
+        {
+            // TODO
+        }
+    }
+
+    glDisable(GL_DEPTH_TEST);
+    m_shadow_depth_shader->disuse();
+    m_frame_buffers->get_shadow_depth_FBO().unbind_FBO();
+
+    // render shadow map
+    m_frame_buffers->get_shadow_opacity_FBO().get_texture_size(frame_width, frame_height);
+
+    m_frame_buffers->get_shadow_opacity_FBO().bind_FBO();
+    m_shadow_opacity_shader->use();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
+    glBlendEquation(GL_FUNC_ADD);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    m_frame_buffers->get_shadow_depth_FBO().get_color_texture().bind_texture_unit(0);
+    m_shadow_opacity_shader->set_i1(0, "depth_map");
+    m_shadow_opacity_shader->set_i1(frame_width, "width");
+    m_shadow_opacity_shader->set_i1(frame_height, "height");
+
+    for (int i_light = 0; i_light < m_lights->m_num_lights; i_light++)
+    {
+        glViewport((i_light % 2) * frame_width / 2,
+                   (i_light / 2) * frame_height / 2,
+                   frame_width / 2,
+                   frame_height / 2);
+        
+        glm::mat4 model{ 1.0f };
+        m_shadow_depth_shader->set_mat4(model, "model_mat");
+        m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
+        m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
+
+        if (m_strands)
+        {
+            // TODO
+        }
+    }
+
+    glDisable(GL_DEPTH_TEST);
+    m_shadow_opacity_shader->disuse();
+    m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO();
+}
+
+void SceneView::render_mesh()
+{
+
+}
+
+void SceneView::render_strands()
+{
+
 }

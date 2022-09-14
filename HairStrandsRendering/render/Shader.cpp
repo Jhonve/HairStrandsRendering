@@ -60,6 +60,11 @@ void Shader::use()
     glUseProgram(m_program_id);
 }
 
+void Shader::disuse()
+{
+    glUseProgram(0);
+}
+
 void Shader::unload()
 {
     glDeleteProgram(m_program_id);
