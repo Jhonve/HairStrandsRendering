@@ -12,40 +12,37 @@ class SceneView
 {
 public:
     SceneView() : 
-        m_camera(nullptr), m_light(nullptr), m_size(1600, 1600), m_frame_buffers(nullptr),
-        m_face_shader(nullptr), m_strands_shader(nullptr), m_comp_shader(nullptr)
+        m_camera(nullptr), m_light(nullptr), m_lights(nullptr), m_size(1600, 1600), m_frame_buffers(nullptr),
+        m_mesh_shader(nullptr), m_strands_shader(nullptr), m_comp_shader(nullptr)
     {
         m_frame_buffers = std::make_unique<OpenGLFrameBuffers>();
         m_frame_buffers->create_buffers(m_size.x, m_size.y);
 
-        m_face_shader = std::make_unique<Shader>();
-        m_face_shader->load("shaders/mesh.vert", "shaders/mesh_pbr.frag");
+        m_mesh_shader = std::make_unique<Shader>();
+        m_mesh_shader->load("shaders/mesh.vert", "shaders/mesh_pbr.frag");
 
         m_strands_shader = std::make_unique<Shader>();
         m_strands_shader->load("shaders/strands.vert", "shaders/strands.frag");
 
         m_comp_shader = std::make_unique<Shader>();
         m_comp_shader->load("shaders/composite.vert", "shaders/composite.frag");
-
+    
         m_light = std::make_unique<Light>();
+        m_lights = std::make_unique<Lights>(m_render_param.light);
         m_camera = std::make_unique<Camera>(glm::vec3(0, 0, 3), 45.0f, 1.3f, 0.1f, 100.0f);
     }
   
     ~SceneView()
     {
-        m_face_shader->unload();
+        m_mesh_shader->unload();
         m_strands_shader->unload();
+        m_comp_shader->unload();
     }
   
     Light* get_light() { return m_light.get(); }
-  
-    void resize(int width, int height);
-  
-    void render();
-  
+    std::shared_ptr<Mesh> get_mesh() { return m_mesh; }
     void load_mesh(const std::string& filepath);
     void load_strands(const std::string& filepath);
-  
     void set_mesh(std::shared_ptr<Mesh> mesh)
     {
         m_mesh = mesh;
@@ -54,8 +51,6 @@ public:
     {
         m_strands = strands;
     }
-  
-    std::shared_ptr<Mesh> get_mesh() { return m_mesh; }
     
     void on_mouse_move(double x, double y, InputButton button);
   
@@ -66,16 +61,22 @@ public:
         m_camera->reset();
     }
 
+    void resize(int width, int height);
+    void render();
+
 private:
     std::unique_ptr<Camera> m_camera;
     std::unique_ptr<Light> m_light;
+    std::unique_ptr<Lights> m_lights;
     glm::vec2 m_size;
 
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Strands> m_strands;
 
     std::unique_ptr<OpenGLFrameBuffers> m_frame_buffers;
-    std::unique_ptr<Shader> m_face_shader;
+    std::unique_ptr<Shader> m_mesh_shader;
     std::unique_ptr<Shader> m_strands_shader;
     std::unique_ptr<Shader> m_comp_shader;
+
+    RenderParameters m_render_param;
 };

@@ -176,8 +176,8 @@
     <ClInclude Include="imgui\imgui_impl_opengl3_loader.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="elems\random_color.h">
-      <Filter>Elements</Filter>
+    <ClInclude Include="render\parameters.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

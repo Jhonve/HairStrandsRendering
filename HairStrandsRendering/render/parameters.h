@@ -1,5 +1,5 @@
-#ifndef RANDOMCOLOR_H
-#define RANDOMCOLOR_H
+#ifndef PARAMETERS_H
+#define PARAMETERS_H
 
 #define RANDOM
 
@@ -48,4 +48,34 @@ static const int k_strands_colors[256] =
 };
 #endif
 
-#endif // RANDOMCOLOR_H
+struct RenderParameters
+{
+    float mesh_color[3] = { 238 / 255.0, 207 / 255.0f, 161 / 255.0f };
+    float strands_color[3] = { 0.5, 0.5, 0.5 };
+    float light = 0.45f;
+    float gamma = 1.5f;
+    float mesh_ambient = 0.2f;
+    float mesh_fiffuse = 0.9f;
+    float mesh_specular = 0.1f;
+    float strands_ambient = 0.1f;
+    float strands_diffuse = 1.5f;
+    float strands_specular = 0.8f;
+    float mesh_self_shadow = 0.3f;
+    float mesh_hair_shadow = 0.5f;
+    float strands_self_shadow = 0.6f;
+    float strands_mesh_shadow = 0.3f;
+    float strands_alpha = 0.25f;
+    float strands_width = 2.0f;
+};
+
+struct OriginalLightsParameters
+{
+    int num_lights = 4;
+    int num_param = 7; // 3 colors + 3 directions + 1 intensity = 7 parameters
+    float lights[28] = { 0.585436f, 0.581132f, 0.565288f, -0.386036f,  0.972636f, -0.015817f, 1.786173f,
+                         0.589499f, 0.585810f, 0.556164f,  0.581768f,  0.725987f, -0.366728f, 0.974651f,
+                         0.586187f, 0.583904f, 0.561642f,  0.363468f,  0.785292f, -0.501207f, 0.800924f,
+                         0.585436f, 0.581132f, 0.565288f, -0.086036f, -0.972636f, -0.215817f, 1.377824f };
+};
+
+#endif // PARAMETERS_H

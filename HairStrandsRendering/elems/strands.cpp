@@ -1,5 +1,5 @@
 #include "elems/strands.h"
-#include "elems/random_color.h"
+#include "render/parameters.h"
 #include "render/opengl_buffer_manager.h"
 
 void Strands::init()

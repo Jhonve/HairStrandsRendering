@@ -38,9 +38,9 @@ void SceneView::load_strands(const std::string& filepath)
 
 void SceneView::render()
 {
-    m_face_shader->use();
+    m_mesh_shader->use();
 
-    m_light->update(m_face_shader.get());
+    m_light->update(m_mesh_shader.get());
 
     m_frame_buffers->get_mesh_FBO().bind_FBO();
     int frame_width, frame_height;
@@ -50,7 +50,7 @@ void SceneView::render()
 
     if (m_mesh)
     {
-        m_mesh->update(m_face_shader.get());
+        m_mesh->update(m_mesh_shader.get());
         m_mesh->render();
     }
 
@@ -69,7 +69,7 @@ void SceneView::render()
     m_size = { viewport_panelsize.x, viewport_panelsize.y };
 
     m_camera->set_aspect(m_size.x / m_size.y);
-    m_camera->update(m_face_shader.get());
+    m_camera->update(m_mesh_shader.get());
 
     // add rendered texture to ImGUI scene window
     uint32_t texture_id = m_frame_buffers->get_mesh_FBO().get_color_texture().get_texture();
