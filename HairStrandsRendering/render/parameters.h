@@ -55,13 +55,13 @@ struct RenderParameters
     float light = 0.45f;
     float gamma = 1.5f;
     float mesh_ambient = 0.2f;
-    float mesh_fiffuse = 0.9f;
+    float mesh_diffuse = 0.9f;
     float mesh_specular = 0.1f;
     float strands_ambient = 0.1f;
     float strands_diffuse = 1.5f;
     float strands_specular = 0.8f;
     float mesh_self_shadow = 0.3f;
-    float mesh_hair_shadow = 0.5f;
+    float mesh_strands_shadow = 0.5f;
     float strands_self_shadow = 0.6f;
     float strands_mesh_shadow = 0.3f;
     float strands_alpha = 0.25f;

@@ -7,7 +7,7 @@ uniform mat4 model_mat;
 uniform mat4 view_mat;
 uniform mat4 proj_mat;
 
-uniform vec3 view_point;
+uniform vec3 cam_pos;
 
 uniform mat4 light_view_mat_1;
 uniform mat4 light_view_mat_2;
@@ -38,7 +38,7 @@ out VSOUT
 void main()
 {
     gl_Position = proj_mat * view_mat * model_mat * vec4(position, 1.0f);
-	vs_out.view = normalize(view_point - position);
+	vs_out.view = normalize(cam_pos - position);
     vs_out.normal = normalize(mat3(transpose(inverse(model_mat))) * normal);
 
     vs_out.light_view_depth_1 = -(light_view_mat_1 * model_mat * vec4(position, 1.0f)).z;
