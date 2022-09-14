@@ -4,7 +4,6 @@ in VSOUT
 {
     vec3 world_pos;
     vec3 normal;
-    vec3 color;
 }fs_in;
 
 out vec4 frag_color;

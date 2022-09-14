@@ -61,6 +61,7 @@ void GLWindow::render()
     m_UI_ctx->pre_render();
 
     // render scene to framebuffer and add it to scene view
+    // m_scene_view->render_shadow();
     m_scene_view->render();
 
     m_property_pannel->render(m_scene_view.get());

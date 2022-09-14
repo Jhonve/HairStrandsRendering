@@ -104,7 +104,7 @@ void Shader::set_vec3(const glm::vec3& vec3, const std::string& name)
 void Shader::set_vec4(const glm::vec4& vec4, const std::string& name)
 {
     GLint param_loc = glGetUniformLocation(get_program_id(), name.c_str());
-    glUniform4f(param_loc, vec4.w, vec4.x, vec4.y, vec4.z);
+    glUniform4f(param_loc, vec4.x, vec4.y, vec4.z, vec4.w);
 }
 #else
 void Shader::set_vec3(const glm::vec3& vec3, const std::string& name)

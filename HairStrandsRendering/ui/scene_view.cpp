@@ -70,6 +70,7 @@ void SceneView::render()
     m_camera->set_aspect(m_size.x / m_size.y);
     m_camera->update(m_mesh_shader.get());
 
+    m_mesh_shader->disuse();
     // add rendered texture to ImGUI scene window
     uint32_t texture_id = m_frame_buffers->get_mesh_FBO().get_color_texture().get_texture();
     ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -156,7 +157,7 @@ void SceneView::render_shadow()
 
         if (m_mesh)
         {
-            // TODO
+            m_mesh->render();
         }
     }
 
@@ -201,8 +202,19 @@ void SceneView::render_shadow()
     }
 
     glDisable(GL_DEPTH_TEST);
-    m_shadow_opacity_shader->disuse();
-    m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO();
+
+    // validate rendering
+    // m_shadow_opacity_shader->disuse();
+    // m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO();
+
+    // ImGui::Begin("Scene");
+    // ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
+    // m_size = { viewport_panelsize.x, viewport_panelsize.y };
+
+    // // add rendered texture to ImGUI scene window
+    // uint32_t texture_id = m_frame_buffers->get_shadow_depth_FBO().get_color_texture().get_texture();
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::End();
 }
 
 void SceneView::render_mesh()
