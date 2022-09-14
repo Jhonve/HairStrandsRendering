@@ -156,9 +156,7 @@ void SceneView::render_shadow()
         m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_mesh)
-        {
             m_mesh->render();
-        }
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -191,9 +189,9 @@ void SceneView::render_shadow()
                    frame_height / 2);
         
         glm::mat4 model{ 1.0f };
-        m_shadow_depth_shader->set_mat4(model, "model_mat");
-        m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
-        m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
+        m_shadow_opacity_shader->set_mat4(model, "model_mat");
+        m_shadow_opacity_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
+        m_shadow_opacity_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_strands)
         {
@@ -203,16 +201,16 @@ void SceneView::render_shadow()
 
     glDisable(GL_DEPTH_TEST);
 
-    // validate rendering
-    // m_shadow_opacity_shader->disuse();
-    // m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO();
+    m_shadow_opacity_shader->disuse();
+    m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO();
 
+    // validate rendering
     // ImGui::Begin("Scene");
     // ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
     // m_size = { viewport_panelsize.x, viewport_panelsize.y };
 
     // // add rendered texture to ImGUI scene window
-    // uint32_t texture_id = m_frame_buffers->get_shadow_depth_FBO().get_color_texture().get_texture();
+    // uint32_t texture_id = m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().get_texture();
     // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
     // ImGui::End();
 }
