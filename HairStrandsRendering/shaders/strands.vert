@@ -10,11 +10,6 @@ uniform mat4 proj_mat;
 
 uniform vec3 view_point;
 
-uniform vec3 light_dir_1;
-uniform vec3 light_dir_2;
-uniform vec3 light_dir_3;
-uniform vec3 light_dir_4;
-
 uniform mat4 light_view_mat_1;
 uniform mat4 light_view_mat_2;
 uniform mat4 light_view_mat_3;

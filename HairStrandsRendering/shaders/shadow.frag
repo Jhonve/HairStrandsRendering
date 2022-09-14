@@ -1,24 +1,28 @@
-#version 330
-in float Depth;
+#version 450 core
 
-uniform int Width;
-uniform int Height;
+in VSOUT
+{
+    float depth;
+}fs_in;
 
-uniform sampler2D DepthMap;
+uniform int width;
+uniform int height;
 
-out vec4 OutColor;
+uniform sampler2D depth_map;
+
+out vec4 frag_color;
 
 void main()
 {
-    vec2 texPos = gl_FragCoord.xy / vec2(float(Width), float(Height));
-    float depth0 = texture(DepthMap, texPos).x;
+    vec2 texcoord = gl_FragCoord.xy / vec2(float(width), float(height));
+    float depth_0 = texture(depth_map, texcoord).x;
 
-    float ratio = max(Depth - depth0, 0.) * 0.2;
-    int depthID = int(ratio);
-    if (depthID == 0)
-        OutColor = vec4(1., 1., 1., 0.);
-    else if (depthID == 1)
-        OutColor = vec4(0., 1., 1., 0.);
+    float ratio = max(fs_in.depth - depth_0, 0.) * 0.2;
+    int depth_id = int(ratio);
+    if (depth_id == 0)
+        frag_color = vec4(1., 1., 1., 0.);
+    else if (depth_id == 1)
+        frag_color = vec4(0., 1., 1., 0.);
     else
-        OutColor = vec4(0., 0., 1., 0.);
+        frag_color = vec4(0., 0., 1., 0.);
 }

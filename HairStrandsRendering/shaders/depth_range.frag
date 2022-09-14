@@ -1,12 +1,13 @@
-#version 330
+#version 450 core
 
-in float Depth;
+in VSOUT
+{
+    float depth;
+}fs_in;
 
-out vec4 OutColor;
-
+out vec4 frag_out;
 
 void main()
 {
-    // outColor = vec4(gl_FragCoord.z, -gl_FragCoord.z, 0.0f, 0.0f);
-    OutColor = vec4(Depth, -Depth, 0.0f, 0.0f);
+    frag_out = vec4(fs_in.depth, -fs_in.depth, 0.0f, 0.0f);
 }

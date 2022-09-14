@@ -85,12 +85,12 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
 
     // 1
     vec4 lpos1 = fs_in.light_view_position_1 / fs_in.light_view_position_1.w;
-    vec2 texPos1 = (lpos1.xy * 0.5 + vec2(0.5, 0.5)) * 0.5;
+    vec2 tex_pos1 = (lpos1.xy * 0.5 + vec2(0.5, 0.5)) * 0.5;
     val1 = 0.;
     for (int i = 0; i < 4; ++i){
         for (int j = 0; j < 4; ++j){
-            vec2 texPos = texPos1 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
-            vec4 opacity1 = texture(opacity_map, texPos);
+            vec2 tex_pos = tex_pos1 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
+            vec4 opacity1 = texture(opacity_map, tex_pos);
             float ratio1 = max(fs_in.light_view_depth_1 - opacity1.w, 0.) * 0.2;
             int depth_id_1 = min(int(ratio1), 2);
             ratio1 = min(ratio1 - float(depth_id_1), 1.);
@@ -104,18 +104,18 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
             val1 += pow(1. - hair_shadow, mix(opacity_range_1.x, opacity_range_1.y, ratio1));
         }
     }
-    float head_depth_1 = texture(depth_map, texPos1).y;
+    float head_depth_1 = texture(depth_map, tex_pos1).y;
     val1 *= fs_in.light_view_depth_1 > head_depth_1 + tolerance ? 1. - head_shadow : 1.;
     val1 /= 16.;
 
     // 2
     vec4 lpos2 = fs_in.light_view_position_2 / fs_in.light_view_position_2.w;
-    vec2 texPos2 = (lpos2.xy * 0.5 + vec2(0.5, 0.5)) * 0.5 + vec2(0.5, 0.);
+    vec2 tex_pos2 = (lpos2.xy * 0.5 + vec2(0.5, 0.5)) * 0.5 + vec2(0.5, 0.);
     val2 = 0.;
     for (int i = 0; i < 4; ++i){
         for (int j = 0; j < 4; ++j){
-            vec2 texPos = texPos2 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
-            vec4 opacity2 = texture(opacity_map, texPos);
+            vec2 tex_pos = tex_pos2 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
+            vec4 opacity2 = texture(opacity_map, tex_pos);
             float ratio2 = max(fs_in.light_view_depth_2 - opacity2.w, 0.) * 0.2;
             int depth_id_2 = min(int(ratio2), 2);
             ratio2 = min(ratio2 - float(depth_id_2), 1.);
@@ -129,18 +129,18 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
             val2 += pow(1.- hair_shadow, mix(opacity_range_2.x, opacity_range_2.y, ratio2));
         }
     }
-    float head_depth_2 = texture(depth_map, texPos2).y;
+    float head_depth_2 = texture(depth_map, tex_pos2).y;
     val2 *= fs_in.light_view_depth_2 > head_depth_2 + tolerance ? 1. - head_shadow : 1.;
     val2 /= 16.;
 
     // 3
     vec4 lpos3 = fs_in.light_view_position_3 / fs_in.light_view_position_3.w;
-    vec2 texPos3 = (lpos3.xy * 0.5 + vec2(0.5, 0.5)) * 0.5 + vec2(0., 0.5);
+    vec2 tex_pos3 = (lpos3.xy * 0.5 + vec2(0.5, 0.5)) * 0.5 + vec2(0., 0.5);
     val3 = 0.;
     for (int i = 0; i < 4; ++i){
         for (int j = 0; j < 4; ++j){
-            vec2 texPos = texPos3 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
-            vec4 opacity3 = texture(opacity_map, texPos);
+            vec2 tex_pos = tex_pos3 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
+            vec4 opacity3 = texture(opacity_map, tex_pos);
             float ratio3 = max(fs_in.light_view_depth_3 - opacity3.w, 0.) * 0.2;
             int depth_id_3 = min(int(ratio3), 2);
             ratio3 = min(ratio3 - float(depth_id_3), 1.);
@@ -154,18 +154,18 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
             val3 += pow(1. - hair_shadow, mix(opacity_range_3.x, opacity_range_3.y, ratio3));
         }
     }
-    float head_depth_3 = texture(depth_map, texPos3).y;
+    float head_depth_3 = texture(depth_map, tex_pos3).y;
     val3 *= fs_in.light_view_depth_3 > head_depth_3 + tolerance ? 1. - head_shadow : 1.;
     val3 /= 16.;
 
     // 4
     vec4 lpos4 = fs_in.light_view_position_4 / fs_in.light_view_position_4.w;
-    vec2 texPos4 = (lpos4.xy * 0.5 + vec2(0.5, 0.5)) * 0.5 + vec2(0.5, 0.5);
+    vec2 tex_pos4 = (lpos4.xy * 0.5 + vec2(0.5, 0.5)) * 0.5 + vec2(0.5, 0.5);
     val4 = 0.;
     for (int i = 0; i < 4; ++i){
         for (int j = 0; j < 4; ++j){
-            vec2 texPos = texPos4 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
-            vec4 opacity4 = texture(opacity_map, texPos);
+            vec2 tex_pos = tex_pos4 + vec2((float(i) - 1.5) / 256., (float(j) - 1.5) / 256.);
+            vec4 opacity4 = texture(opacity_map, tex_pos);
             float ratio4 = max(fs_in.light_view_depth_4 - opacity4.w, 0.) * 0.2;
             int depth_id_4 = min(int(ratio4), 2);
             ratio4 = min(ratio4 - float(depth_id_4), 1.);
@@ -179,7 +179,7 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
             val4 += pow(1.- hair_shadow, mix(opacity_range_4.x, opacity_range_4.y, ratio4));
         }
     }
-    float head_depth_4 = texture2D(depth_map, texPos4).y;
+    float head_depth_4 = texture2D(depth_map, tex_pos4).y;
     val4 *= fs_in.light_view_depth_4 > head_depth_4 + tolerance ? 1. - head_shadow : 1.;
     val4 /= 16.;
 }

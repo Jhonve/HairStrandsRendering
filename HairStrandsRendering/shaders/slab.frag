@@ -1,27 +1,30 @@
-#version 330
-in float Depth;
+#version 450 core
 
-uniform int Width;
-uniform int Height;
+in VSOUT
+{
+    float depth;
+}fs_in;
 
-uniform sampler2D DepthRangeMap;
+uniform int width;
+uniform int height;
 
-out vec4 outColor;
+uniform sampler2D depth_range_map;
+
+out vec4 frag_color;
 
 void main()
 {
-    // Compute the depth id
-    vec2 range = texture(DepthRangeMap, gl_FragCoord.xy / vec2(float(Width), float(Height))).xy;
-    float ratio = sqrt(max(Depth - range.x, 0.) / max(-range.y - range.x, 1e-6));
-    int depthId = min(int(ratio * 128.), 127);
-    int slabId = depthId / 32;
+    vec2 range = texture(depth_range_map, gl_FragCoord.xy / vec2(float(width), float(height))).xy;
+    float ratio = sqrt(max(fs_in.depth - range.x, 0.) / max(-range.y - range.x, 1e-6));
+    int depth_id = min(int(ratio * 128.), 127);
+    int slab_id = depth_id / 32;
 
-    if (slabId == 0)
-        outColor = vec4(1., 0., 0., 0.);
-    else if (slabId == 1)
-        outColor = vec4(0., 1., 0., 0.);
-    else if (slabId == 2)
-        outColor = vec4(0., 0., 1., 0.);
+    if (slab_id == 0)
+        frag_color = vec4(1., 0., 0., 0.);
+    else if (slab_id == 1)
+        frag_color = vec4(0., 1., 0., 0.);
+    else if (slab_id == 2)
+        frag_color = vec4(0., 0., 1., 0.);
     else
-        outColor = vec4(0., 0., 0., 1.);
+        frag_color = vec4(0., 0., 0., 1.);
 }

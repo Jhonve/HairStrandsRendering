@@ -1,15 +1,17 @@
-#version 330
+#version 450 core
 layout (location=0) in vec3 position;
 
-uniform mat4 ModelMatrix;
-uniform mat4 ViewMatrix;
-uniform mat4 ProjectionMatrix;
+uniform mat4 model_mat;
+uniform mat4 view_mat;
+uniform mat4 proj_mat;
 
-out float Depth;
+out VSOUT
+{
+    float depth;
+}vs_out;
 
 void main()
 {
-    gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(position, 1.0f);
-    // Depth = -gl_Position.z;
-    Depth = -(ViewMatrix * ModelMatrix * vec4(position, 1.0f)).z;
+    gl_Position = proj_mat * view_mat * model_mat * vec4(position, 1.0f);
+    vs_out.depth = -(view_mat * model_mat * vec4(position, 1.0f)).z;
 }

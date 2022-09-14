@@ -181,28 +181,58 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\frag_fixed_mesh.frag">
+    <None Include="shaders\composite.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\vert_mesh.vert">
+    <None Include="shaders\composite.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\frag_simple_mesh.frag">
+    <None Include="shaders\depth_range.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\frag_pbr_mesh.frag">
+    <None Include="shaders\depth_range.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\vert_strands.vert">
+    <None Include="shaders\mesh.vert">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\frag_strands.frag">
+    <None Include="shaders\mesh_pbr.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\vert_composite.vert">
+    <None Include="shaders\mesh_shade.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\frag_composite.frag">
+    <None Include="shaders\mesh_shade.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\occ.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\occ.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\shadow.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\shadow.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\depth.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\depth.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\slab.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\slab.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\strands.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\strands.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

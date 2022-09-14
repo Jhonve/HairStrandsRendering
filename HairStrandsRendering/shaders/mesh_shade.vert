@@ -1,51 +1,53 @@
-#version 330
+#version 450 core
 
 layout (location=0) in vec3 position;
 layout (location=1) in vec3 normal;
 
-uniform mat4 ModelMatrix;
-uniform mat4 ViewMatrix;
-uniform mat4 ProjectionMatrix;
+uniform mat4 model_mat;
+uniform mat4 view_mat;
+uniform mat4 proj_mat;
 
-uniform vec3 ViewPoint;
+uniform vec3 view_point;
 
-uniform mat4 LightViewMatrix1;
-uniform mat4 LightViewMatrix2;
-uniform mat4 LightViewMatrix3;
-uniform mat4 LightViewMatrix4;
+uniform mat4 light_view_mat_1;
+uniform mat4 light_view_mat_2;
+uniform mat4 light_view_mat_3;
+uniform mat4 light_view_mat_4;
 
-uniform mat4 LightViewProjMatrix1;
-uniform mat4 LightViewProjMatrix2;
-uniform mat4 LightViewProjMatrix3;
-uniform mat4 LightViewProjMatrix4;
+uniform mat4 light_view_proj_mat_1;
+uniform mat4 light_view_proj_mat_2;
+uniform mat4 light_view_proj_mat_3;
+uniform mat4 light_view_proj_mat_4;
 
-out vec4 LightViewPosition1;
-out vec4 LightViewPosition2;
-out vec4 LightViewPosition3;
-out vec4 LightViewPosition4;
+out VSOUT
+{
+    vec4 light_view_position_1;
+    vec4 light_view_position_2;
+    vec4 light_view_position_3;
+    vec4 light_view_position_4;
+    
+    float light_view_depth_1;
+    float light_view_depth_2;
+    float light_view_depth_3;
+    float light_view_depth_4;
 
-out float LightViewDepth1;
-out float LightViewDepth2;
-out float LightViewDepth3;
-out float LightViewDepth4;
-
-out vec3 Normal;
-out vec3 View;
+    vec3 normal;
+    vec3 view;
+}vs_out;
 
 void main()
 {
-    gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(position, 1.0f);
-	View = normalize(ViewPoint - position);
-    Normal = normalize(mat3(transpose(inverse(ModelMatrix))) * normal);
-	// Normal = normalize(normal);
+    gl_Position = proj_mat * view_mat * model_mat * vec4(position, 1.0f);
+	vs_out.view = normalize(view_point - position);
+    vs_out.normal = normalize(mat3(transpose(inverse(model_mat))) * normal);
 
-	LightViewDepth1 = -(LightViewMatrix1 * ModelMatrix * vec4(position, 1.0f)).z;
-	LightViewDepth2 = -(LightViewMatrix2 * ModelMatrix * vec4(position, 1.0f)).z;
-	LightViewDepth3 = -(LightViewMatrix3 * ModelMatrix * vec4(position, 1.0f)).z;
-	LightViewDepth4 = -(LightViewMatrix4 * ModelMatrix * vec4(position, 1.0f)).z;
+    vs_out.light_view_depth_1 = -(light_view_mat_1 * model_mat * vec4(position, 1.0f)).z;
+    vs_out.light_view_depth_2 = -(light_view_mat_2 * model_mat * vec4(position, 1.0f)).z;
+    vs_out.light_view_depth_3 = -(light_view_mat_3 * model_mat * vec4(position, 1.0f)).z;
+    vs_out.light_view_depth_4 = -(light_view_mat_4 * model_mat * vec4(position, 1.0f)).z;
 
-	LightViewPosition1 = LightViewProjMatrix1 * ModelMatrix * vec4(position, 1.0f);
-	LightViewPosition2 = LightViewProjMatrix2 * ModelMatrix * vec4(position, 1.0f);
-	LightViewPosition3 = LightViewProjMatrix3 * ModelMatrix * vec4(position, 1.0f);
-	LightViewPosition4 = LightViewProjMatrix4 * ModelMatrix * vec4(position, 1.0f);
+    vs_out.light_view_position_1 = light_view_proj_mat_1 * model_mat * vec4(position, 1.0f);
+    vs_out.light_view_position_2 = light_view_proj_mat_2 * model_mat * vec4(position, 1.0f);
+    vs_out.light_view_position_3 = light_view_proj_mat_3 * model_mat * vec4(position, 1.0f);
+    vs_out.light_view_position_4 = light_view_proj_mat_4 * model_mat * vec4(position, 1.0f);
 }
