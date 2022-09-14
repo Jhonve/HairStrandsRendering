@@ -130,7 +130,7 @@ void OpenGLStrandsIndexBuffer::draw(int index_count)
 * Fragment buffer class for simple mesh vertex
 */
 
-void OpenGLFrameBuffer::create_buffers(int32_t width, int32_t height)
+void OpenGLFrameBuffer::create_buffers(int width, int height)
 {
     m_width = width;
     m_height = height;
@@ -235,7 +235,63 @@ OpenGLFrameBuffers::~OpenGLFrameBuffers()
     m_shadow_depth_depth_tex.delete_texture();
 }
 
-bool OpenGLFrameBuffers::create_textures(int width, int height)
+bool OpenGLFrameBuffers::create_textures()
 {
-    return false;
+    bool create_sucess = 
+        m_mesh_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_mesh_depth_tex.create_depth_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_strands_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_strands_depth_tex.create_depth_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_trsp_slab_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_trsp_occ_color_tex.create_RGBA32UI_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_trsp_depth_range_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_shadow_opacity_color_tex.create_RGBA32F_texture(m_shadow_width, m_shadow_height, GL_LINEAR) &&
+        m_shadow_depth_color_tex.create_RGBA32F_texture(m_shadow_width, m_shadow_height, GL_LINEAR) &&
+        m_shadow_depth_depth_tex.create_depth_texture(m_shadow_width, m_shadow_height, GL_LINEAR);
+
+    if (!create_sucess)
+        printf("Error: create textures wrong!\n");
+    return create_sucess;
+}
+
+bool OpenGLFrameBuffers::create_FBO()
+{
+    m_mesh_FBO.create_FBO();
+    m_strands_FBO.create_FBO();
+    m_trsp_slab_FBO.create_FBO();
+    m_trsp_occ_FBO.create_FBO();
+    m_trsp_depth_range_FBO.create_FBO();
+    m_shadow_opacity_FBO.create_FBO();
+    m_shadow_depth_FBO.create_FBO();
+    return true;
+}
+
+bool OpenGLFrameBuffers::attach_FBO_textures()
+{
+    m_mesh_FBO.attach_color_texture(m_mesh_color_tex);
+    m_mesh_FBO.attach_depth_texture(m_mesh_depth_tex);
+    m_strands_FBO.attach_color_texture(m_strands_color_tex);
+    m_strands_FBO.attach_depth_texture(m_strands_depth_tex);
+    m_trsp_slab_FBO.attach_color_texture(m_trsp_slab_color_tex);
+    m_trsp_slab_FBO.attach_depth_texture(m_strands_depth_tex);
+    m_trsp_occ_FBO.attach_color_texture(m_trsp_occ_color_tex);
+    m_trsp_occ_FBO.attach_depth_texture(m_strands_depth_tex);
+    m_trsp_depth_range_FBO.attach_color_texture(m_trsp_depth_range_color_tex);
+    m_trsp_depth_range_FBO.attach_depth_texture(m_strands_depth_tex);
+    m_shadow_depth_FBO.attach_color_texture(m_shadow_depth_color_tex);
+    m_shadow_depth_FBO.attach_depth_texture(m_shadow_depth_depth_tex);
+    m_shadow_opacity_FBO.attach_color_texture(m_shadow_opacity_color_tex);
+    return true;
+}
+
+bool OpenGLFrameBuffers::create_buffers(int width, int height)
+{
+    m_frame_width = width;
+    m_frame_height = height;
+    m_shadow_width = width;
+    m_shadow_height = height;
+
+    create_textures();
+    create_FBO();
+    attach_FBO_textures();
 }

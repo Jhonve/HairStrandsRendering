@@ -76,9 +76,7 @@ protected:
 class GLTexture
 {
 public:
-    GLTexture()
-    {
-    }
+    GLTexture() {}
 
     bool create_texture()
     {

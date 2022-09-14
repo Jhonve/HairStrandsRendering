@@ -61,20 +61,19 @@ public:
     OpenGLFrameBuffers();
     ~OpenGLFrameBuffers();
     
-    void set_frame_size(int width, int height);
-    void set_shadow_size(int width, int height);
+    bool create_textures();
+    bool create_FBO();
+    bool attach_FBO_textures();
 
-    bool create_textures(int width, int height);
-    bool createFramebufferObjects();
-    bool attachFramebufferObjectsTextures();
+    bool create_buffers(int width, int height);
 
-    GLFBO& get_bust_FBO();
-    GLFBO& get_hair_FBO();
-    GLFBO& get_transparency_slab_FBO();
-    GLFBO& get_transparency_occupancy_FBO();
-    GLFBO& get_transparency_depth_range_FBO();
-    GLFBO& get_shadow_opacity_FBO();
-    GLFBO& get_shadow_depth_FBO();
+    GLFBO& get_mesh_FBO() { return m_mesh_FBO; }
+    GLFBO& get_strands_FBO(){ return m_strands_FBO; }
+    GLFBO& get_transparency_slab_FBO(){ return m_trsp_slab_FBO; }
+    GLFBO& get_transparency_occupancy_FBO(){ return m_trsp_occ_FBO; }
+    GLFBO& get_transparency_depth_range_FBO(){ return m_trsp_depth_range_FBO;}
+    GLFBO& get_shadow_opacity_FBO(){ return m_shadow_opacity_FBO;}
+    GLFBO& get_shadow_depth_FBO(){ return m_shadow_depth_FBO; }
 
 protected:
     GLFBO m_mesh_FBO;
