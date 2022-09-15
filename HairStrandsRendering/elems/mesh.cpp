@@ -45,7 +45,8 @@ bool Mesh::load(const std::string& filepath)
             Vertex vh;
             vh.m_pos = { mesh->mVertices[i].x, mesh->mVertices[i].y ,mesh->mVertices[i].z };
             vh.m_normal = { mesh->mNormals[i].x, mesh->mNormals[i].y ,mesh->mNormals[i].z };
-  
+            
+            vh.m_pos = vh.m_pos * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f); //  TODO Shen
             add_vertex(vh);
         }
   

@@ -119,7 +119,7 @@ void OpenGLStrandsIndexBuffer::draw(int index_count)
     bind();
 
     // the vertices as line loop
-    glLineWidth(1);
+    glLineWidth(3);
     glDrawElements(GL_LINES, index_count, GL_UNSIGNED_INT, nullptr);
 
     unbind();

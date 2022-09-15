@@ -16,7 +16,7 @@ void Strands::init()
         for (int j_point = 0; j_point < num_points - 1; j_point++)
         {
             StrandVertex strand_vertex;
-            strand_vertex.m_pos = m_points[i_strand][j_point] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);
+            strand_vertex.m_pos = m_points[i_strand][j_point] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);   // TODO Shen
             strand_vertex.m_color = color;
 
             glm::vec3 tangent = m_points[i_strand][j_point + 1] -  m_points[i_strand][j_point];
@@ -30,7 +30,7 @@ void Strands::init()
         }
 
         StrandVertex strand_vertex;
-        strand_vertex.m_pos = m_points[i_strand][num_points - 1] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);
+        strand_vertex.m_pos = m_points[i_strand][num_points - 1] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);    //  TODO Shen
         strand_vertex.m_color = color;
         strand_vertex.m_tangent = m_strands_vertices[m_strands_vertices.size() - 1].m_tangent;
         m_strands_vertices.push_back(strand_vertex);

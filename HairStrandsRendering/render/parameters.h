@@ -58,8 +58,8 @@ struct RenderParameters
     float mesh_diffuse = 0.9f;
     float mesh_specular = 0.1f;
     float strands_ambient = 0.1f;
-    float strands_diffuse = 1.5f;
-    float strands_specular = 0.8f;
+    float strands_diffuse = 0.8f;
+    float strands_specular = 0.7f;
     float mesh_self_shadow = 0.3f;
     float mesh_strands_shadow = 0.5f;
     float strands_self_shadow = 0.6f;

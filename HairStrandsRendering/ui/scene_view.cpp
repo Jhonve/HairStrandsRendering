@@ -74,6 +74,47 @@ void SceneView::render()
     ImGui::End();
 }
 
+void SceneView::render_mesh_depth()
+{
+    ImGui::Begin("Scene");
+    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
+    m_size = { viewport_panelsize.x, viewport_panelsize.y };
+    m_camera->set_aspect(m_size.x / m_size.y);
+    ImGui::End();
+
+    int frame_width, frame_height;
+    m_frame_buffers->get_strands_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+
+    m_frame_buffers->get_strands_FBO().bind_FBO();
+    m_depth_shader->use();
+
+    glClearColor(0.f, 0.f, 0.f, 0.f);
+    glClearDepth(1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+    glDepthRange(0.0, 1.0);
+
+    if (m_mesh)
+        m_mesh->render();
+
+    m_camera->update(m_depth_shader.get());
+
+    glDisable(GL_DEPTH_TEST);
+
+    m_depth_shader->disuse();
+    m_frame_buffers->get_strands_FBO().unbind_FBO();
+
+    // // validate mesh color frame
+    // ImGui::Begin("Scene");  // can move to the top of the function
+    // // add rendered texture to ImGUI scene window
+    // uint32_t texture_id = m_frame_buffers->get_strands_FBO().get_depth_texture().get_texture();
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::End();
+}
+
 void SceneView::render_transparency()
 {
     ImGui::Begin("Scene");  // can move to the top of the function
@@ -184,7 +225,7 @@ void SceneView::render_shadow()
     
     // renfer strands depth with lights
     m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
-    m_shadow_depth_shader->use();
+    m_depth_shader->use();
     
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
@@ -203,16 +244,16 @@ void SceneView::render_shadow()
                    frame_height / 2);
         
         glm::mat4 model{ 1.0f };
-        m_shadow_depth_shader->set_mat4(model, "model_mat");
-        m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
-        m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
+        m_depth_shader->set_mat4(model, "model_mat");
+        m_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
+        m_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_strands)
             m_strands->render();
     }
 
     glDisable(GL_DEPTH_TEST);
-    m_shadow_depth_shader->disuse();
+    m_depth_shader->disuse();
     m_frame_buffers->get_shadow_depth_FBO().unbind_FBO();
 
     // Copy can be replace by glBlitNamedFramebuffer
@@ -224,7 +265,7 @@ void SceneView::render_shadow()
 
     // render mesh depth with lights
     m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
-    m_shadow_depth_shader->use();
+    m_depth_shader->use();
 
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
@@ -242,16 +283,16 @@ void SceneView::render_shadow()
                    frame_height / 2);
         
         glm::mat4 model{ 1.0f };
-        m_shadow_depth_shader->set_mat4(model, "model_mat");
-        m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
-        m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
+        m_depth_shader->set_mat4(model, "model_mat");
+        m_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
+        m_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_mesh)
             m_mesh->render();
     }
 
     glDisable(GL_DEPTH_TEST);
-    m_shadow_depth_shader->disuse();
+    m_depth_shader->disuse();
     m_frame_buffers->get_shadow_depth_FBO().unbind_FBO();
 
     // render shadow map
@@ -323,7 +364,6 @@ void SceneView::render_mesh()
     glClearDepth(1.0);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     
@@ -401,8 +441,8 @@ void SceneView::render_strands()
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glClearColor(0.f, 0.f, 0.f, 0.f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glClearDepth(1.f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // glClearDepth(1.f);               // without render mesh depth, clearing depth buffer is required
+    // glClear(GL_DEPTH_BUFFER_BIT);    // uncomment it when call render_strands() only
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     glEnable(GL_BLEND);
