@@ -76,10 +76,113 @@ void SceneView::render()
 
 void SceneView::render_transparency()
 {
+    ImGui::Begin("Scene");  // can move to the top of the function
+    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
+    m_size = { viewport_panelsize.x, viewport_panelsize.y };
+    m_camera->set_aspect(m_size.x / m_size.y);
+    ImGui::End();
 
+    // render depth range
+    int frame_width, frame_height;
+    m_frame_buffers->get_transparency_depth_range_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+    
+    m_frame_buffers->get_transparency_depth_range_FBO().bind_FBO();
+    m_depth_range_shader->use();
+
+    glEnable(GL_DEPTH_TEST);    // the depth is only read
+    glDepthMask(GL_FALSE);
+    glEnable(GL_BLEND);  // blend the color for get the range
+    glBlendFunc(GL_ONE, GL_ONE);
+    glBlendEquation(GL_MIN);
+    glClearColor(1e30f, 1e30f, 1e30f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    if (m_strands)
+    {
+        // TODO
+    }
+
+    m_camera->update(m_depth_range_shader.get());
+
+    glDepthMask(GL_TRUE);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+    
+    m_depth_range_shader->disuse();
+    m_frame_buffers->get_transparency_depth_range_FBO().unbind_FBO();
+
+    // render occupancy map
+    m_frame_buffers->get_transparency_occupancy_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+    
+    m_frame_buffers->get_transparency_occupancy_FBO().bind_FBO();
+    m_occ_shader->use();
+
+    glEnable(GL_COLOR_LOGIC_OP);
+    glLogicOp(GL_OR);
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().bind_texture_unit(0);
+    m_occ_shader->set_i1(0, "depth_range_map");
+    m_occ_shader->set_i1(frame_width, "width");
+    m_occ_shader->set_i1(frame_height, "height");
+
+    if (m_strands)
+    {
+        // TODO
+    }
+
+    m_camera->update(m_occ_shader.get());
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(0);
+    
+    glDepthMask(GL_TRUE);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_COLOR_LOGIC_OP);
+
+    m_occ_shader->disuse();
+    m_frame_buffers->get_transparency_occupancy_FBO().unbind_FBO();
+
+    // render slab map
+    m_frame_buffers->get_transparency_slab_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+    
+    m_frame_buffers->get_transparency_slab_FBO().bind_FBO();
+    m_slab_shader->use();
+
+    glClearColor(0.f, 0.f, 0.f, 0.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ONE);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().bind_texture_unit(0);
+    m_slab_shader->set_i1(0, "depth_range_map");
+    m_slab_shader->set_i1(frame_width, "width");
+    m_slab_shader->set_i1(frame_height, "height");
+
+    if (m_strands)
+    {
+        // TODO
+    }
+
+    m_camera->update(m_slab_shader.get());
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(0);
+    
+    glDepthMask(GL_TRUE);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+
+    m_slab_shader->disuse();
+    m_frame_buffers->get_transparency_slab_FBO().unbind_FBO();
 }
 
-void SceneView::render_shadow()
+void SceneView::render_shadow() // May have problems
 {   
     int frame_width, frame_height;
     m_frame_buffers->get_shadow_depth_FBO().get_texture_size(frame_width, frame_height);
