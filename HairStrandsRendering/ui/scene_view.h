@@ -41,6 +41,9 @@ public:
         m_light = std::make_unique<Light>();
         m_lights = std::make_unique<Lights>(m_render_param.light);
         m_camera = std::make_unique<Camera>(glm::vec3(0, 0, 3), 45.0f, 1.3f, 0.1f, 100.0f);
+
+        m_comp = std::make_shared<QuadMesh>();
+        m_comp->init();
     }
   
     ~SceneView()
@@ -92,6 +95,7 @@ private:
 
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Strands> m_strands;
+    std::shared_ptr<QuadMesh> m_comp;
 
     std::unique_ptr<OpenGLFrameBuffers> m_frame_buffers;
 

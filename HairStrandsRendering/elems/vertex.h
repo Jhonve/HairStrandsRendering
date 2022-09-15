@@ -16,6 +16,7 @@ public:
 
     glm::vec3 m_pos;
     glm::vec3 m_normal;
+	glm::vec2 m_uv;	// optional
 };
 
 class StrandVertex

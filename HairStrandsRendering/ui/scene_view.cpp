@@ -38,7 +38,40 @@ void SceneView::load_strands(const std::string& filepath)
 
 void SceneView::render()
 {
+    int frame_width, frame_height;
+    m_frame_buffers->get_comp_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+    
+    m_frame_buffers->get_comp_FBO().bind_FBO();
+    m_comp_shader->use();
 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    m_frame_buffers->get_strands_FBO().get_color_texture().bind_texture_unit(0);
+    m_frame_buffers->get_mesh_FBO().get_color_texture().bind_texture_unit(1);
+    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().bind_texture_unit(2);
+
+    m_comp_shader->set_i1(0, "strands_map");
+    m_comp_shader->set_i1(1, "mesh_map");
+    m_comp_shader->set_i1(2, "slab_map");
+    
+    m_comp_shader->set_f1(m_render_param.strands_alpha, "alpha");
+    m_comp_shader->set_f1(m_render_param.gamma, "gamma");
+
+    m_comp->render();
+
+    m_frame_buffers->get_strands_FBO().get_color_texture().unbind_texture_unit(0);
+    m_frame_buffers->get_mesh_FBO().get_color_texture().unbind_texture_unit(1);
+    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().unbind_texture_unit(2);
+
+    m_comp_shader->disuse();
+    m_frame_buffers->get_comp_FBO().unbind_FBO();
+
+    ImGui::Begin("Scene");  // can move to the top of the function
+    // add rendered texture to ImGUI scene window
+    uint32_t texture_id = m_frame_buffers->get_comp_FBO().get_color_texture().get_texture();
+    ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    ImGui::End();
 }
 
 void SceneView::render_transparency()

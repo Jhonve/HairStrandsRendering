@@ -26,8 +26,6 @@ void OpenGLVertexIndexBuffer::create_buffers(const std::vector<Vertex>& vertices
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_normal));
   
-    glBindVertexArray(0);
-    
     unbind();
 }
 
@@ -70,18 +68,18 @@ void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<StrandVertex>& v
         const std::vector<unsigned int>& indices)
 {
     glGenVertexArrays(1, &m_VAO);
-  
+ 
     glGenBuffers(1, &m_IBO);
     glGenBuffers(1, &m_VBO);
-  
-    glBindVertexArray(m_VAO);
-  
+
+    bind();
+
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(StrandVertex), vertices.data(), GL_STATIC_DRAW);
-  
+ 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-  
+ 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)0);
   
@@ -90,15 +88,14 @@ void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<StrandVertex>& v
 
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_color));
-  
-    glBindVertexArray(0);
+
+    unbind();
 }
 
 void OpenGLStrandsIndexBuffer::delete_buffers()
 {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_IBO);
@@ -122,6 +119,67 @@ void OpenGLStrandsIndexBuffer::draw(int index_count)
 
     // the vertices as line loop
     glDrawElements(GL_LINES, index_count, GL_UNSIGNED_INT, nullptr);
+
+    unbind();
+}
+
+
+/*
+* Vertex buffer class for mesh vertex
+*/
+
+void OpenGLQuadIndexBuffer::create_buffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+{
+    glGenVertexArrays(1, &m_VAO);
+  
+    glGenBuffers(1, &m_IBO);
+    glGenBuffers(1, &m_VBO);
+  
+    bind();
+  
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+  
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+  
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+  
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_uv));
+    
+    unbind();
+}
+
+void OpenGLQuadIndexBuffer::delete_buffers()
+{
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &m_IBO);
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteVertexArrays(1, &m_VAO);
+}
+
+void OpenGLQuadIndexBuffer::bind()
+{
+    glBindVertexArray(m_VAO);
+}
+
+void OpenGLQuadIndexBuffer::unbind()
+{
+    glBindVertexArray(0);
+}
+
+void OpenGLQuadIndexBuffer::draw(int index_count)
+{
+    bind();
+
+    // the vertices as line loop
+    glLineWidth(1);
+    glDrawElements(GL_QUADS, index_count, GL_UNSIGNED_INT, nullptr);
 
     unbind();
 }
@@ -243,6 +301,8 @@ OpenGLFrameBuffers::~OpenGLFrameBuffers()
 bool OpenGLFrameBuffers::create_textures()
 {
     bool create_sucess = 
+        m_comp_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
+        m_comp_depth_tex.create_depth_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
         m_mesh_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
         m_mesh_depth_tex.create_depth_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
         m_strands_color_tex.create_RGBA32F_texture(m_frame_width, m_frame_height, GL_LINEAR) &&
@@ -261,6 +321,7 @@ bool OpenGLFrameBuffers::create_textures()
 
 bool OpenGLFrameBuffers::create_FBO()
 {
+    m_comp_FBO.create_FBO();
     m_mesh_FBO.create_FBO();
     m_strands_FBO.create_FBO();
     m_trsp_slab_FBO.create_FBO();
@@ -273,6 +334,8 @@ bool OpenGLFrameBuffers::create_FBO()
 
 bool OpenGLFrameBuffers::attach_FBO_textures()
 {
+    m_comp_FBO.attach_color_texture(m_comp_color_tex);
+    m_comp_FBO.attach_depth_texture(m_comp_depth_tex);
     m_mesh_FBO.attach_color_texture(m_mesh_color_tex);
     m_mesh_FBO.attach_depth_texture(m_mesh_depth_tex);
     m_strands_FBO.attach_color_texture(m_strands_color_tex);

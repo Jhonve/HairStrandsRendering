@@ -23,6 +23,7 @@ public:
 
 protected:
     GLuint m_VBO;
+    GLuint m_tex_VBO;
     GLuint m_VAO;
     GLuint m_IBO;
 };

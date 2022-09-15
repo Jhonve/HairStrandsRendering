@@ -40,6 +40,24 @@ public:
 
 };
 
+class OpenGLQuadIndexBuffer : public VertexIndexBuffer
+{
+public:
+    OpenGLQuadIndexBuffer() : VertexIndexBuffer()
+    {}
+  
+    void create_buffers(const std::vector<Vertex>& vertices,
+        const std::vector<unsigned int>& indices) override;
+  
+    void delete_buffers() override;
+  
+    void bind() override;
+  
+    void unbind() override;
+  
+    void draw(int index_count) override;
+
+};
 class OpenGLFrameBuffer : public FrameBuffer
 {
 public:
@@ -67,6 +85,7 @@ public:
 
     bool create_buffers(int width, int height);
 
+    GLFBO& get_comp_FBO() { return m_comp_FBO; }
     GLFBO& get_mesh_FBO() { return m_mesh_FBO; }
     GLFBO& get_strands_FBO(){ return m_strands_FBO; }
     GLFBO& get_transparency_slab_FBO(){ return m_trsp_slab_FBO; }
@@ -76,6 +95,10 @@ public:
     GLFBO& get_shadow_depth_FBO(){ return m_shadow_depth_FBO; }
 
 protected:
+    GLFBO m_comp_FBO;
+    GLTexture m_comp_color_tex;
+    GLTexture m_comp_depth_tex;
+
     GLFBO m_mesh_FBO;
     GLTexture m_mesh_color_tex;
     GLTexture m_mesh_depth_tex;

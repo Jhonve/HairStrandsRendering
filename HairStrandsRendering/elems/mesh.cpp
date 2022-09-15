@@ -87,3 +87,60 @@ void Mesh::render()
 {
     m_render_buffer_mgr->draw((int) m_vertex_indices.size());
 }
+
+void QuadMesh::init()
+{
+    Vertex v_0;
+	v_0.m_pos = glm::vec3(-1.0f, -1.0f, 0.0f);
+	v_0.m_uv = glm::vec2(0.0f, 0.0f);
+    Vertex v_1;
+    v_1.m_pos = glm::vec3(1.0, -1.0, 0.0);
+	v_1.m_uv = glm::vec2(1.0f, 0.0f);
+    Vertex v_2;
+    v_2.m_pos = glm::vec3(1.0, 1.0, 0.0);
+	v_2.m_uv = glm::vec2(1.0f, 1.0f);
+    Vertex v_3;
+    v_3.m_pos = glm::vec3(-1.0, 1.0, 0.0);
+	v_3.m_uv = glm::vec2(0.0f, 1.0f);
+    add_vertex(v_0);
+    add_vertex(v_1);
+    add_vertex(v_2);
+    add_vertex(v_3);
+    add_vertex_index(0);
+    add_vertex_index(1);
+    add_vertex_index(2);
+    add_vertex_index(3);
+
+    m_render_buffer_mgr = std::make_unique<OpenGLQuadIndexBuffer>();
+    create_buffers();
+}
+  
+QuadMesh::~QuadMesh()
+{
+    delete_buffers();
+}
+
+void QuadMesh::create_buffers()
+{
+    m_render_buffer_mgr->create_buffers(m_vertices, m_vertex_indices);
+}
+  
+void QuadMesh::delete_buffers()
+{
+    m_render_buffer_mgr->delete_buffers();
+}
+  
+void QuadMesh::bind()
+{
+    m_render_buffer_mgr->bind();
+}
+  
+void QuadMesh::unbind()
+{
+    m_render_buffer_mgr->unbind();
+}
+  
+void QuadMesh::render()
+{
+    m_render_buffer_mgr->draw((int) m_vertex_indices.size());
+}
