@@ -27,8 +27,8 @@ uniform usampler2D occupancy_map;
 uniform sampler2D slab_map;
 
 uniform float alpha;
-uniform float hair_shadow;
-uniform float head_shadow;
+uniform float strands_shadow;
+uniform float mesh_shadow;
 
 in VSOUT
 {
@@ -101,11 +101,11 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_1 = opacity1.xy;
             else
                 opacity_range_1 = opacity1.yz;
-            val1 += pow(1. - hair_shadow, mix(opacity_range_1.x, opacity_range_1.y, ratio1));
+            val1 += pow(1. - strands_shadow, mix(opacity_range_1.x, opacity_range_1.y, ratio1));
         }
     }
     float head_depth_1 = texture(depth_map, tex_pos1).y;
-    val1 *= fs_in.light_view_depth_1 > head_depth_1 + tolerance ? 1. - head_shadow : 1.;
+    val1 *= fs_in.light_view_depth_1 > head_depth_1 + tolerance ? 1. - mesh_shadow : 1.;
     val1 /= 16.;
 
     // 2
@@ -126,11 +126,11 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_2 = opacity2.xy;
             else
                 opacity_range_2 = opacity2.yz;
-            val2 += pow(1.- hair_shadow, mix(opacity_range_2.x, opacity_range_2.y, ratio2));
+            val2 += pow(1.- strands_shadow, mix(opacity_range_2.x, opacity_range_2.y, ratio2));
         }
     }
     float head_depth_2 = texture(depth_map, tex_pos2).y;
-    val2 *= fs_in.light_view_depth_2 > head_depth_2 + tolerance ? 1. - head_shadow : 1.;
+    val2 *= fs_in.light_view_depth_2 > head_depth_2 + tolerance ? 1. - mesh_shadow : 1.;
     val2 /= 16.;
 
     // 3
@@ -151,11 +151,11 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_3 = opacity3.xy;
             else
                 opacity_range_3 = opacity3.yz;
-            val3 += pow(1. - hair_shadow, mix(opacity_range_3.x, opacity_range_3.y, ratio3));
+            val3 += pow(1. - strands_shadow, mix(opacity_range_3.x, opacity_range_3.y, ratio3));
         }
     }
     float head_depth_3 = texture(depth_map, tex_pos3).y;
-    val3 *= fs_in.light_view_depth_3 > head_depth_3 + tolerance ? 1. - head_shadow : 1.;
+    val3 *= fs_in.light_view_depth_3 > head_depth_3 + tolerance ? 1. - mesh_shadow : 1.;
     val3 /= 16.;
 
     // 4
@@ -176,11 +176,11 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_4 = opacity4.xy;
             else
                 opacity_range_4 = opacity4.yz;
-            val4 += pow(1.- hair_shadow, mix(opacity_range_4.x, opacity_range_4.y, ratio4));
+            val4 += pow(1.- strands_shadow, mix(opacity_range_4.x, opacity_range_4.y, ratio4));
         }
     }
     float head_depth_4 = texture2D(depth_map, tex_pos4).y;
-    val4 *= fs_in.light_view_depth_4 > head_depth_4 + tolerance ? 1. - head_shadow : 1.;
+    val4 *= fs_in.light_view_depth_4 > head_depth_4 + tolerance ? 1. - mesh_shadow : 1.;
     val4 /= 16.;
 }
 

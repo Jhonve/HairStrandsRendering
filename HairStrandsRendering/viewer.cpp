@@ -63,6 +63,7 @@ void GLWindow::render()
     // render scene to framebuffer and add it to scene view
     m_scene_view->render_transparency();
     m_scene_view->render_shadow();
+    m_scene_view->render_strands();
     m_scene_view->render_mesh();
     m_scene_view->render();
 

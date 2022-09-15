@@ -395,5 +395,85 @@ void SceneView::render_mesh()
 
 void SceneView::render_strands()
 {
+    ImGui::Begin("Scene");
+    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
+    m_size = { viewport_panelsize.x, viewport_panelsize.y };
+    m_camera->set_aspect(m_size.x / m_size.y);
+    ImGui::End();
 
+    int frame_width, frame_height;
+    m_frame_buffers->get_strands_FBO().get_texture_size(frame_width, frame_height);
+    glViewport(0, 0, frame_width, frame_height);
+
+    m_frame_buffers->get_strands_FBO().bind_FBO();
+    m_strands_shader->use();
+
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ONE);
+
+    m_frame_buffers->get_shadow_depth_FBO().get_color_texture().bind_texture_unit(1);
+    m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().bind_texture_unit(2);
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().bind_texture_unit(1);
+    m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().bind_texture_unit(2);
+    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().bind_texture_unit(2);
+
+    m_strands_shader->set_i1(1, "depth_map");
+    m_strands_shader->set_i1(2, "opacity_map");
+    m_strands_shader->set_i1(3, "depth_range_map");
+    m_strands_shader->set_i1(4, "opacity_map");
+    m_strands_shader->set_i1(5, "slab_map");
+
+    m_strands_shader->set_vec3(m_lights->m_dirs[0], "light_dir_1");
+    m_strands_shader->set_vec3(m_lights->m_dirs[1], "light_dir_2");
+    m_strands_shader->set_vec3(m_lights->m_dirs[2], "light_dir_3");
+    m_strands_shader->set_vec3(m_lights->m_dirs[3], "light_dir_4");
+
+    m_strands_shader->set_vec3(m_lights->m_colors[0], "light_color_1");
+    m_strands_shader->set_vec3(m_lights->m_colors[1], "light_color_2");
+    m_strands_shader->set_vec3(m_lights->m_colors[2], "light_color_3");
+    m_strands_shader->set_vec3(m_lights->m_colors[3], "light_color_4");
+
+    m_strands_shader->set_mat4(m_lights->m_view_mat[0], "light_view_mat_1");
+    m_strands_shader->set_mat4(m_lights->m_view_mat[1], "light_view_mat_2");
+    m_strands_shader->set_mat4(m_lights->m_view_mat[2], "light_view_mat_3");
+    m_strands_shader->set_mat4(m_lights->m_view_mat[3], "light_view_mat_4");
+
+    m_strands_shader->set_mat4(m_lights->m_view_proj_mat[0], "light_view_proj_mat_1");
+    m_strands_shader->set_mat4(m_lights->m_view_proj_mat[1], "light_view_proj_mat_2");
+    m_strands_shader->set_mat4(m_lights->m_view_proj_mat[2], "light_view_proj_mat_3");
+    m_strands_shader->set_mat4(m_lights->m_view_proj_mat[3], "light_view_proj_mat_4");
+    
+    m_strands_shader->set_f1(m_render_param.strands_ambient, "Ka");
+    m_strands_shader->set_f1(m_render_param.strands_diffuse, "Kd");
+    m_strands_shader->set_f1(m_render_param.strands_specular, "Ks");
+    
+    m_strands_shader->set_f1(m_render_param.strands_alpha, "alpha");
+    m_strands_shader->set_f1(m_render_param.strands_self_shadow, "strands_shadow");
+    m_strands_shader->set_f1(m_render_param.strands_mesh_shadow, "mesh_shadow");
+    
+    m_strands_shader->set_i1(frame_width, "width");
+    m_strands_shader->set_i1(frame_height, "height");
+
+    if (m_strands)
+        m_strands->render();
+
+    m_camera->update(m_strands_shader.get());
+
+    m_frame_buffers->get_shadow_depth_FBO().get_color_texture().unbind_texture_unit(1);
+    m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().unbind_texture_unit(2);
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(1);
+    m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().unbind_texture_unit(2);
+    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().unbind_texture_unit(2);
+    
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+
+    m_strands_shader->disuse();
+    m_frame_buffers->get_strands_FBO().unbind_FBO();
 }
