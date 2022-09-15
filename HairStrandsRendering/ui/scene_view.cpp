@@ -38,44 +38,7 @@ void SceneView::load_strands(const std::string& filepath)
 
 void SceneView::render()
 {
-    int frame_width, frame_height;
-    m_frame_buffers->get_mesh_FBO().get_texture_size(frame_width, frame_height);
-    glViewport(0, 0, frame_width, frame_height);
 
-    m_frame_buffers->get_mesh_FBO().bind_FBO();
-    m_mesh_shader->use();
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    m_light->update(m_mesh_shader.get());
-    if (m_mesh)
-    {
-        m_mesh->update(m_mesh_shader.get());
-        m_mesh->render();
-    }
-
-    m_frame_buffers->get_mesh_FBO().unbind_FBO();
-
-    // TODO use another shader program here
-    /*
-    * 1. we need a composite shader program including vertex and fragment
-    * 2. composite fragment textures to the shader program
-    * 3. get_texture from it's frame buffer and draw it
-    */
-
-    ImGui::Begin("Scene");
-
-    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
-    m_size = { viewport_panelsize.x, viewport_panelsize.y };
-
-    m_camera->set_aspect(m_size.x / m_size.y);
-    m_camera->update(m_mesh_shader.get());
-
-    m_mesh_shader->disuse();
-    // add rendered texture to ImGUI scene window
-    uint32_t texture_id = m_frame_buffers->get_mesh_FBO().get_color_texture().get_texture();
-    ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-    ImGui::End();
 }
 
 void SceneView::render_transparency()
@@ -279,17 +242,19 @@ void SceneView::render_mesh()
     ImGui::Begin("Scene");  // can move to the top of the function
     ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
     m_size = { viewport_panelsize.x, viewport_panelsize.y };
+    ImGui::End();
 
     m_camera->set_aspect(m_size.x / m_size.y);
     m_camera->update(m_mesh_shader.get());
 
     m_mesh_shader->disuse();
-
-    // add rendered texture to ImGUI scene window
-    uint32_t texture_id = m_frame_buffers->get_mesh_FBO().get_color_texture().get_texture();
-    ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-    ImGui::End();
+    
+    // // validate mesh color frame
+    // ImGui::Begin("Scene");  // can move to the top of the function
+    // // add rendered texture to ImGUI scene window
+    // uint32_t texture_id = m_frame_buffers->get_mesh_FBO().get_color_texture().get_texture();
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::End();
 }
 
 void SceneView::render_strands()
