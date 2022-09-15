@@ -182,7 +182,7 @@ void SceneView::render_transparency()
     m_frame_buffers->get_transparency_slab_FBO().unbind_FBO();
 }
 
-void SceneView::render_shadow() // May have problems
+void SceneView::render_shadow()
 {   
     int frame_width, frame_height;
     m_frame_buffers->get_shadow_depth_FBO().get_texture_size(frame_width, frame_height);
@@ -230,7 +230,7 @@ void SceneView::render_shadow() // May have problems
     m_frame_buffers->get_shadow_depth_FBO().unbind_FBO_read();
     m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO_draw();
 
-    // renfer mesh depth with lights
+    // render mesh depth with lights
     m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
     m_shadow_depth_shader->use();
 
@@ -316,6 +316,12 @@ void SceneView::render_shadow() // May have problems
 
 void SceneView::render_mesh()
 {
+    ImGui::Begin("Scene");
+    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
+    m_size = { viewport_panelsize.x, viewport_panelsize.y };
+    m_camera->set_aspect(m_size.x / m_size.y);
+    ImGui::End();
+
     int frame_width, frame_height;
     m_frame_buffers->get_mesh_FBO().get_texture_size(frame_width, frame_height);
     glViewport(0, 0, frame_width, frame_height);
@@ -369,22 +375,16 @@ void SceneView::render_mesh()
     if (m_mesh)
         m_mesh->render();
 
+    m_camera->update(m_mesh_shader.get());
+
     m_frame_buffers->get_shadow_depth_FBO().get_color_texture().unbind_texture_unit(1);
     m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().unbind_texture_unit(2);
 
     glDisable(GL_DEPTH_TEST);
-    m_frame_buffers->get_mesh_FBO().unbind_FBO();
-
-    ImGui::Begin("Scene");  // can move to the top of the function
-    ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
-    m_size = { viewport_panelsize.x, viewport_panelsize.y };
-    ImGui::End();
-
-    m_camera->set_aspect(m_size.x / m_size.y);
-    m_camera->update(m_mesh_shader.get());
 
     m_mesh_shader->disuse();
-    
+    m_frame_buffers->get_mesh_FBO().unbind_FBO();
+
     // // validate mesh color frame
     // ImGui::Begin("Scene");  // can move to the top of the function
     // // add rendered texture to ImGUI scene window
