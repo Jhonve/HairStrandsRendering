@@ -235,5 +235,11 @@
     <None Include="shaders\strands.vert">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\strands_simple.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\strands_simple.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

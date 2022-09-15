@@ -16,7 +16,7 @@ void Strands::init()
         for (int j_point = 0; j_point < num_points - 1; j_point++)
         {
             StrandVertex strand_vertex;
-            strand_vertex.m_pos = m_points[i_strand][j_point];
+            strand_vertex.m_pos = m_points[i_strand][j_point] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);
             strand_vertex.m_color = color;
 
             glm::vec3 tangent = m_points[i_strand][j_point + 1] -  m_points[i_strand][j_point];
@@ -30,7 +30,7 @@ void Strands::init()
         }
 
         StrandVertex strand_vertex;
-        strand_vertex.m_pos = m_points[i_strand][num_points - 1];
+        strand_vertex.m_pos = m_points[i_strand][num_points - 1] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);
         strand_vertex.m_color = color;
         strand_vertex.m_tangent = m_strands_vertices[m_strands_vertices.size() - 1].m_tangent;
         m_strands_vertices.push_back(strand_vertex);
@@ -169,11 +169,11 @@ Strands::points Strands::try_simple_case()
 bool Strands::load(const std::string& filepath)
 {
     // check suffix
-    // if (filepath[filepath.length() - 1] == 'n') // .bin
-    //     m_points = load_bin(filepath);
-    // else
-    // m_points = load_usc_data(filepath);
-    m_points = try_simple_case();
+    if (filepath[filepath.length() - 1] == 'n') // .bin
+        m_points = load_bin(filepath);
+    else
+        m_points = load_usc_data(filepath);
+    // m_points = try_simple_case();
     
     if (m_num_strands > 0)
     {
