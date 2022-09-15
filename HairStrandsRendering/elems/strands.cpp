@@ -20,7 +20,7 @@ void Strands::init()
             strand_vertex.m_color = color;
 
             glm::vec3 tangent = m_points[i_strand][j_point + 1] -  m_points[i_strand][j_point];
-            strand_vertex.m_tangent = tangent;
+            strand_vertex.m_tangent = glm::normalize(tangent);
             
             m_strands_vertices.push_back(strand_vertex);
 
@@ -145,13 +145,35 @@ Strands::points Strands::load_usc_data(const std::string& filepath)
     return strands_points;
 }
 
+Strands::points Strands::try_simple_case()
+{
+    m_num_strands = 4;
+    points four_strands;
+    four_strands.resize(4);
+    four_strands[0].push_back(glm::vec3(-0.5f, -0.5f, -0.5f));
+    four_strands[0].push_back(glm::vec3(-0.5f, -0.5f, 0.f));
+    four_strands[0].push_back(glm::vec3(-0.5f, -0.5f, 0.5f));
+    four_strands[1].push_back(glm::vec3(-0.5f, 0.5f, -0.5f));
+    four_strands[1].push_back(glm::vec3(-0.5f, 0.5f, 0.f));
+    four_strands[1].push_back(glm::vec3(-0.5f, 0.5f, 0.5f));
+    four_strands[2].push_back(glm::vec3(0.5f, -0.5f, -0.5f));
+    four_strands[2].push_back(glm::vec3(0.5f, -0.5f, 0.f));
+    four_strands[2].push_back(glm::vec3(0.5f, -0.5f, 0.5f));
+    four_strands[3].push_back(glm::vec3(0.5f, 0.5f, -0.5f));
+    four_strands[3].push_back(glm::vec3(0.5f, 0.5f, 0.f));
+    four_strands[3].push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+
+    return four_strands;
+}
+
 bool Strands::load(const std::string& filepath)
 {
-	// check suffix
-    if (filepath[filepath.length() - 1] == 'n') // .bin
-        m_points = load_bin(filepath);
-	else
-		m_points = load_usc_data(filepath);
+    // check suffix
+    // if (filepath[filepath.length() - 1] == 'n') // .bin
+    //     m_points = load_bin(filepath);
+    // else
+    // m_points = load_usc_data(filepath);
+    m_points = try_simple_case();
     
     if (m_num_strands > 0)
     {

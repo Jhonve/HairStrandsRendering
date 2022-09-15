@@ -99,9 +99,7 @@ void SceneView::render_transparency()
     glClear(GL_COLOR_BUFFER_BIT);
     
     if (m_strands)
-    {
-        // TODO
-    }
+        m_strands->render();
 
     m_camera->update(m_depth_range_shader.get());
 
@@ -132,9 +130,7 @@ void SceneView::render_transparency()
     m_occ_shader->set_i1(frame_height, "height");
 
     if (m_strands)
-    {
-        // TODO
-    }
+        m_strands->render();
 
     m_camera->update(m_occ_shader.get());
     m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(0);
@@ -167,9 +163,7 @@ void SceneView::render_transparency()
     m_slab_shader->set_i1(frame_height, "height");
 
     if (m_strands)
-    {
-        // TODO
-    }
+        m_strands->render();
 
     m_camera->update(m_slab_shader.get());
     m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(0);
@@ -214,9 +208,7 @@ void SceneView::render_shadow()
         m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_strands)
-        {
-            // TODO
-        }
+            m_strands->render();
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -293,9 +285,7 @@ void SceneView::render_shadow()
         m_shadow_opacity_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_strands)
-        {
-            // TODO
-        }
+            m_strands->render();
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -419,9 +409,9 @@ void SceneView::render_strands()
 
     m_frame_buffers->get_shadow_depth_FBO().get_color_texture().bind_texture_unit(1);
     m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().bind_texture_unit(2);
-    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().bind_texture_unit(1);
-    m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().bind_texture_unit(2);
-    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().bind_texture_unit(2);
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().bind_texture_unit(3);
+    m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().bind_texture_unit(4);
+    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().bind_texture_unit(5);
 
     m_strands_shader->set_i1(1, "depth_map");
     m_strands_shader->set_i1(2, "opacity_map");
@@ -467,13 +457,20 @@ void SceneView::render_strands()
 
     m_frame_buffers->get_shadow_depth_FBO().get_color_texture().unbind_texture_unit(1);
     m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().unbind_texture_unit(2);
-    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(1);
-    m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().unbind_texture_unit(2);
-    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().unbind_texture_unit(2);
+    m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(3);
+    m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().unbind_texture_unit(4);
+    m_frame_buffers->get_transparency_slab_FBO().get_color_texture().unbind_texture_unit(5);
     
     glDisable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
 
     m_strands_shader->disuse();
     m_frame_buffers->get_strands_FBO().unbind_FBO();
+
+    // // validate mesh color frame
+    // ImGui::Begin("Scene");  // can move to the top of the function
+    // // add rendered texture to ImGUI scene window
+    // uint32_t texture_id = m_frame_buffers->get_strands_FBO().get_color_texture().get_texture();
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::End();
 }

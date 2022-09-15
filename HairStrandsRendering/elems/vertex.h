@@ -16,24 +16,24 @@ public:
 
     glm::vec3 m_pos;
     glm::vec3 m_normal;
-	glm::vec2 m_uv;	// optional
+    glm::vec2 m_uv;	// optional
 };
 
 class StrandVertex
 {
 public:
-	StrandVertex() : m_pos(), m_tangent(), m_color() {}
+    StrandVertex() : m_pos(), m_tangent(), m_color() {}
 
-	StrandVertex(const glm::vec3& points,
-		const glm::vec3& tagents, 
-		const glm::vec3& colors) : 
-		m_pos(points), m_tangent(tagents), m_color(colors)
-	{
-	}
+    StrandVertex(const glm::vec3& points,
+        const glm::vec3& tagents, 
+        const glm::vec3& colors) : 
+        m_pos(points), m_tangent(tagents), m_color(colors)
+    {
+    }
 
-	~StrandVertex() = default;
+    ~StrandVertex() = default;
 
-	glm::vec3 m_pos;
-	glm::vec3 m_tangent;
-	glm::vec3 m_color;
+    glm::vec3 m_pos;
+    glm::vec3 m_tangent;
+    glm::vec3 m_color;
 };

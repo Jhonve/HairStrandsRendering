@@ -38,6 +38,7 @@ public:
 private:
     points load_bin(const std::string& filepath);
     points load_usc_data(const std::string& filepath);
+    points try_simple_case();
 
 private:
     // Buffers manager
