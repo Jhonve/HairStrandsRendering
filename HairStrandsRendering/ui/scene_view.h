@@ -30,7 +30,8 @@ public:
         m_shadow_opacity_shader->load("shaders/shadow.vert", "shaders/shadow.frag");
 
         m_mesh_shader = std::make_unique<Shader>();
-        m_mesh_shader->load("shaders/mesh.vert", "shaders/mesh_pbr.frag");
+        // m_mesh_shader->load("shaders/mesh.vert", "shaders/mesh_pbr.frag");
+        m_mesh_shader->load("shaders/mesh_shade.vert", "shaders/mesh_shade.frag");
         m_strands_shader = std::make_unique<Shader>();
         m_strands_shader->load("shaders/strands.vert", "shaders/strands.frag");
 

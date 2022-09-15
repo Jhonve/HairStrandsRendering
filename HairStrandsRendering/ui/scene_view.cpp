@@ -266,6 +266,15 @@ void SceneView::render_mesh()
     m_mesh_shader->set_f1(m_render_param.mesh_strands_shadow, "strands_shadow");
     
     m_mesh_shader->set_f3(m_render_param.mesh_color[0], m_render_param.mesh_color[1], m_render_param.mesh_color[2], "color");
+    
+    if (m_mesh)
+        m_mesh->render();
+
+    m_frame_buffers->get_shadow_depth_FBO().get_color_texture().unbind_texture_unit(1);
+    m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().unbind_texture_unit(2);
+
+    glDisable(GL_DEPTH_TEST);
+    m_frame_buffers->get_mesh_FBO().unbind_FBO();
 
     ImGui::Begin("Scene");  // can move to the top of the function
     ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();

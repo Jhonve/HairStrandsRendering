@@ -38,7 +38,7 @@ out VSOUT
 void main()
 {
     gl_Position = proj_mat * view_mat * model_mat * vec4(position, 1.0f);
-	vs_out.view = normalize(cam_pos - position);
+    vs_out.view = normalize(cam_pos - position);
     vs_out.normal = normalize(mat3(transpose(inverse(model_mat))) * normal);
 
     vs_out.light_view_depth_1 = -(light_view_mat_1 * model_mat * vec4(position, 1.0f)).z;
