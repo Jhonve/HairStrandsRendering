@@ -2,7 +2,6 @@
 
 in VSOUT
 {
-	vec3 tangent;
 	vec3 color;
 }fs_in;
 

@@ -13,28 +13,13 @@ void OpenGLVertexIndexBuffer::create_buffers(const std::vector<Vertex>& vertices
     glGenBuffers(1, &m_VBO);
   
     bind();
-  
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
-  
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-  
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_pos));
-  
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_normal));
-  
     unbind();
 }
 
 void OpenGLVertexIndexBuffer::delete_buffers()
 {
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_IBO);
     glDeleteBuffers(1, &m_VBO);
     glDeleteVertexArrays(1, &m_VAO);
@@ -43,19 +28,35 @@ void OpenGLVertexIndexBuffer::delete_buffers()
 void OpenGLVertexIndexBuffer::bind()
 {
     glBindVertexArray(m_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 }
 
 void OpenGLVertexIndexBuffer::unbind()
 {
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void OpenGLVertexIndexBuffer::draw(int index_count)
+void OpenGLVertexIndexBuffer::draw(int index_count, bool is_shade)
 {
     bind();
 
-    // the vertices as line loop
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_pos));
+    
+    if (is_shade)
+    {
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_normal));
+    }
+
     glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
+    
+    glDisableVertexAttribArray(0);
+    if(is_shade)
+        glDisableVertexAttribArray(1);
 
     unbind();
 }
@@ -73,32 +74,13 @@ void OpenGLStrandsIndexBuffer::create_buffers(const std::vector<StrandVertex>& v
     glGenBuffers(1, &m_VBO);
 
     bind();
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(StrandVertex), vertices.data(), GL_STATIC_DRAW);
- 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
- 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_pos));
-  
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_tangent));
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_color));
-
     unbind();
 }
 
 void OpenGLStrandsIndexBuffer::delete_buffers()
 {
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_IBO);
     glDeleteBuffers(1, &m_VBO);
     glDeleteVertexArrays(1, &m_VAO);
@@ -107,20 +89,41 @@ void OpenGLStrandsIndexBuffer::delete_buffers()
 void OpenGLStrandsIndexBuffer::bind()
 {
     glBindVertexArray(m_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 }
 
 void OpenGLStrandsIndexBuffer::unbind()
 {
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void OpenGLStrandsIndexBuffer::draw(int index_count)
+void OpenGLStrandsIndexBuffer::draw(int index_count, bool is_shade)
 {
     bind();
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_pos));
+    
+    if (is_shade)
+    {
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_tangent));
+
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(StrandVertex), (void*)offsetof(StrandVertex, m_color));
+    }
 
     // the vertices as line loop
     glLineWidth(3);
     glDrawElements(GL_LINES, index_count, GL_UNSIGNED_INT, nullptr);
+
+    glDisableVertexAttribArray(0);
+    if(is_shade)
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
 
     unbind();
 }
@@ -175,7 +178,7 @@ void OpenGLQuadIndexBuffer::unbind()
     glBindVertexArray(0);
 }
 
-void OpenGLQuadIndexBuffer::draw(int index_count)
+void OpenGLQuadIndexBuffer::draw(int index_count, bool is_shade)
 {
     bind();
 
@@ -358,8 +361,8 @@ bool OpenGLFrameBuffers::create_buffers(int width, int height)
 {
     m_frame_width = width;
     m_frame_height = height;
-    m_shadow_width = width;
-    m_shadow_height = height;
+    m_shadow_width = 1024;  // fixed, use this in mesh and strands shader program
+    m_shadow_height = 1024;
 
     create_textures();
     create_FBO();

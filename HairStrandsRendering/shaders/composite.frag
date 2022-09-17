@@ -20,7 +20,7 @@ void main()
     vec4 strands_color = texture(strands_map, fs_in.tex_coord);
     vec4 slab = texture(slab_map, fs_in.tex_coord);
     
-    vec4 frame_color = vec4(0.25, 0.25, 0.25, 1.0f);
+    vec4 frame_color = vec4(0.f, 0.f, 0.f, 1.0f);
 
     mesh_color.rgb = pow(mesh_color.rgb, vec3(gamma, gamma, gamma));
 

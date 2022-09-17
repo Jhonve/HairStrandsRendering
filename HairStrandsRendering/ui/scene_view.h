@@ -24,8 +24,10 @@ public:
         m_occ_shader->load("shaders/occ.vert", "shaders/occ.frag");
         m_slab_shader = std::make_unique<Shader>();
         m_slab_shader->load("shaders/slab.vert", "shaders/slab.frag");
-        m_depth_shader = std::make_unique<Shader>();
-        m_depth_shader->load("shaders/depth.vert", "shaders/depth.frag");
+        m_mesh_depth_shader = std::make_unique<Shader>();
+        m_mesh_depth_shader->load("shaders/depth.vert", "shaders/depth.frag");
+        m_shadow_depth_shader = std::make_unique<Shader>();
+        m_shadow_depth_shader->load("shaders/depth.vert", "shaders/depth.frag");
         m_shadow_opacity_shader = std::make_unique<Shader>();
         m_shadow_opacity_shader->load("shaders/shadow.vert", "shaders/shadow.frag");
 
@@ -50,7 +52,8 @@ public:
         m_depth_range_shader->unload();
         m_occ_shader->unload();
         m_slab_shader->unload();
-        m_depth_shader->unload();
+        m_mesh_depth_shader->unload();
+        m_shadow_depth_shader->unload();
         m_shadow_opacity_shader->unload();
         m_mesh_shader->unload();
         m_strands_shader->unload();
@@ -102,7 +105,8 @@ private:
     std::unique_ptr<Shader> m_depth_range_shader;
     std::unique_ptr<Shader> m_occ_shader;
     std::unique_ptr<Shader> m_slab_shader;
-    std::unique_ptr<Shader> m_depth_shader;
+    std::unique_ptr<Shader> m_mesh_depth_shader;
+    std::unique_ptr<Shader> m_shadow_depth_shader;
     std::unique_ptr<Shader> m_shadow_opacity_shader;
     std::unique_ptr<Shader> m_mesh_shader;
     std::unique_ptr<Shader> m_strands_shader;

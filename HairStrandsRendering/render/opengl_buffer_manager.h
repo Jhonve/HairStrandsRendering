@@ -17,7 +17,7 @@ public:
   
     void unbind() override;
   
-    void draw(int index_count) override;
+    void draw(int index_count, bool is_shade = true) override;
 
 };
 
@@ -36,7 +36,7 @@ public:
   
     void unbind() override;
   
-    void draw(int index_count) override;
+    void draw(int index_count, bool is_shade = true) override;
 
 };
 
@@ -55,7 +55,7 @@ public:
   
     void unbind() override;
   
-    void draw(int index_count) override;
+    void draw(int index_count, bool is_shade = true) override;
 
 };
 class OpenGLFrameBuffer : public FrameBuffer

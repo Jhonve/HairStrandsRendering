@@ -84,9 +84,9 @@ void Mesh::unbind()
     m_render_buffer_mgr->unbind();
 }
   
-void Mesh::render()
+void Mesh::render(bool is_shade)
 {
-    m_render_buffer_mgr->draw((int) m_vertex_indices.size());
+    m_render_buffer_mgr->draw((int) m_vertex_indices.size(), is_shade);
 }
 
 void QuadMesh::init()

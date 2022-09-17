@@ -19,7 +19,7 @@ public:
   
     virtual void unbind() = 0;
   
-    virtual void draw(int index_count) = 0;
+    virtual void draw(int index_count, bool is_shade = true) = 0;
 
 protected:
     GLuint m_VBO;
@@ -42,7 +42,7 @@ public:
   
     virtual void unbind() = 0;
   
-    virtual void draw(int index_count) = 0;
+    virtual void draw(int index_count, bool is_shade = true) = 0;
 
 protected:
     GLuint m_VBO;

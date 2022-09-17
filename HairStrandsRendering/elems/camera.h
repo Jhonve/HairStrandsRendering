@@ -30,6 +30,14 @@ public:
         shader->set_mat4(get_projection(), "proj_mat");
         shader->set_vec3(m_position, "cam_pos");
     }
+
+    void update_mat(Shader* shader)
+    {
+        glm::mat4 model{ 1.0f };
+        shader->set_mat4(model, "model_mat");
+        shader->set_mat4(m_view_matrix, "view_mat");
+        shader->set_mat4(get_projection(), "proj_mat");
+    }
     
     void set_aspect(float aspect)
     {
