@@ -2,6 +2,8 @@
 
 #extension GL_EXT_gpu_shader4 : enable
 
+uniform vec3 color;
+
 uniform vec3 light_color_1;
 uniform vec3 light_color_2;
 uniform vec3 light_color_3;
@@ -247,7 +249,17 @@ void main()
 
     float occupancy_factor = GetOccupancyFactor();
 
-    frag_color = vec4(fs_in.color * ( // careful, the fs_in.color is a hack
+    vec3 main_color;
+
+    if (color.x == 0 && color.y == 0 && color.z == 0)
+    {
+        main_color = fs_in.color;
+    }
+    else{
+        main_color = color;
+    }
+
+    frag_color = vec4(main_color * ( // careful, the fs_in.color is a hack
                                      light_color_1 * Kajiya1 * opacity_factor_1 +
                                      light_color_2 * Kajiya2 * opacity_factor_2 +
                                      light_color_3 * Kajiya3 * opacity_factor_3 +

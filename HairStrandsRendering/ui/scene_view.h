@@ -25,8 +25,6 @@ public:
         m_mesh_shader = std::make_unique<Shader>();
         m_strands_shader = std::make_unique<Shader>();
         m_comp_shader = std::make_unique<Shader>();
-        
-        m_render_param = std::make_shared<RenderParameters>();
 
 #if defined(__APPLE__)
         m_depth_range_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/depth_range.macos.frag");
@@ -50,6 +48,7 @@ public:
         m_comp_shader->load("shaders/composite.vert", "shaders/composite.frag");
 #endif
 
+        m_render_param = std::make_shared<RenderParameters>();
         m_lights = std::make_unique<Lights>(m_render_param->light);
         m_camera = std::make_unique<Camera>(glm::vec3(0, 0, 3), 45.0f, 1.3f, 0.1f, 100.0f);
 
@@ -105,8 +104,7 @@ public:
 private:
     std::unique_ptr<Camera> m_camera;
     std::unique_ptr<Lights> m_lights;
-    glm::vec2 m_size = glm::vec2(1600, 1600);
-
+    std::shared_ptr<RenderParameters> m_render_param;
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Strands> m_strands;
     std::shared_ptr<QuadMesh> m_comp;
@@ -123,5 +121,5 @@ private:
     std::unique_ptr<Shader> m_strands_shader;
     std::unique_ptr<Shader> m_comp_shader;
 
-    std::shared_ptr<RenderParameters> m_render_param;
+    glm::vec2 m_size = glm::vec2(1600, 1600);
 };

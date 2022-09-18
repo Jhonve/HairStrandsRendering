@@ -463,6 +463,10 @@ void SceneView::render_strands()
     m_frame_buffers->get_transparency_occupancy_FBO().get_color_texture().bind_texture_unit(4);
     m_frame_buffers->get_transparency_slab_FBO().get_color_texture().bind_texture_unit(5);
 
+    m_strands_shader->set_f3(m_render_param->strands_color[0],
+                             m_render_param->strands_color[1],
+                             m_render_param->strands_color[2], "color");
+
     m_strands_shader->set_i1(1, "depth_map");
     m_strands_shader->set_i1(2, "opacity_map");
     m_strands_shader->set_i1(3, "depth_range_map");

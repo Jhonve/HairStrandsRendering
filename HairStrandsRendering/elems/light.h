@@ -6,30 +6,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-class Light : public Element
-{
-public:
-    Light()
-    {
-      m_color = glm::vec3(1.0f, 1.0f, 1.0f);
-      m_position = { 1.5f, 3.5f, 3.0f };
-      m_strength = 100.0f;
-    }
-
-    ~Light() {}
-
-    void update(Shader* shader) override
-    {
-      shader->set_vec3(m_position, "light_position");
-      shader->set_vec3(m_color * m_strength, "light_color");
-    }
-
-public:
-    glm::vec3 m_position;
-    glm::vec3 m_color;
-    float m_strength;
-};
-
 class Lights : public Element
 {
 public:
@@ -58,7 +34,7 @@ public:
         m_dirs.resize(m_num_lights);
 
         init();
-        get_lights_mat(glm::vec3(-1.f, -1.f, -1.f), glm::vec3(1.f, 1.f, 1.f)); // TODO
+        get_lights_mat(glm::vec3(-1.f, -1.f, -1.f), glm::vec3(1.f, 1.f, 1.f)); // TODO Shen Setting the scene bound
     }
     ~Lights()
     {

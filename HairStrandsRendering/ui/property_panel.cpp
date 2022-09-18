@@ -46,7 +46,9 @@ void PropertyPanel::render(SceneView* scene_view)
   
     if (ImGui::CollapsingHeader("Strands Properties") && render_param)
     {
+        ImGui::ColorPicker3("Strs Color", (float*)&render_param->strands_color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
         ImGui::SliderInt("Strs Width", &render_param->strands_width, 1, 10);
+        ImGui::SliderFloat("Strs Alpha", &render_param->strands_alpha, 0.0f, 1.0f);
         ImGui::SliderFloat("Strs Diffuse", &render_param->strands_diffuse, 0.0f, 1.0f);
         ImGui::SliderFloat("Strs Specular", &render_param->strands_specular, 0.0f, 1.0f);
         ImGui::SliderFloat("Strs Ambient", &render_param->strands_ambient, 0.0f, 1.0f);
@@ -58,6 +60,14 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::Text("Position");
         ImGui::Separator();
         // draw_vec3_widget("Position", scene_view->get_light()->m_position, 80.0f);
+    }
+    
+    if (ImGui::CollapsingHeader("Shadow Properties") && render_param)
+    {
+        ImGui::SliderFloat("Mesh Self", &render_param->mesh_self_shadow, 0.0f, 0.95f);
+        ImGui::SliderFloat("Mesh Strs", &render_param->mesh_strands_shadow, 0.0f, 0.95f);
+        ImGui::SliderFloat("Strs Self", &render_param->strands_self_shadow, 0.0f, 0.95f);
+        ImGui::SliderFloat("Strs Mesh", &render_param->strands_mesh_shadow, 0.0f, 0.95f);
     }
   
     ImGui::End();
