@@ -202,7 +202,7 @@ float GetOccupancyFactor()
     int slab_id = depth_id / 32;
     uint mask = ~(uint(0xffffffff) << uint(depth_id % 32));
 
-    uvec4 occ = texture(occupancy_map, tex_coord);  // TODO Shen Final bug on macos
+    uvec4 occ = texture(occupancy_map, tex_coord);  // TODO Shen Final bug on macos https://developer.apple.com/forums/thread/683865
     vec4 slab = texture(slab_map, tex_coord);
     uint occx;
     float slabx;
@@ -233,7 +233,6 @@ float GetOccupancyFactor()
     float order = slab0 + slabx * float(before) / max(float(total), 1e-6);
 
     return pow((1. - alpha), order) * alpha;
-    return 0.2f;
 }
 
 void main()
