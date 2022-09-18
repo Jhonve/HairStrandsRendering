@@ -19,37 +19,31 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{a3cc9584-f0be-462a-9b08-b2f69ac70c57}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
-      <UniqueIdentifier>{10e18f04-c926-4000-8a11-3a5956620674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Elements">
-      <UniqueIdentifier>{dc922065-2795-485a-ab5c-132441b79a95}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ui">
       <UniqueIdentifier>{f9805dea-bb70-487c-b8f5-0edc340d1257}</UniqueIdentifier>
     </Filter>
     <Filter Include="glad">
       <UniqueIdentifier>{9d6ae92b-50cd-474b-858d-73893204b4cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\imguiplugins">
+      <UniqueIdentifier>{7850f27c-2567-4406-92d1-2b9476b8997c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="elements">
+      <UniqueIdentifier>{dc922065-2795-485a-ab5c-132441b79a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{10e18f04-c926-4000-8a11-3a5956620674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="render\opengl_buffer_manager.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\opengl_context.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
     <ClCompile Include="render\shader.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\ui_context.cpp">
-      <Filter>Render</Filter>
+      <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="elems\mesh.cpp">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClCompile>
     <ClCompile Include="viewer.cpp">
       <Filter>Source Files</Filter>
@@ -61,7 +55,7 @@
       <Filter>ui</Filter>
     </ClCompile>
     <ClCompile Include="elems\strands.cpp">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClCompile>
     <ClCompile Include="glad\glad.c">
       <Filter>glad</Filter>
@@ -87,37 +81,40 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="ui\imguiplugins\ImGuiFileDialog.cpp">
+      <Filter>ui\imguiplugins</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\opengl_context.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_context.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="render\buffer_manager.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render\render_base.h">
-      <Filter>Render</Filter>
+      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="elems\element.h">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="elems\input.h">
-      <Filter>Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="render\opengl_buffer_manager.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\opengl_context.h">
-      <Filter>Render</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="render\shader.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\ui_context.h">
-      <Filter>Render</Filter>
+      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="elems\camera.h">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="elems\light.h">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="elems\mesh.h">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="viewer.h">
       <Filter>Header Files</Filter>
@@ -131,17 +128,11 @@
     <ClInclude Include="ui\scene_view.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="ui\utils_imgui_widgets.h">
-      <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="ui\imguiplugins\ImFileBrowser.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="elems\strands.h">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="elems\vertex.h">
-      <Filter>Elements</Filter>
+      <Filter>elements</Filter>
     </ClInclude>
     <ClInclude Include="glad\glad.h">
       <Filter>glad</Filter>
@@ -177,7 +168,28 @@
       <Filter>imgui</Filter>
     </ClInclude>
     <ClInclude Include="render\parameters.h">
-      <Filter>Render</Filter>
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\imguiplugins\ImGuiFileDialog.h">
+      <Filter>ui\imguiplugins</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\imguiplugins\ImGuiFileDialogConfig.h">
+      <Filter>ui\imguiplugins</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\context.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\opengl_context.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_context.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\utils_widgets.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="render\buffer_manager.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

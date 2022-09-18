@@ -6,6 +6,9 @@
 #include "imgui.h"
 #include "ui/utils_widgets.h"
 
+#include <functional>
+
+
 class PropertyPanel
 {
 public:

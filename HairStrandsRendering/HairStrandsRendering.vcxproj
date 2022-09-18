@@ -159,12 +159,13 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="render\opengl_buffer_manager.cpp" />
-    <ClCompile Include="render\opengl_context.cpp" />
+    <ClCompile Include="render\buffer_manager.cpp" />
     <ClCompile Include="render\shader.cpp" />
-    <ClCompile Include="render\ui_context.cpp" />
+    <ClCompile Include="ui\imguiplugins\ImGuiFileDialog.cpp" />
+    <ClCompile Include="ui\opengl_context.cpp" />
     <ClCompile Include="ui\property_panel.cpp" />
     <ClCompile Include="ui\scene_view.cpp" />
+    <ClCompile Include="ui\ui_context.cpp" />
     <ClCompile Include="viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,16 +187,18 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="render\opengl_buffer_manager.h" />
-    <ClInclude Include="render\opengl_context.h" />
+    <ClInclude Include="render\buffer_manager.h" />
     <ClInclude Include="render\parameters.h" />
     <ClInclude Include="render\render_base.h" />
     <ClInclude Include="render\shader.h" />
-    <ClInclude Include="render\ui_context.h" />
-    <ClInclude Include="ui\imguiplugins\ImFileBrowser.h" />
+    <ClInclude Include="ui\context.h" />
+    <ClInclude Include="ui\imguiplugins\ImGuiFileDialog.h" />
+    <ClInclude Include="ui\imguiplugins\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="ui\opengl_context.h" />
     <ClInclude Include="ui\property_panel.h" />
     <ClInclude Include="ui\scene_view.h" />
-    <ClInclude Include="ui\utils_imgui_widgets.h" />
+    <ClInclude Include="ui\ui_context.h" />
+    <ClInclude Include="ui\utils_widgets.h" />
     <ClInclude Include="viewer.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
