@@ -100,7 +100,7 @@ void OpenGLStrandsIndexBuffer::unbind()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void OpenGLStrandsIndexBuffer::draw(int index_count, bool is_shade)
+void OpenGLStrandsIndexBuffer::draw(int index_count, bool is_shade, int width)
 {
     bind();
 
@@ -117,7 +117,7 @@ void OpenGLStrandsIndexBuffer::draw(int index_count, bool is_shade)
     }
 
     // the vertices as line loop
-    glLineWidth(3);
+    glLineWidth(width);
     glDrawElements(GL_LINES, index_count, GL_UNSIGNED_INT, nullptr);
 
     glDisableVertexAttribArray(0);

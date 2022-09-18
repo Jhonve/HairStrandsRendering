@@ -11,9 +11,7 @@
 class SceneView
 {
 public:
-    SceneView() : 
-        m_camera(nullptr), m_light(nullptr), m_lights(nullptr), m_size(1600, 1600), m_frame_buffers(nullptr),
-        m_mesh_shader(nullptr), m_strands_shader(nullptr), m_comp_shader(nullptr)
+    SceneView()
     {
         m_frame_buffers = std::make_unique<OpenGLFrameBuffers>();
         m_frame_buffers->create_buffers(m_size.x, m_size.y);
@@ -27,6 +25,8 @@ public:
         m_mesh_shader = std::make_unique<Shader>();
         m_strands_shader = std::make_unique<Shader>();
         m_comp_shader = std::make_unique<Shader>();
+        
+        m_render_param = std::make_shared<RenderParameters>();
 
 #if defined(__APPLE__)
         m_depth_range_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/depth_range.macos.frag");
@@ -50,8 +50,7 @@ public:
         m_comp_shader->load("shaders/composite.vert", "shaders/composite.frag");
 #endif
 
-        m_light = std::make_unique<Light>();
-        m_lights = std::make_unique<Lights>(m_render_param.light);
+        m_lights = std::make_unique<Lights>(m_render_param->light);
         m_camera = std::make_unique<Camera>(glm::vec3(0, 0, 3), 45.0f, 1.3f, 0.1f, 100.0f);
 
         m_comp = std::make_shared<QuadMesh>();
@@ -71,8 +70,10 @@ public:
         m_comp_shader->unload();
     }
   
-    Light* get_light() { return m_light.get(); }
     std::shared_ptr<Mesh> get_mesh() { return m_mesh; }
+    std::shared_ptr<Strands> get_strands() { return m_strands; }
+    std::shared_ptr<RenderParameters> get_render_param() { return m_render_param; }
+
     void load_mesh(const std::string& filepath);
     void load_strands(const std::string& filepath);
     void set_mesh(std::shared_ptr<Mesh> mesh)
@@ -103,9 +104,8 @@ public:
 
 private:
     std::unique_ptr<Camera> m_camera;
-    std::unique_ptr<Light> m_light;
     std::unique_ptr<Lights> m_lights;
-    glm::vec2 m_size;
+    glm::vec2 m_size = glm::vec2(1600, 1600);
 
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Strands> m_strands;
@@ -123,5 +123,5 @@ private:
     std::unique_ptr<Shader> m_strands_shader;
     std::unique_ptr<Shader> m_comp_shader;
 
-    RenderParameters m_render_param;
+    std::shared_ptr<RenderParameters> m_render_param;
 };

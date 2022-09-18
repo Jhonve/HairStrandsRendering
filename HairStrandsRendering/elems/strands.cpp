@@ -203,7 +203,7 @@ void Strands::unbind()
     m_render_buffer_mgr->unbind();
 }
   
-void Strands::render(bool is_shade)
+void Strands::render(bool is_shade, int width)
 {
-    m_render_buffer_mgr->draw((int) m_vertex_indices.size(), is_shade);
+    m_render_buffer_mgr->draw((int) m_vertex_indices.size(), is_shade, width);
 }

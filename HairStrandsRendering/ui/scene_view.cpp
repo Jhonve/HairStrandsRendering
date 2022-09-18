@@ -55,8 +55,11 @@ void SceneView::render()
     m_comp_shader->set_i1(1, "mesh_map");
     m_comp_shader->set_i1(2, "slab_map");
     
-    m_comp_shader->set_f1(m_render_param.strands_alpha, "alpha");
-    m_comp_shader->set_f1(m_render_param.gamma, "gamma");
+    m_comp_shader->set_f1(m_render_param->strands_alpha, "alpha");
+    m_comp_shader->set_f1(m_render_param->gamma, "gamma");
+    m_comp_shader->set_f3(m_render_param->clear_color[0],
+                          m_render_param->clear_color[1],
+                          m_render_param->clear_color[2], "clear_color");
 
     m_comp->render();
 
@@ -140,7 +143,7 @@ void SceneView::render_transparency()
     glClear(GL_COLOR_BUFFER_BIT);
     
     if (m_strands)
-        m_strands->render(false);
+        m_strands->render(false, m_render_param->strands_width);
 
     m_camera->update_mat(m_depth_range_shader.get());
 
@@ -171,7 +174,7 @@ void SceneView::render_transparency()
     m_occ_shader->set_i1(frame_height, "height");
 
     if (m_strands)
-        m_strands->render(false);
+        m_strands->render(false, m_render_param->strands_width);
 
     m_camera->update_mat(m_occ_shader.get());
     m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(0);
@@ -204,7 +207,7 @@ void SceneView::render_transparency()
     m_slab_shader->set_i1(frame_height, "height");
 
     if (m_strands)
-        m_strands->render(false);
+        m_strands->render(false, m_render_param->strands_width);
 
     m_camera->update_mat(m_slab_shader.get());
     m_frame_buffers->get_transparency_depth_range_FBO().get_color_texture().unbind_texture_unit(0);
@@ -256,7 +259,7 @@ void SceneView::render_shadow()
         m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_strands)
-            m_strands->render(false);
+            m_strands->render(false, m_render_param->strands_width);
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -333,7 +336,7 @@ void SceneView::render_shadow()
         m_shadow_opacity_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
         if (m_strands)
-            m_strands->render(false);
+            m_strands->render(false, m_render_param->strands_width);
     }
     
     m_frame_buffers->get_shadow_depth_FBO().get_color_texture().unbind_texture_unit(0);
@@ -398,14 +401,14 @@ void SceneView::render_mesh()
     m_mesh_shader->set_mat4(m_lights->m_view_proj_mat[2], "light_view_proj_mat_3");
     m_mesh_shader->set_mat4(m_lights->m_view_proj_mat[3], "light_view_proj_mat_4");
     
-    m_mesh_shader->set_f1(m_render_param.mesh_ambient, "Ka");
-    m_mesh_shader->set_f1(m_render_param.mesh_diffuse, "Kd");
-    m_mesh_shader->set_f1(m_render_param.mesh_specular, "Ks");
+    m_mesh_shader->set_f1(m_render_param->mesh_ambient, "Ka");
+    m_mesh_shader->set_f1(m_render_param->mesh_diffuse, "Kd");
+    m_mesh_shader->set_f1(m_render_param->mesh_specular, "Ks");
     
-    m_mesh_shader->set_f1(m_render_param.mesh_self_shadow, "mesh_shadow");
-    m_mesh_shader->set_f1(m_render_param.mesh_strands_shadow, "strands_shadow");
+    m_mesh_shader->set_f1(m_render_param->mesh_self_shadow, "mesh_shadow");
+    m_mesh_shader->set_f1(m_render_param->mesh_strands_shadow, "strands_shadow");
     
-    m_mesh_shader->set_f3(m_render_param.mesh_color[0], m_render_param.mesh_color[1], m_render_param.mesh_color[2], "color");
+    m_mesh_shader->set_f3(m_render_param->mesh_color[0], m_render_param->mesh_color[1], m_render_param->mesh_color[2], "color");
     
     if (m_mesh)
         m_mesh->render();
@@ -486,19 +489,19 @@ void SceneView::render_strands()
     m_strands_shader->set_mat4(m_lights->m_view_proj_mat[2], "light_view_proj_mat_3");
     m_strands_shader->set_mat4(m_lights->m_view_proj_mat[3], "light_view_proj_mat_4");
     
-    m_strands_shader->set_f1(m_render_param.strands_ambient, "Ka");
-    m_strands_shader->set_f1(m_render_param.strands_diffuse, "Kd");
-    m_strands_shader->set_f1(m_render_param.strands_specular, "Ks");
+    m_strands_shader->set_f1(m_render_param->strands_ambient, "Ka");
+    m_strands_shader->set_f1(m_render_param->strands_diffuse, "Kd");
+    m_strands_shader->set_f1(m_render_param->strands_specular, "Ks");
     
-    m_strands_shader->set_f1(m_render_param.strands_alpha, "alpha");
-    m_strands_shader->set_f1(m_render_param.strands_self_shadow, "strands_shadow");
-    m_strands_shader->set_f1(m_render_param.strands_mesh_shadow, "mesh_shadow");
+    m_strands_shader->set_f1(m_render_param->strands_alpha, "alpha");
+    m_strands_shader->set_f1(m_render_param->strands_self_shadow, "strands_shadow");
+    m_strands_shader->set_f1(m_render_param->strands_mesh_shadow, "mesh_shadow");
     
     m_strands_shader->set_i1(frame_width, "width");
     m_strands_shader->set_i1(frame_height, "height");
 
     if (m_strands)
-        m_strands->render();
+        m_strands->render(true, m_render_param->strands_width);
 
     m_camera->update(m_strands_shader.get());
 

@@ -29,7 +29,7 @@ public:
   
     void delete_buffers();
   
-    void render(bool is_shade = true);
+    void render(bool is_shade = true, int width = 2);
   
     void bind();
   

@@ -50,8 +50,8 @@ static const int k_strands_colors[256] =
 
 struct RenderParameters
 {
+    float clear_color[3] = {0.f, 0.f, 0.f};
     float mesh_color[3] = { 238 / 255.0, 207 / 255.0f, 161 / 255.0f };
-    float strands_color[3] = { 0.5, 0.5, 0.5 };
     float light = 0.45f;
     float gamma = 1.5f;
     float mesh_ambient = 0.2f;
@@ -65,7 +65,7 @@ struct RenderParameters
     float strands_self_shadow = 0.6f;
     float strands_mesh_shadow = 0.3f;
     float strands_alpha = 0.25f;
-    float strands_width = 2.0f;
+    int strands_width = 2;
 };
 
 struct OriginalLightsParameters

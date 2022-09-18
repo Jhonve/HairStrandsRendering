@@ -3,7 +3,8 @@
 
 void PropertyPanel::render(SceneView* scene_view)
 {
-    auto mesh = scene_view->get_mesh();
+    // auto mesh = scene_view->get_mesh();
+    auto render_param = scene_view->get_render_param();
   
     ImGui::Begin("Properties");
     if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
@@ -30,19 +31,33 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::Text(m_strands_current_file.c_str());
     }
   
-    if (ImGui::CollapsingHeader("Mesh Material") && mesh)
+    if (ImGui::CollapsingHeader("Scene"))
     {
-        ImGui::ColorPicker3("Color", (float*)&mesh->m_color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
-        ImGui::SliderFloat("Roughness", &mesh->m_roughness, 0.0f, 1.0f);
-        ImGui::SliderFloat("Metallic", &mesh->m_metallic, 0.0f, 1.0f);
+        ImGui::ColorEdit3("Clear Color", (float*)&render_param->clear_color);
+    }
+
+    if (ImGui::CollapsingHeader("Mesh Properties") && render_param)
+    {
+        ImGui::ColorPicker3("Mesh Color", (float*)&render_param->mesh_color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
+        ImGui::SliderFloat("Mesh Diffuse", &render_param->mesh_diffuse, 0.0f, 1.0f);
+        ImGui::SliderFloat("Mesh Specular", &render_param->mesh_specular, 0.0f, 1.0f);
+        ImGui::SliderFloat("Mesh Ambient", &render_param->mesh_ambient, 0.0f, 1.0f);
     }
   
+    if (ImGui::CollapsingHeader("Strands Properties") && render_param)
+    {
+        ImGui::SliderInt("Strs Width", &render_param->strands_width, 1, 10);
+        ImGui::SliderFloat("Strs Diffuse", &render_param->strands_diffuse, 0.0f, 1.0f);
+        ImGui::SliderFloat("Strs Specular", &render_param->strands_specular, 0.0f, 1.0f);
+        ImGui::SliderFloat("Strs Ambient", &render_param->strands_ambient, 0.0f, 1.0f);
+    }
+
     if (ImGui::CollapsingHeader("Light"))
     {
         ImGui::Separator();
         ImGui::Text("Position");
         ImGui::Separator();
-        draw_vec3_widget("Position", scene_view->get_light()->m_position, 80.0f);
+        // draw_vec3_widget("Position", scene_view->get_light()->m_position, 80.0f);
     }
   
     ImGui::End();

@@ -36,7 +36,7 @@ public:
   
     void unbind() override;
   
-    void draw(int index_count, bool is_shade = true) override;
+    void draw(int index_count, bool is_shade = true, int width = 2) override;
 
 };
 
