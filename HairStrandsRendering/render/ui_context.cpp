@@ -10,12 +10,12 @@ bool UIContext::init(ImWindow* window)
 {
 #ifdef _WIN32
     __super::init(window);
+    const char* glsl_version = "#version 450";
 #else
     m_window = window;
+    const char* glsl_version = "#version 150";
 #endif
 
-    // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 450";
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
