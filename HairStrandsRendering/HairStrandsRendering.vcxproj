@@ -206,23 +206,15 @@
     <None Include="shaders\composite.frag" />
     <None Include="shaders\composite.vert" />
     <None Include="shaders\depth_range.frag" />
-    <None Include="shaders\depth_range.vert" />
-    <None Include="shaders\mesh.vert" />
-    <None Include="shaders\mesh_pbr.frag" />
     <None Include="shaders\mesh_shade.frag" />
     <None Include="shaders\mesh_shade.vert" />
     <None Include="shaders\occ.frag" />
-    <None Include="shaders\occ.vert" />
     <None Include="shaders\shadow.frag" />
-    <None Include="shaders\shadow.vert" />
     <None Include="shaders\depth.frag" />
     <None Include="shaders\depth.vert" />
     <None Include="shaders\slab.frag" />
-    <None Include="shaders\slab.vert" />
     <None Include="shaders\strands.frag" />
     <None Include="shaders\strands.vert" />
-    <None Include="shaders\strands_simple.frag" />
-    <None Include="shaders\strands_simple.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
