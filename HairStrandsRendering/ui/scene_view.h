@@ -39,12 +39,12 @@ public:
         m_strands_shader->load("shaders/macos/strands.macos.vert", "shaders/macos/strands.macos.frag");
         m_comp_shader->load("shaders/macos/composite.macos.vert", "shaders/macos/composite.macos.frag");
 #else
-        m_depth_range_shader->load("shaders/depth_range.vert", "shaders/depth_range.frag");
-        m_occ_shader->load("shaders/occ.vert", "shaders/occ.frag");
-        m_slab_shader->load("shaders/slab.vert", "shaders/slab.frag");
+        m_depth_range_shader->load("shaders/depth.vert", "shaders/depth_range.frag");
+        m_occ_shader->load("shaders/depth.vert", "shaders/occ.frag");
+        m_slab_shader->load("shaders/depth.vert", "shaders/slab.frag");
         m_mesh_depth_shader->load("shaders/depth.vert", "shaders/depth.frag");
         m_shadow_depth_shader->load("shaders/depth.vert", "shaders/depth.frag");
-        m_shadow_opacity_shader->load("shaders/shadow.vert", "shaders/shadow.frag");
+        m_shadow_opacity_shader->load("shaders/depth.vert", "shaders/shadow.frag");
         m_mesh_shader->load("shaders/mesh_shade.vert", "shaders/mesh_shade.frag");
         m_strands_shader->load("shaders/strands.vert", "shaders/strands.frag");
         m_comp_shader->load("shaders/composite.vert", "shaders/composite.frag");
