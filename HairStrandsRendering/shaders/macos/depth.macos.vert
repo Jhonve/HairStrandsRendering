@@ -1,6 +1,6 @@
-#version 150
+#version 410
 
-in vec3 position;
+layout (location=0) in vec3 position;
 
 uniform mat4 model_mat;
 uniform mat4 view_mat;

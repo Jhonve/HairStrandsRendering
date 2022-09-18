@@ -1,4 +1,4 @@
-#version 150
+#version 410
 
 uniform vec3 light_color_1;
 uniform vec3 light_color_2;

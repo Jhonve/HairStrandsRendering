@@ -1,6 +1,4 @@
-#version 150
-
-#extension GL_EXT_gpu_shader4 : enable
+#version 410
 
 uniform vec3 light_color_1;
 uniform vec3 light_color_2;
@@ -179,7 +177,7 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
             val4 += pow(1.- strands_shadow, mix(opacity_range_4.x, opacity_range_4.y, ratio4));
         }
     }
-    float head_depth_4 = texture2D(depth_map, tex_pos4).y;
+    float head_depth_4 = texture(depth_map, tex_pos4).y;
     val4 *= fs_in.light_view_depth_4 > head_depth_4 + tolerance ? 1. - mesh_shadow : 1.;
     val4 /= 16.;
 }
@@ -204,7 +202,7 @@ float GetOccupancyFactor()
     int slab_id = depth_id / 32;
     uint mask = ~(uint(0xffffffff) << uint(depth_id % 32));
 
-    uvec4 occ = texture(occupancy_map, tex_coord);
+    uvec4 occ = texture(occupancy_map, tex_coord);  // TODO Shen Final bug on macos
     vec4 slab = texture(slab_map, tex_coord);
     uint occx;
     float slabx;
@@ -235,6 +233,7 @@ float GetOccupancyFactor()
     float order = slab0 + slabx * float(before) / max(float(total), 1e-6);
 
     return pow((1. - alpha), order) * alpha;
+    return 0.2f;
 }
 
 void main()

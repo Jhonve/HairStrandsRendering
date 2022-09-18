@@ -1,8 +1,8 @@
-#version 150
+#version 410
 
-in vec3 position;
-in vec3 tangent;
-in vec3 color;
+layout (location=0) in vec3 position;
+layout (location=1) in vec3 tangent;
+layout (location=2) in vec3 color;
 
 uniform mat4 model_mat;
 uniform mat4 view_mat;
