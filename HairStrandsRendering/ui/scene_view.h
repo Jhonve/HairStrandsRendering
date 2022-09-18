@@ -29,12 +29,12 @@ public:
         m_comp_shader = std::make_unique<Shader>();
 
 #if defined(__APPLE__)
-        m_depth_range_shader->load("shaders/macos/depth_range.macos.vert", "shaders/macos/depth_range.macos.frag");
-        m_occ_shader->load("shaders/macos/occ.macos.vert", "shaders/macos/occ.macos.frag");
-        m_slab_shader->load("shaders/macos/slab.macos.vert", "shaders/macos/slab.macos.frag");
+        m_depth_range_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/depth_range.macos.frag");
+        m_occ_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/occ.macos.frag");
+        m_slab_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/slab.macos.frag");
         m_mesh_depth_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/depth.macos.frag");
         m_shadow_depth_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/depth.macos.frag");
-        m_shadow_opacity_shader->load("shaders/macos/shadow.macos.vert", "shaders/macos/shadow.macos.frag");
+        m_shadow_opacity_shader->load("shaders/macos/depth.macos.vert", "shaders/macos/shadow.macos.frag");
         m_mesh_shader->load("shaders/macos/mesh_shade.macos.vert", "shaders/macos/mesh_shade.macos.frag");
         m_strands_shader->load("shaders/macos/strands.macos.vert", "shaders/macos/strands.macos.frag");
         m_comp_shader->load("shaders/macos/composite.macos.vert", "shaders/macos/composite.macos.frag");
