@@ -18,7 +18,7 @@ EXE = HairStrandsRendering
 IMGUI_DIR = /Users/yuefan/Documents/3rdparty/imgui
 GLM_DIR = /Users/yuefan/Documents/3rdparty/glm
 # SOURCES = main.cpp viewer.cpp render/shader.cpp render/opengl_buffer_manager.cpp render/opengl_context.cpp render/ui_context.cpp elems/mesh.cpp ui/property_panel.cpp ui/scene_view.cpp
-SOURCES = $(wildcard glad/*.c) $(wildcard imgui/*.cpp) $(wildcard ./*.cpp) $(wildcard elems/*.cpp) $(wildcard render/*.cpp) $(wildcard ui/*.cpp)
+SOURCES = $(wildcard glad/*.c) $(wildcard imgui/*.cpp) $(wildcard ui/imguiplugins/*.cpp) $(wildcard ./*.cpp) $(wildcard elems/*.cpp) $(wildcard render/*.cpp) $(wildcard ui/*.cpp)
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
@@ -86,6 +86,9 @@ endif
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.o:imgui/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+%.o:ui/imguiplugins/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 all: $(EXE)

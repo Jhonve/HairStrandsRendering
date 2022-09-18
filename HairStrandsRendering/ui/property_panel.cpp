@@ -1,4 +1,5 @@
 #include "property_panel.h"
+#include "ui/imguiplugins/ImGuiFileDialog.h"
 
 void PropertyPanel::render(SceneView* scene_view)
 {
@@ -8,7 +9,11 @@ void PropertyPanel::render(SceneView* scene_view)
     if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (ImGui::Button("Open Mesh"))
-            m_mesh_file_dialog.Open();
+        {
+            m_mesh_loading = true;
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
+                                                    ".ply,.fbx,.obj,.off", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
+        }
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_mesh_current_file.c_str());
     }
@@ -16,7 +21,11 @@ void PropertyPanel::render(SceneView* scene_view)
     if (ImGui::CollapsingHeader("Strands", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (ImGui::Button("Open Strands"))
-            m_strands_file_dialog.Open();
+        {
+            m_strands_loading = true;
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
+                                                    ".bin,.data", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
+        }
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_strands_current_file.c_str());
     }
@@ -38,25 +47,25 @@ void PropertyPanel::render(SceneView* scene_view)
   
     ImGui::End();
   
-    m_mesh_file_dialog.Display();
-    if (m_mesh_file_dialog.HasSelected())
+    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) 
     {
-        auto file_path = m_mesh_file_dialog.GetSelected().string();
-        m_mesh_current_file = file_path.substr(file_path.find_last_of("/\\") + 1);
-  
-        m_mesh_load_callback(file_path);
-  
-        m_mesh_file_dialog.ClearSelected();
-    }
-
-    m_strands_file_dialog.Display();
-    if (m_strands_file_dialog.HasSelected())
-    {
-        auto file_path = m_strands_file_dialog.GetSelected().string();
-        m_strands_current_file = file_path.substr(file_path.find_last_of("/\\") + 1);
-  
-        m_strands_load_callback(file_path);
-  
-        m_strands_file_dialog.ClearSelected();
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string file_name = ImGuiFileDialog::Instance()->GetFilePathName();
+            if(m_mesh_loading)
+            {
+                m_mesh_current_file = file_name.substr(file_name.find_last_of("/\\") + 1);
+                m_mesh_loading = false;
+                m_mesh_load_callback(file_name);
+            }
+            else if (m_strands_loading)
+            {
+                m_strands_current_file = file_name.substr(file_name.find_last_of("/\\") + 1);
+                m_strands_loading = false;
+                m_strands_load_callback(file_name);
+            }
+            
+        }
+        ImGuiFileDialog::Instance()->Close();
     }
 }
