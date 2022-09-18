@@ -1,8 +1,8 @@
 #pragma once
 
-#include "render/render_base.h"
+#include "ui/context.h"
 
-class OpenGLContext : public RenderContext
+class UIContext : public ImWindowContext
 {
 public:
     bool init(ImWindow* window) override;
@@ -12,4 +12,5 @@ public:
     void post_render() override;
 
     void end() override;
+
 };

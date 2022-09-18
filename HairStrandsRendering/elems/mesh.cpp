@@ -4,7 +4,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
-#include "render/opengl_buffer_manager.h"
+#include "render/buffer_manager.h"
 
 void Mesh::init()
 {

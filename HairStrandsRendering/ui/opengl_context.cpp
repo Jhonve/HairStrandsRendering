@@ -1,4 +1,5 @@
-#include "render/opengl_context.h"
+#include "ui/opengl_context.h"
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 
 static void on_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

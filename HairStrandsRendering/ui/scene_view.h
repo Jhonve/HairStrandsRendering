@@ -6,7 +6,7 @@
 #include "elems/mesh.h"
 #include "elems/strands.h"
 #include "render/shader.h"
-#include "render/opengl_buffer_manager.h"
+#include "render/buffer_manager.h"
 
 class SceneView
 {

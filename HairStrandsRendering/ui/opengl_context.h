@@ -1,8 +1,9 @@
 #pragma once
 
-#include "render/render_base.h"
+#include "ui/context.h"
 
-class UIContext : public RenderContext
+// OpenGLContext is designed for interacitve callback mouse/key events
+class OpenGLContext : public ImWindowContext
 {
 public:
     bool init(ImWindow* window) override;
@@ -12,5 +13,4 @@ public:
     void post_render() override;
 
     void end() override;
-
 };

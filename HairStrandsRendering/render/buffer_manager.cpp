@@ -1,4 +1,4 @@
-#include "render/opengl_buffer_manager.h"
+#include "render/buffer_manager.h"
 #include "glad/glad.h"
 
 /*

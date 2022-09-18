@@ -1,6 +1,6 @@
 #include "elems/strands.h"
 #include "render/parameters.h"
-#include "render/opengl_buffer_manager.h"
+#include "render/buffer_manager.h"
 
 void Strands::init()
 {   

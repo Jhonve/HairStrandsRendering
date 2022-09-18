@@ -4,7 +4,7 @@
 #include "ui/scene_view.h"
 
 #include "imgui.h"
-#include "ui/utils_imgui_widgets.h"
+#include "ui/utils_widgets.h"
 
 class PropertyPanel
 {

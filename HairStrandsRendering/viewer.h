@@ -5,9 +5,9 @@
 #include "elems/light.h"
 #include "render/shader.h"
 
-#include "render/ui_context.h"
-#include "render/opengl_context.h"
-#include "render/opengl_buffer_manager.h"
+#include "ui/ui_context.h"
+#include "ui/opengl_context.h"
+#include "render/buffer_manager.h"
 
 #include "window.h"
 
