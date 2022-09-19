@@ -202,15 +202,6 @@
     <None Include="shaders\depth_range.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\depth_range.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="shaders\mesh.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="shaders\mesh_pbr.frag">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="shaders\mesh_shade.frag">
       <Filter>shaders</Filter>
     </None>
@@ -220,13 +211,7 @@
     <None Include="shaders\occ.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\occ.vert">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="shaders\shadow.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="shaders\shadow.vert">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\depth.frag">
@@ -238,19 +223,10 @@
     <None Include="shaders\slab.frag">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\slab.vert">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="shaders\strands.frag">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\strands.vert">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="shaders\strands_simple.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="shaders\strands_simple.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
