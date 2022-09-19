@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="elems\arcball.cpp" />
     <ClCompile Include="elems\mesh.cpp" />
     <ClCompile Include="elems\strands.cpp" />
     <ClCompile Include="glad\glad.c" />
@@ -169,6 +170,7 @@
     <ClCompile Include="viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="elems\arcball.h" />
     <ClInclude Include="elems\camera.h" />
     <ClInclude Include="elems\element.h" />
     <ClInclude Include="elems\strands.h" />

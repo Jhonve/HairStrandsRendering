@@ -93,6 +93,9 @@
     <ClCompile Include="render\buffer_manager.cpp">
       <Filter>render</Filter>
     </ClCompile>
+    <ClCompile Include="elems\arcball.cpp">
+      <Filter>elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="render\render_base.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="render\buffer_manager.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="elems\arcball.h">
+      <Filter>elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
