@@ -75,7 +75,7 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_1 = opacity1.xy;
             else
                 opacity_range_1 = opacity1.yz;
-            val1 += fs_in.light_view_depth_1 > texture(depth_map, tex_pos).y + tolerance ? (1. - strands_shadow) * (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_1.x, opacity_range_1.y, ratio1));
+            val1 += fs_in.light_view_depth_1 > texture(depth_map, tex_pos).y + tolerance ? (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_1.x, opacity_range_1.y, ratio1));
         }
     }
     val1 /= 36.;
@@ -98,7 +98,7 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_2 = opacity2.xy;
             else
                 opacity_range_2 = opacity2.yz;
-            val2 += fs_in.light_view_depth_2 > texture(depth_map, tex_pos).y + tolerance ? (1. - strands_shadow) * (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_2.x, opacity_range_2.y, ratio2));
+            val2 += fs_in.light_view_depth_2 > texture(depth_map, tex_pos).y + tolerance ? (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_2.x, opacity_range_2.y, ratio2));
         }
     }
     val2 /= 36.;
@@ -121,7 +121,7 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_3 = opacity3.xy;
             else
                 opacity_range_3 = opacity3.yz;
-            val3 += fs_in.light_view_depth_3 > texture(depth_map, tex_pos).y + tolerance ? (1. - strands_shadow) * (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_3.x, opacity_range_3.y, ratio3));
+            val3 += fs_in.light_view_depth_3 > texture(depth_map, tex_pos).y + tolerance ? (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_3.x, opacity_range_3.y, ratio3));
         }
     }
     val3 /= 36.;
@@ -144,7 +144,7 @@ void GetOpacityFactor(out float val1, out float val2, out float val3, out float 
                 opacity_range_4 = opacity4.xy;
             else
                 opacity_range_4 = opacity4.yz;
-            val4 += fs_in.light_view_depth_4 > texture(depth_map, tex_pos).y + tolerance ? (1. - strands_shadow) * (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_4.x, opacity_range_4.y, ratio4));
+            val4 += fs_in.light_view_depth_4 > texture(depth_map, tex_pos).y + tolerance ? (1. - mesh_shadow) : pow(1. - strands_shadow, mix(opacity_range_4.x, opacity_range_4.y, ratio4));
         }
     }
     val4 /= 36.;
