@@ -5,6 +5,7 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/transform.hpp>
 
 class Lights : public Element
 {
@@ -34,7 +35,7 @@ public:
         m_dirs.resize(m_num_lights);
 
         init();
-        get_lights_mat(glm::vec3(-1.f, -1.f, -1.f), glm::vec3(1.f, 1.f, 1.f)); // TODO Shen Setting the scene bound
+        get_lights_mat(m_scene_min, m_scene_max);
     }
     ~Lights()
     {
@@ -63,7 +64,8 @@ public:
         for (int i_light = 0; i_light < m_num_lights; ++i_light)
         {
             m_colors[i_light] = m_ori_colors[i_light] * m_strength;
-            m_dirs[i_light] = rot_mat * m_ori_dirs[i_light];
+            m_ori_dirs[i_light] = rot_mat * m_ori_dirs[i_light];
+            m_dirs[i_light] = m_ori_dirs[i_light];
         }
     }
 
@@ -125,12 +127,24 @@ public:
 
     void update(Shader* shader) override
     {
+        glm::mat4 rot_mat = glm::rotate(m_rot[0], glm::vec3(1.f, 0.f, 0.f));
+        rot_mat *= glm::rotate(m_rot[1], glm::vec3(0.f, 1.f, 0.f));
+        rot_mat *= glm::rotate(m_rot[2], glm::vec3(0.f, 0.f, 1.f));
 
+        for (int i_light = 0; i_light <m_num_lights; i_light++)
+        {
+            m_colors[i_light] = m_ori_colors[i_light] * m_strength;
+            m_dirs[i_light] = glm::mat3(rot_mat) * m_ori_dirs[i_light];
+        }
     }
 
 private:
     std::vector<glm::vec3> m_ori_colors;
     std::vector<glm::vec3> m_ori_dirs;
+
+    // TODO Shen Setting the scene bound
+    glm::vec3 m_scene_min{-1.f, -1.f, -1.f};
+    glm::vec3 m_scene_max{1.f, 1.f, 1.f};
 
 public:
     int m_num_lights = 0;
@@ -141,5 +155,7 @@ public:
     std::vector<glm::mat4> m_view_mat;
     std::vector<glm::mat4> m_proj_mat;
     std::vector<glm::mat4> m_view_proj_mat;
-    // it is better for setting as private parameters and using get function
+
+    float m_rot[3] = {0.0f, 0.0f, 0.0f};
+    // TODO shen it is better for setting as private parameters and using get function
 };

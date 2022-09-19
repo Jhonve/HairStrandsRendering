@@ -7,6 +7,9 @@ void PropertyPanel::render(SceneView* scene_view)
     auto render_param = scene_view->get_render_param();
   
     ImGui::Begin("Properties");
+
+    ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
     if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (ImGui::Button("Open Mesh"))
@@ -31,7 +34,7 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::Text(m_strands_current_file.c_str());
     }
   
-    if (ImGui::CollapsingHeader("Scene"))
+    if (ImGui::CollapsingHeader("Scene", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::ColorEdit3("Clear Color", (float*)&render_param->clear_color);
     }
@@ -44,7 +47,7 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::SliderFloat("Mesh Ambient", &render_param->mesh_ambient, 0.0f, 1.0f);
     }
   
-    if (ImGui::CollapsingHeader("Strands Properties") && render_param)
+    if (ImGui::CollapsingHeader("Strands Properties", ImGuiTreeNodeFlags_DefaultOpen) && render_param)
     {
         ImGui::ColorPicker3("Strs Color", (float*)&render_param->strands_color, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_DisplayRGB);
         ImGui::SliderInt("Strs Width", &render_param->strands_width, 1, 10);
@@ -54,15 +57,16 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::SliderFloat("Strs Ambient", &render_param->strands_ambient, 0.0f, 1.0f);
     }
 
-    if (ImGui::CollapsingHeader("Light"))
+    if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::Separator();
         ImGui::Text("Position");
         ImGui::Separator();
-        // draw_vec3_widget("Position", scene_view->get_light()->m_position, 80.0f);
+        ImGui::SliderFloat("Strength", &scene_view->get_lights()->m_strength, 0.f, 1.f);
+        ImGui::SliderFloat3("Rot", scene_view->get_lights()->m_rot, 0.f, 3.1415f);
     }
     
-    if (ImGui::CollapsingHeader("Shadow Properties") && render_param)
+    if (ImGui::CollapsingHeader("Shadow Properties", ImGuiTreeNodeFlags_DefaultOpen) && render_param)
     {
         ImGui::SliderFloat("Mesh Self", &render_param->mesh_self_shadow, 0.0f, 0.95f);
         ImGui::SliderFloat("Mesh Strs", &render_param->mesh_strands_shadow, 0.0f, 0.95f);

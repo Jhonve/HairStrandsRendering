@@ -131,16 +131,11 @@ private:
     float m_near;
     float m_far;
 
-    float m_pitch = 0.0f;
-    float m_yaw = 0.0f;
-
     glm::vec2 m_current_pos2d = { 0.0f, 0.0f };
 
     const glm::vec3 m_right = { 1.0f, 0.0f, 0.0f };
     const glm::vec3 m_up = { 0.0f, 1.0f, 0.0f };
     const glm::vec3 m_forward = { 0.0f, 0.0f, -1.0f };
-
-    const float m_rot_speed = 2.0f;
 
     ArcBall m_arcball;
 };

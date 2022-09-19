@@ -232,6 +232,8 @@ void SceneView::render_shadow()
     int frame_width, frame_height;
     m_frame_buffers->get_shadow_depth_FBO().get_texture_size(frame_width, frame_height);
     glViewport(0, 0, frame_width, frame_height);
+
+    m_lights->update(nullptr);
     
     // renfer strands depth with lights
     m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
