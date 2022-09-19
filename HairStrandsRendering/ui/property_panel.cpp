@@ -18,6 +18,12 @@ void PropertyPanel::render(SceneView* scene_view)
                                                     ".ply,.fbx,.obj,.off", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
         }
         ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Clear Mesh"))
+        {
+            scene_view->del_mesh();
+            m_mesh_current_file = "< ... >";
+        }
+        ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_mesh_current_file.c_str());
     }
 
@@ -28,6 +34,12 @@ void PropertyPanel::render(SceneView* scene_view)
             m_strands_loading = true;
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
                                                     ".bin,.data", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
+        }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Clear Strands"))
+        {
+            scene_view->del_strands();
+            m_strands_current_file = "< ... >";
         }
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_strands_current_file.c_str());

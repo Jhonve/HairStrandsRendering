@@ -4,6 +4,8 @@
 
 void Strands::init()
 {   
+    m_strands_vertices.clear();
+    m_vertex_indices.clear();
     int index_count = 0;
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
@@ -145,35 +147,16 @@ Strands::points Strands::load_usc_data(const std::string& filepath)
     return strands_points;
 }
 
-Strands::points Strands::try_simple_case()
-{
-    m_num_strands = 4;
-    points four_strands;
-    four_strands.resize(4);
-    four_strands[0].push_back(glm::vec3(-0.5f, -0.5f, -0.5f));
-    four_strands[0].push_back(glm::vec3(-0.5f, -0.5f, 0.f));
-    four_strands[0].push_back(glm::vec3(-0.5f, -0.5f, 0.5f));
-    four_strands[1].push_back(glm::vec3(-0.5f, 0.5f, -0.5f));
-    four_strands[1].push_back(glm::vec3(-0.5f, 0.5f, 0.f));
-    four_strands[1].push_back(glm::vec3(-0.5f, 0.5f, 0.5f));
-    four_strands[2].push_back(glm::vec3(0.5f, -0.5f, -0.5f));
-    four_strands[2].push_back(glm::vec3(0.5f, -0.5f, 0.f));
-    four_strands[2].push_back(glm::vec3(0.5f, -0.5f, 0.5f));
-    four_strands[3].push_back(glm::vec3(0.5f, 0.5f, -0.5f));
-    four_strands[3].push_back(glm::vec3(0.5f, 0.5f, 0.f));
-    four_strands[3].push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-
-    return four_strands;
-}
-
 bool Strands::load(const std::string& filepath)
 {
+    m_points.clear();
+    m_num_points = 0;
+    m_num_strands = 0;
     // check suffix
     if (filepath[filepath.length() - 1] == 'n') // .bin
         m_points = load_bin(filepath);
     else
         m_points = load_usc_data(filepath);
-    // m_points = try_simple_case();
     
     if (m_num_strands > 0)
     {

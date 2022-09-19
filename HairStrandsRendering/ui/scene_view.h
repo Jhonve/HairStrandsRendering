@@ -87,6 +87,16 @@ public:
     {
         m_strands = strands;
     }
+    void del_mesh()
+    {
+        if(m_mesh)
+            m_mesh.reset();
+    }
+    void del_strands()
+    {
+        if(m_strands)
+            m_strands.reset();
+    }
     
     void on_mouse_move(double x, double y, InputButton button);
   

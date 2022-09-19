@@ -30,7 +30,7 @@ void SceneView::load_mesh(const std::string& filepath)
 
 void SceneView::load_strands(const std::string& filepath)
 {
-    if(!m_strands)
+    if (!m_strands)
         m_strands = std::make_shared<Strands>();
   
     m_strands->load(filepath);
