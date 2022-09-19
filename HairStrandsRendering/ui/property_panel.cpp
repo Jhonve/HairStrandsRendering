@@ -59,9 +59,6 @@ void PropertyPanel::render(SceneView* scene_view)
 
     if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::Separator();
-        ImGui::Text("Position");
-        ImGui::Separator();
         ImGui::SliderFloat("Strength", &scene_view->get_lights()->m_strength, 0.f, 1.f);
         ImGui::SliderFloat3("Rot", scene_view->get_lights()->m_rot, 0.f, 3.1415f);
     }
