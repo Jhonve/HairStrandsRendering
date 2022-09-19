@@ -43,6 +43,17 @@ void PropertyPanel::render(SceneView* scene_view)
         }
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_strands_current_file.c_str());
+        if (ImGui::Button("Smooth"))
+        {
+        }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Downsample"))
+        {
+        }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Parametric"))
+        {
+        }
     }
   
     if (ImGui::CollapsingHeader("Scene", ImGuiTreeNodeFlags_DefaultOpen))

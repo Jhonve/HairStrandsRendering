@@ -78,11 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering;C:\Users\yuefan\3rdparty\assimp\build\include;C:\Users\yuefan\3rdparty\assimp\include;C:\Users\yuefan\3rdparty\glew-2.1.0\include;C:\Users\yuefan\3rdparty\glm;C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\yuefan\3rdparty\eigen;C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering;C:\Users\yuefan\3rdparty\assimp\build\include;C:\Users\yuefan\3rdparty\assimp\include;C:\Users\yuefan\3rdparty\glew-2.1.0\include;C:\Users\yuefan\3rdparty\glm;C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering;C:\Users\yuefan\3rdparty\assimp\build\include;C:\Users\yuefan\3rdparty\assimp\include;C:\Users\yuefan\3rdparty\glm;C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\yuefan\3rdparty\eigen;C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering;C:\Users\yuefan\3rdparty\assimp\build\include;C:\Users\yuefan\3rdparty\assimp\include;C:\Users\yuefan\3rdparty\glm;C:\Users\yuefan\3rdparty\glfw-3.3.8\include;C:\Users\yuefan\Documents\CTHair\Code\HairStrandsRendering\HairStrandsRendering\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
