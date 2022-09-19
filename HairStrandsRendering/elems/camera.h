@@ -38,12 +38,12 @@ public:
         shader->set_mat4(m_proj_mat, "proj_mat");
     }
 
-    void setup(float width, float height)
+    void setup(float width, float height, float win_width, float win_height)
     {
         m_width = width;
         m_height = height;
         set_aspect(m_width / m_height);
-        m_arcball.set_win_size(m_width, m_height);
+        m_arcball.set_win_size(win_width, win_height);
         m_arcball.set_inv_view_mat(glm::inverse(m_view_mat));
     }
     

@@ -66,7 +66,7 @@ struct RenderParameters
     float strands_self_shadow = 0.6f;
     float strands_mesh_shadow = 0.3f;
     float strands_alpha = 0.25f;
-    int strands_width = 2;
+    int strands_width = 4;
 };
 
 struct OriginalLightsParameters

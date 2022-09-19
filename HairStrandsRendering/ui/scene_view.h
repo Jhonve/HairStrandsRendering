@@ -11,10 +11,13 @@
 class SceneView
 {
 public:
-    SceneView()
+    SceneView(int win_width, int win_height)
     {
+        m_win_size = glm::vec2(win_width, win_height);
+        m_dock_size = glm::vec2(win_width, win_height);
+
         m_frame_buffers = std::make_unique<OpenGLFrameBuffers>();
-        m_frame_buffers->create_buffers(m_size.x, m_size.y);
+        m_frame_buffers->create_buffers(m_win_size.x, m_win_size.y);
         
         m_depth_range_shader = std::make_unique<Shader>();
         m_occ_shader = std::make_unique<Shader>();
@@ -122,5 +125,6 @@ private:
     std::unique_ptr<Shader> m_strands_shader;
     std::unique_ptr<Shader> m_comp_shader;
 
-    glm::vec2 m_size = glm::vec2(1600, 1600);
+    glm::vec2 m_win_size;
+    glm::vec2 m_dock_size;
 };

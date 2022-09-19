@@ -3,7 +3,6 @@
 
 void PropertyPanel::render(SceneView* scene_view)
 {
-    // auto mesh = scene_view->get_mesh();
     auto render_param = scene_view->get_render_param();
   
     ImGui::Begin("Properties");

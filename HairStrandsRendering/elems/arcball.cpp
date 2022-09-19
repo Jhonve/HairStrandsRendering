@@ -3,8 +3,8 @@
 
 void ArcBall::set_win_size(float width, float height)
 {
-    m_width = 1600;
-    m_height = 1600;    // TODO Shen set as window size not panel size
+    m_width = width;
+    m_height = height;
 }
 
 void ArcBall::click(float x, float y)
@@ -20,6 +20,9 @@ void ArcBall::release()
 
 void ArcBall::rotate(float x, float y)
 {
+    x = std::max(std::min(x, m_width - 1.f), 1.f);
+    y = std::max(std::min(y, m_height - 1.f), 1.f);
+
     float x_offset = x - m_last_x;
     float y_offset = y - m_last_y;
 
