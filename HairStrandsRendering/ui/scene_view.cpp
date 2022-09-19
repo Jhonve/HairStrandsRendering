@@ -82,7 +82,7 @@ void SceneView::render_mesh_depth()
     ImGui::Begin("Scene");
     ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
     m_size = { viewport_panelsize.x, viewport_panelsize.y };
-    m_camera->set_aspect(m_size.x / m_size.y);
+    m_camera->setup(m_size.x, m_size.y);
     ImGui::End();
 
     int frame_width, frame_height;
@@ -123,7 +123,7 @@ void SceneView::render_transparency()
     ImGui::Begin("Scene");  // can move to the top of the function
     ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
     m_size = { viewport_panelsize.x, viewport_panelsize.y };
-    m_camera->set_aspect(m_size.x / m_size.y);
+    m_camera->setup(m_size.x, m_size.y);
     ImGui::End();
 
     // render depth range
@@ -253,8 +253,7 @@ void SceneView::render_shadow()
                    frame_width / 2,
                    frame_height / 2);
         
-        glm::mat4 model{ 1.0f };
-        m_shadow_depth_shader->set_mat4(model, "model_mat");
+        m_shadow_depth_shader->set_mat4(m_camera->get_model_mat(), "model_mat");
         m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
         m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
@@ -292,8 +291,7 @@ void SceneView::render_shadow()
                    frame_width / 2,
                    frame_height / 2);
         
-        glm::mat4 model{ 1.0f };
-        m_shadow_depth_shader->set_mat4(model, "model_mat");
+        m_shadow_depth_shader->set_mat4(m_camera->get_model_mat(), "model_mat");
         m_shadow_depth_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
         m_shadow_depth_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
@@ -330,8 +328,7 @@ void SceneView::render_shadow()
                    frame_width / 2,
                    frame_height / 2);
         
-        glm::mat4 model{ 1.0f };
-        m_shadow_opacity_shader->set_mat4(model, "model_mat");
+        m_shadow_opacity_shader->set_mat4(m_camera->get_model_mat(), "model_mat");
         m_shadow_opacity_shader->set_mat4(m_lights->m_view_mat[i_light], "view_mat");
         m_shadow_opacity_shader->set_mat4(m_lights->m_proj_mat[i_light], "proj_mat");
 
@@ -358,7 +355,7 @@ void SceneView::render_mesh()
     ImGui::Begin("Scene");
     ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
     m_size = { viewport_panelsize.x, viewport_panelsize.y };
-    m_camera->set_aspect(m_size.x / m_size.y);
+    m_camera->setup(m_size.x, m_size.y);
     ImGui::End();
 
     int frame_width, frame_height;
@@ -436,7 +433,7 @@ void SceneView::render_strands()
     ImGui::Begin("Scene");
     ImVec2 viewport_panelsize = ImGui::GetContentRegionAvail();
     m_size = { viewport_panelsize.x, viewport_panelsize.y };
-    m_camera->set_aspect(m_size.x / m_size.y);
+    m_camera->setup(m_size.x, m_size.y);
     ImGui::End();
 
     int frame_width, frame_height;

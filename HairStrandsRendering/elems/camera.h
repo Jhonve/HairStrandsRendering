@@ -5,6 +5,7 @@
 
 #include "elems/input.h"
 #include "elems/element.h"
+#include "elems/arcball.h"
 
 class Camera : public Element
 {
@@ -24,24 +25,31 @@ public:
     
     void update(Shader* shader) override
     {
-        glm::mat4 model{ 1.0f };
-        shader->set_mat4(model, "model_mat");
-        shader->set_mat4(m_view_matrix, "view_mat");
-        shader->set_mat4(get_projection(), "proj_mat");
+        shader->set_mat4(m_model_mat, "model_mat");
+        shader->set_mat4(m_view_mat, "view_mat");
+        shader->set_mat4(m_proj_mat, "proj_mat");
         shader->set_vec3(m_position, "cam_pos");
     }
 
     void update_mat(Shader* shader)
     {
-        glm::mat4 model{ 1.0f };
-        shader->set_mat4(model, "model_mat");
-        shader->set_mat4(m_view_matrix, "view_mat");
-        shader->set_mat4(get_projection(), "proj_mat");
+        shader->set_mat4(m_model_mat, "model_mat");
+        shader->set_mat4(m_view_mat, "view_mat");
+        shader->set_mat4(m_proj_mat, "proj_mat");
+    }
+
+    void setup(float width, float height)
+    {
+        m_width = width;
+        m_height = height;
+        set_aspect(m_width / m_height);
+        m_arcball.set_win_size(m_width, m_height);
+        m_arcball.set_inv_view_mat(glm::inverse(m_view_mat));
     }
     
     void set_aspect(float aspect)
     {
-        m_projection = glm::perspective(m_fov, aspect, m_near, m_far);
+        m_proj_mat = glm::perspective(m_fov, aspect, m_near, m_far);
     }
     
     void set_distance(float offset)
@@ -50,40 +58,17 @@ public:
         update_view_matrix();
     }
     
-    const glm::mat4& get_projection() const
-    {
-        return m_projection;
-    }
+    glm::mat4 get_view_projection() const{ return m_proj_mat * get_view_mat(); }
     
-    glm::mat4 get_view_projection() const
-    {
-        return m_projection * get_view_matrix();
-    }
+    glm::vec3 get_up() const { return m_up; }
     
-    glm::vec3 get_up() const
-    {
-        return glm::rotate(get_direction(), m_up);
-    }
+    glm::vec3 get_right() const { return m_right; }
+
+    glm::vec3 get_forward() const { return m_forward; }
     
-    glm::vec3 get_right() const
-    {
-        return glm::rotate(get_direction(), m_right);
-    }
+    glm::mat4 get_model_mat() const { return m_model_mat; }
     
-    glm::vec3 get_forward() const
-    {
-        return glm::rotate(get_direction(), m_forward);
-    }
-    
-    glm::quat get_direction() const
-    {
-        return glm::quat(glm::vec3(-m_pitch, -m_yaw, 0.0f));
-    }
-    
-    glm::mat4 get_view_matrix() const
-    {
-        return m_view_matrix;
-    }
+    glm::mat4 get_view_mat() const { return m_view_mat; }
     
     void on_mouse_wheel(double delta)
     {
@@ -93,8 +78,10 @@ public:
     
     void reset()
     {
+        m_arcball.reset();
+        m_model_mat = m_arcball.get_trans_mat();
         m_focus = { 0.0f, 0.0f, 0.0f };
-        m_distance = 3.0f;
+        m_distance = 5.0f;
         update_view_matrix();
     }
     
@@ -104,41 +91,38 @@ public:
     
         if (button == InputButton::Right)
         {
-            glm::vec2 delta = (pos2d - m_current_pos2d) * 0.004f;
-    
-            float sign = get_up().y < 0 ? -1.0f : 1.0f;
-            m_yaw += sign * delta.x * m_rot_speed;
-            m_pitch += delta.y * m_rot_speed;
-    
-            update_view_matrix();
+            m_arcball.click(m_current_pos2d.x, m_current_pos2d.y);
+            m_arcball.rotate(x, y);
+            m_model_mat = m_arcball.get_trans_mat();
+            m_arcball.release();
         }	
         else if (button == InputButton::Middle)
         {
             glm::vec2 delta = (pos2d - m_current_pos2d) * 0.003f;
-    
             m_focus += -get_right() * delta.x * m_distance * 0.3f;
             m_focus += get_up() * delta.y * m_distance * 0.3f;
-    
             update_view_matrix();
-    }
+        }
     
-    m_current_pos2d = pos2d;
+        m_current_pos2d = pos2d;
     }
     
     void update_view_matrix()
     {
         m_position =  m_focus - get_forward() * m_distance;
-    
-        glm::quat orientation = get_direction();
-        m_view_matrix = glm::translate(glm::mat4(1.0f), m_position) * glm::toMat4(orientation);
-        m_view_matrix = glm::inverse(m_view_matrix);
+        m_view_mat = glm::translate(glm::mat4(1.0f), m_position);
+        m_view_mat = glm::inverse(m_view_mat);
     }
 
 private:
-    glm::mat4 m_view_matrix;
-    glm::mat4 m_projection = glm::mat4{ 1.0f };
+    float m_width = 0;
+    float m_height = 0;
+
+    glm::mat4 m_model_mat{ 1.0f }; 
+    glm::mat4 m_view_mat;
+    glm::mat4 m_proj_mat{ 1.0f };
+
     glm::vec3 m_position = { 0.0f, 0.0f, 0.0f };
-    
     glm::vec3 m_focus = { 0.0f, 0.0f, 0.0f };
     
     float m_distance = 5.0f;
@@ -157,4 +141,6 @@ private:
     const glm::vec3 m_forward = { 0.0f, 0.0f, -1.0f };
 
     const float m_rot_speed = 2.0f;
+
+    ArcBall m_arcball;
 };
