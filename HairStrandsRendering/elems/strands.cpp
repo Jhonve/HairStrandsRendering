@@ -53,86 +53,73 @@ void Strands::init(const Strands::points& points)
 
 void Strands::smooth()
 {
-    int idx_points = 0;
+    if (m_num_strands == 0)
+        return;
+
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = m_original_points[i_strand].size();
+        std::vector<glm::vec3> smoothed_strand = m_original_points[i_strand];
+        
         if (num_points < 3)
+        {
+            m_smoothed_points.push_back(smoothed_strand);
             continue;
+        }
 
         LaplaceSmoothing lap_smooth(4.0f, 2.0f);
-        StrandVertex strand_vertex = m_strands_vertices[idx_points];
-        idx_points += num_points;
+        lap_smooth.build_coeff_mat(num_points);
+        lap_smooth.smooth(smoothed_strand);
+
+        m_smoothed_points.push_back(smoothed_strand);
     }
 
-    // if (m_vertices.size() < 3)
-    // {
-    //     // LOG(ERROR) << "Data Size Is Less Than Three, No Need To Smooth";
-    //     return;
-    // }
-
-    // zcg::Smoothing::LaplaceSmoothing ls(4.0f, 2.0f);
-    // ls.build_coeff_mat(m_vertices.size());
-
-    // std::vector<float> xarray(m_vertices.size());
-    // std::vector<float> yarray(m_vertices.size());
-    // std::vector<float> zarray(m_vertices.size());
-    // for (int i = 0; i < m_vertices.size(); i++)
-    // {
-    //     StrandVertex& vert = m_vertices[i];
-    //     xarray[i] = vert.position.x;
-    //     yarray[i] = vert.position.y;
-    //     zarray[i] = vert.position.z;
-    // }
-
-    // if (flag & 0x1)
-    // {
-    //     ls.Smooth(xarray);
-    // }
-    // if (flag & 0x2)
-    // {
-    //     ls.Smooth(yarray);
-    // }
-    // if (flag & 0x4)
-    // {
-    //     ls.Smooth(zarray);
-    // }
-
-    // for (int i = 1; i < m_vertices.size(); i++)
-    // {
-    //     StrandVertex& vert = m_vertices[i];
-    //     vert.position.x = xarray[i];
-    //     vert.position.y = yarray[i];
-    //     vert.position.z = zarray[i];
-    // }
+    init(m_smoothed_points);
 }
 
 void Strands::downsample()
 {
-    // int idx_points = 0;
-    // int idx_count = 0;
-    // for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
-    // {
-    //     int num_points = m_original_points[i_strand].size();
-    //     
-    //     // add the 1st points
-    //     StrandVertex strand_vertex_1 = m_strands_vertices[idx_points];
-    //     m_downsampled_strands_vertices.push_back(strand_vertex_1);
-    //     for (int j_point = 1; j_point < num_points - 1; j_point++)
-    //     {
-    //         StrandVertex strand_vertex_2 = m_strands_vertices[(size_t)idx_points + j_point];
-    //         if (glm::dot(strand_vertex_1.m_tangent, strand_vertex_2.m_tangent) < m_downsample_sim_thres)
-    //         {
-    //             m_downsampled_strands_vertices.push_back(strand_vertex_2);
-    //             m_downsampled_vertex_indices.push_back(idx_count);
-    //             m_downsampled_vertex_indices.push_back(idx_count + 1);
-    //             idx_count++;
-    //         }
-    //         strand_vertex_1 = strand_vertex_2;
-    //     }
-    //     idx_points += num_points;
-    //     idx_count++;
-    // }
+    if (m_smoothed_points.size() == 0)
+        return;
+
+    m_num_points = 0;
+    for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
+    {
+        int num_points = m_smoothed_points[i_strand].size();
+        if (num_points < 3)
+        {
+            m_downsampled_points.push_back(m_smoothed_points[i_strand]);
+            m_num_points += num_points;
+            continue;
+        }
+
+        std::vector<glm::vec3> strand_points;
+        
+        // add the 1st point
+        strand_points.push_back(m_smoothed_points[i_strand][0]);
+        glm::vec3 tangent_0 = glm::normalize(m_smoothed_points[i_strand][1] -
+                                             m_smoothed_points[i_strand][0]);
+        for (int j_point = 1; j_point < num_points - 1; j_point++)
+        {
+            glm::vec3 point_1 = m_smoothed_points[i_strand][j_point];
+            glm::vec3 point_2 = m_smoothed_points[i_strand][j_point + 1];
+
+            glm::vec3 tangent_1 = glm::normalize(point_2 - point_1);
+
+            if (glm::dot(tangent_1, tangent_0) < m_downsample_sim_thres)
+            {
+                strand_points.push_back(m_smoothed_points[i_strand][j_point]);
+                tangent_0 = tangent_1;
+                m_num_points++;
+            }
+        }
+        // add the last point
+        strand_points.push_back(m_smoothed_points[i_strand][num_points - 1]);
+
+        m_downsampled_points.push_back(strand_points);
+    }
+
+    init(m_downsampled_points);
 }
 
 void Strands::parametrical()
@@ -186,6 +173,7 @@ Strands::points Strands::load_bin(const std::string& filepath)
         {
             strands_points.push_back(strand_points);
             m_num_strands++;
+            m_num_points += num_points;
         }
     }
     fclose(f);
@@ -252,10 +240,6 @@ bool Strands::load(const std::string& filepath)
     if (m_num_strands > 0)
     {
         init(m_original_points);
-        smooth();
-        // downsample();
-        // printf("number of full %d, number of downsampled %d.\n number of strands %d.\n",
-        //     m_strands_vertices.size(), m_downsampled_strands_vertices.size(), m_num_strands);
         return true;
     }
     return false;

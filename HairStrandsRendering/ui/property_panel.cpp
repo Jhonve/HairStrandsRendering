@@ -1,6 +1,8 @@
 #include "property_panel.h"
 #include "ui/imguiplugins/ImGuiFileDialog.h"
 
+#include <format>
+
 void PropertyPanel::render(SceneView* scene_view)
 {
     auto render_param = scene_view->get_render_param();
@@ -20,7 +22,8 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Mesh"))
         {
-            scene_view->del_mesh();
+            if (scene_view->get_mesh())
+                scene_view->del_mesh();
             m_mesh_current_file = "< ... >";
         }
         ImGui::SameLine(0, 5.0f);
@@ -38,17 +41,28 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Strands"))
         {
-            scene_view->del_strands();
+            if(scene_view->get_strands())
+                scene_view->del_strands();
             m_strands_current_file = "< ... >";
         }
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_strands_current_file.c_str());
+        if(scene_view->get_strands())
+        {
+            std::string show_nums = "Num strs: " + std::to_string(scene_view->get_strands()->get_num_strands()) + 
+                        " Num pts: " + std::to_string(scene_view->get_strands()->get_num_points());
+            ImGui::Text(show_nums.c_str());
+        }
         if (ImGui::Button("Smooth"))
         {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->smooth();
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Downsample"))
         {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->downsample();
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Parametric"))

@@ -14,7 +14,7 @@ public:
     typedef std::vector<std::vector<glm::vec3>> points;
 
 public:
-    Strands() = default;
+    Strands() : m_num_strands(0) {}
 
     virtual ~Strands();
 
@@ -32,6 +32,9 @@ public:
   
     void bind();
     void unbind();
+
+    int get_num_strands() { return m_num_strands; }
+    int get_num_points() { return m_num_points; }
 
 private:
     points load_bin(const std::string& filepath);
@@ -106,7 +109,7 @@ public:
         m_solver.compute(m_coeff_mat_mult);
     }
     
-    void smooth(std::vector<glm::vec3>& curve, int flag, int begin = -1, int end = -1)
+    void smooth(std::vector<glm::vec3>& curve, int begin = -1, int end = -1)
     {
         begin = begin == -1 ? 0 : begin;
         end = end == -1 ? curve.size() : end;
@@ -121,18 +124,10 @@ public:
             zarray[i] = curve[i].z;
         }
     
-        if (flag & 0x1)
-        {
-            this->smooth(xarray, begin, end);
-        }
-        if (flag & 0x2)
-        {
-            this->smooth(xarray, begin, end);
-        }
-        if (flag & 0x4)
-        {
-            this->smooth(xarray, begin, end);
-        }
+        this->smooth(xarray, begin, end);
+        this->smooth(yarray, begin, end);
+        this->smooth(zarray, begin, end);
+
         for (int i = 0; i < curve.size(); i++)
         {
             curve[i].x = xarray[i];
