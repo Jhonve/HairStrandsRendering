@@ -58,6 +58,8 @@ void Strands::smooth()
 
     m_smoothed_points.clear();
     m_num_points = 0;
+    
+    m_num_strands = m_original_points.size();
 
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
@@ -90,6 +92,8 @@ void Strands::downsample()
     m_downsampled_points.clear();
     m_downsampled_tangents.clear();
     m_num_points = 0;
+
+    m_num_strands = m_smoothed_points.size();
 
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
@@ -143,6 +147,8 @@ void Strands::parametrical()
     m_parametric_points.clear();
     m_num_points = 0;
 
+    m_num_strands = m_downsampled_points.size();
+
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = m_downsampled_points[i_strand].size();
@@ -165,6 +171,44 @@ void Strands::parametrical()
     }
 
     init(m_parametric_points);
+}
+
+void Strands::duplicate()
+{
+    if (m_downsampled_points.size() == 0)
+        return;
+    
+    m_duplicated_points.clear();
+    m_num_points = 0;
+
+    for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
+    {
+        int num_points = m_downsampled_points[i_strand].size();
+        StrandPoints strand_points = m_downsampled_points[i_strand];
+        m_duplicated_points.push_back(strand_points);
+
+        glm::vec3 start_tangent = m_downsampled_tangents[i_strand][0];
+        for (int j_sam = 0; j_sam < m_dup_ratio; j_sam++)
+        {
+            float rand_x = (float)rand() / RAND_MAX;
+            float rand_y = (float)rand() / RAND_MAX;
+
+            float orgo_z = -(rand_x * start_tangent.x + rand_y * start_tangent.y) / start_tangent.z;
+
+            float scale_ration =(float)rand() / RAND_MAX * m_dup_perturbation + m_dup_perturbation; 
+            glm::vec3 rand_offset = glm::normalize(glm::vec3(rand_x, rand_y, orgo_z)) * scale_ration;
+            
+            StrandPoints dup_strand;
+            for (int k_point = 0; k_point < num_points; k_point++)
+                dup_strand.push_back(strand_points[k_point] + rand_offset);
+
+            m_duplicated_points.push_back(dup_strand);
+        }
+        m_num_points += (m_dup_ratio + 1) * num_points;
+    }
+
+    m_num_strands = m_duplicated_points.size();
+    init(m_duplicated_points);
 }
 
 Strands::StrandsPoints Strands::load_bin(const std::string& filepath)

@@ -24,6 +24,7 @@ public:
     void smooth();
     void downsample();
     void parametrical();
+    void duplicate();
 
     void update(Shader* shader) override {}
 
@@ -58,6 +59,9 @@ private:
     StrandsPoints m_downsampled_tangents;   // should preserve original tangent
     StrandsPoints m_parametric_points;
     const int m_interp_points = 10;
+    StrandsPoints m_duplicated_points;
+    const int m_dup_ratio = 10;
+    const float m_dup_perturbation = 1.0f;
 
     std::vector<StrandVertex> m_strands_vertices;
     std::vector<unsigned int> m_vertex_indices;

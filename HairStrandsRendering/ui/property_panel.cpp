@@ -70,6 +70,12 @@ void PropertyPanel::render(SceneView* scene_view)
             if(scene_view->get_strands())
                 scene_view->get_strands()->parametrical();
         }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Duplicate"))
+        {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->duplicate();
+        }
     }
   
     if (ImGui::CollapsingHeader("Scene", ImGuiTreeNodeFlags_DefaultOpen))
