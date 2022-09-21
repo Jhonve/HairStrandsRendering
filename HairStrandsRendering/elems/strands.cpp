@@ -94,11 +94,13 @@ void Strands::downsample()
         }
 
         std::vector<glm::vec3> strand_points;
+        std::vector<glm::vec3> strand_tangents;
         
         // add the 1st point
         strand_points.push_back(m_smoothed_points[i_strand][0]);
         glm::vec3 tangent_0 = glm::normalize(m_smoothed_points[i_strand][1] -
                                              m_smoothed_points[i_strand][0]);
+        strand_tangents.push_back(tangent_0);
         for (int j_point = 1; j_point < num_points - 1; j_point++)
         {
             glm::vec3 point_1 = m_smoothed_points[i_strand][j_point];
@@ -110,13 +112,16 @@ void Strands::downsample()
             {
                 strand_points.push_back(m_smoothed_points[i_strand][j_point]);
                 tangent_0 = tangent_1;
+                strand_tangents.push_back(tangent_0);
                 m_num_points++;
             }
         }
         // add the last point
         strand_points.push_back(m_smoothed_points[i_strand][num_points - 1]);
+        strand_tangents.push_back(tangent_0);
 
         m_downsampled_points.push_back(strand_points);
+        m_downsampled_tangents.push_back(strand_tangents);
     }
 
     init(m_downsampled_points);

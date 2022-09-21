@@ -51,6 +51,7 @@ private:
     points m_smoothed_points;
     float m_downsample_sim_thres = 0.98f;
     points m_downsampled_points;
+    points m_downsampled_tangents;   // should preserve original tangent
     points m_parametric_points;
 
     std::vector<StrandVertex> m_strands_vertices;
