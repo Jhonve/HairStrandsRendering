@@ -20,6 +20,8 @@ public:
     virtual ~Strands();
 
     bool load(const std::string& filepath);
+    bool save();
+
     void init(const StrandsPoints& points);
     void smooth();
     void downsample();
@@ -41,11 +43,14 @@ public:
 private:
     StrandsPoints load_bin(const std::string& filepath);
     StrandsPoints load_usc_data(const std::string& filepath);
+    bool save_bin(const std::string& filepath);
+    bool save_usc_data(const std::string& filepath);
 
     StrandPoints Hermit_spline(const glm::vec3 begin_pos, const glm::vec3 begin_tangent,
                                const glm::vec3 end_pos, const glm::vec3 end_tangent, const int num_iter);
 
 private:
+    std::string m_filepath;
     // Buffers manager
     std::unique_ptr<StrandsIndexBuffer> m_render_buffer_mgr;
     

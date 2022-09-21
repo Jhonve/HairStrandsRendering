@@ -310,6 +310,62 @@ Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
     return strands_points;
 }
 
+bool Strands::save_bin(const std::string& filepath)
+{
+    FILE* f = fopen(filepath.c_str(), "wb");
+    if (!f)
+    {
+        fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
+        return false;
+    }
+
+    int currentVertex = 0;
+    
+    fwrite(&m_num_strands, sizeof(int), 1, f);
+    for (unsigned int i = 0; i < m_num_strands; i++) {
+        int num_points = m_duplicated_points[i].size();
+        fwrite(&num_points, sizeof(int), 1, f);
+        // For each strand, first read all of the vertices
+        for (unsigned int j = 0; j < num_points; j++) {
+            glm::vec3 pt = m_duplicated_points[i][j];
+            fwrite(&pt.x, sizeof(float), 1, f);
+            fwrite(&pt.y, sizeof(float), 1, f);
+            fwrite(&pt.z, sizeof(float), 1, f);
+            fwrite(&pt.x, sizeof(float), 1, f);
+            fwrite(&pt.y, sizeof(float), 1, f);
+            fwrite(&pt.z, sizeof(float), 1, f);
+            fwrite(&pt.z, sizeof(uint32_t), 1, f);
+        }
+    }
+    fclose(f);
+    return true;
+}
+
+bool Strands::save_usc_data(const std::string& filepath)
+{
+    FILE* f = fopen(filepath.c_str(), "wb");
+    if (!f)
+    {
+        fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
+        return false;
+    }
+
+    fwrite(&m_num_strands, 4, 1, f);
+    for (int i = 0; i < m_num_strands; i++)
+    {
+        int num_points = m_duplicated_points[i].size();
+        fwrite(&num_points, 4, 1, f);
+        for (int j = 0; j < num_points; j++)
+        {
+            fwrite(&m_duplicated_points[i][j].x, 4, 1, f);
+            fwrite(&m_duplicated_points[i][j].y, 4, 1, f);
+            fwrite(&m_duplicated_points[i][j].z, 4, 1, f);
+        }
+    }
+    fclose(f);
+    return true;
+}
+
 Strands::StrandPoints Strands::Hermit_spline(const glm::vec3 begin_pos, const glm::vec3 begin_tangent,
                                              const glm::vec3 end_pos, const glm::vec3 end_tangent, const int num_iter)
 {
@@ -334,6 +390,7 @@ Strands::StrandPoints Strands::Hermit_spline(const glm::vec3 begin_pos, const gl
 
 bool Strands::load(const std::string& filepath)
 {
+    m_filepath = filepath;
     m_original_points.clear();
     m_num_points = 0;
     m_num_strands = 0;
@@ -349,6 +406,12 @@ bool Strands::load(const std::string& filepath)
         return true;
     }
     return false;
+}
+
+bool Strands::save()
+{
+    // TODO Shen
+    // std::string out_filepath = m_filepath.replace()
 }
 
 void Strands::create_buffers()
