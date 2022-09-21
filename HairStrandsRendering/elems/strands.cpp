@@ -7,7 +7,7 @@ Strands::~Strands()
     delete_buffers();
 }
 
-void Strands::init(const Strands::points& points)
+void Strands::init(const Strands::StrandsPoints& points)
 {   
     m_strands_vertices.clear();
     m_vertex_indices.clear();
@@ -56,14 +56,18 @@ void Strands::smooth()
     if (m_num_strands == 0)
         return;
 
+    m_smoothed_points.clear();
+    m_num_points = 0;
+
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = m_original_points[i_strand].size();
-        std::vector<glm::vec3> smoothed_strand = m_original_points[i_strand];
+        StrandPoints smoothed_strand = m_original_points[i_strand];
         
         if (num_points < 3)
         {
             m_smoothed_points.push_back(smoothed_strand);
+            m_num_points += smoothed_strand.size();
             continue;
         }
 
@@ -72,6 +76,7 @@ void Strands::smooth()
         lap_smooth.smooth(smoothed_strand);
 
         m_smoothed_points.push_back(smoothed_strand);
+        m_num_points += smoothed_strand.size();
     }
 
     init(m_smoothed_points);
@@ -81,8 +86,11 @@ void Strands::downsample()
 {
     if (m_smoothed_points.size() == 0)
         return;
-
+    
+    m_downsampled_points.clear();
+    m_downsampled_tangents.clear();
     m_num_points = 0;
+
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = m_smoothed_points[i_strand].size();
@@ -93,8 +101,8 @@ void Strands::downsample()
             continue;
         }
 
-        std::vector<glm::vec3> strand_points;
-        std::vector<glm::vec3> strand_tangents;
+        StrandPoints strand_points;
+        StrandPoints strand_tangents;
         
         // add the 1st point
         strand_points.push_back(m_smoothed_points[i_strand][0]);
@@ -129,12 +137,39 @@ void Strands::downsample()
 
 void Strands::parametrical()
 {
+    if (m_downsampled_points.size() == 0)
+        return;
     
+    m_parametric_points.clear();
+    m_num_points = 0;
+
+    for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
+    {
+        int num_points = m_downsampled_points[i_strand].size();
+
+        StrandPoints strand_points;
+
+        for (int j_point = 0; j_point < num_points - 1; j_point++)
+        {
+            StrandPoints interp_points = Hermit_spline(
+                m_downsampled_points[i_strand][j_point],
+                m_downsampled_tangents[i_strand][j_point],
+                m_downsampled_points[i_strand][j_point + 1],
+                m_downsampled_tangents[i_strand][j_point + 1],
+                m_interp_points);
+
+            strand_points.insert(strand_points.end(), interp_points.begin(), interp_points.end());
+        }
+        m_parametric_points.push_back(strand_points);
+        m_num_points += strand_points.size();
+    }
+
+    init(m_parametric_points);
 }
 
-Strands::points Strands::load_bin(const std::string& filepath)
+Strands::StrandsPoints Strands::load_bin(const std::string& filepath)
 {
-    points strands_points;
+    StrandsPoints strands_points;
 #ifdef _WIN32
     FILE* f; 
     fopen_s(&f, filepath.c_str(), "rb");
@@ -153,7 +188,7 @@ Strands::points Strands::load_bin(const std::string& filepath)
     {
         int num_points = 0;
         fread(&num_points, 4, 1, f);
-        std::vector<glm::vec3> strand_points(num_points, glm::vec3(0));
+        StrandPoints strand_points(num_points, glm::vec3(0));
         float dummy = 0.0f;
         for (int j_point = 0; j_point < num_points; j_point++)
         {
@@ -185,9 +220,9 @@ Strands::points Strands::load_bin(const std::string& filepath)
     return strands_points;
 }
 
-Strands::points Strands::load_usc_data(const std::string& filepath)
+Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
 {
-    points strands_points;
+    StrandsPoints strands_points;
 #ifdef _WIN32
     FILE* f; 
     fopen_s(&f, filepath.c_str(), "rb");
@@ -215,7 +250,7 @@ Strands::points Strands::load_usc_data(const std::string& filepath)
         }
         else
         {
-            std::vector<glm::vec3> strand_points(num_points, glm::vec3(0));
+            StrandPoints strand_points(num_points, glm::vec3(0));
             for (int j_point = 0; j_point < num_points; j_point++)
             {
                 fread(&strand_points[j_point].x, 4, 1, f);
@@ -229,6 +264,28 @@ Strands::points Strands::load_usc_data(const std::string& filepath)
     }
     fclose(f);
     return strands_points;
+}
+
+Strands::StrandPoints Strands::Hermit_spline(const glm::vec3 begin_pos, const glm::vec3 begin_tangent,
+                                             const glm::vec3 end_pos, const glm::vec3 end_tangent, const int num_iter)
+{
+    StrandPoints interp_points(num_iter);
+
+    const float interp_scale = 1.0f / num_iter;
+    const glm::vec3 diff_pos = end_pos - begin_pos;
+    float diff_len = glm::length(diff_pos);
+    const glm::vec3 diff_normal = glm::normalize(diff_pos);
+
+    for (int i = 0; i < num_iter; i++)
+    {
+        float t = interp_scale * i;
+
+        interp_points[i] = ((2.0f * powf(t, 3.0f) - 3.0f * powf(t, 2.0f) + 1.0f) * glm::vec3(0.0f)
+            + (powf(t, 3.0f) - 2.0f * powf(t, 2.0f) + t) * begin_tangent
+            + (-2.0f * powf(t, 3.0f) + 3.0f * powf(t, 2.0f)) * diff_normal
+            + (powf(t, 3.0f) - powf(t, 2.0f)) * end_tangent) * diff_len + begin_pos;
+    }
+    return interp_points;
 }
 
 bool Strands::load(const std::string& filepath)

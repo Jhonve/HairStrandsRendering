@@ -67,6 +67,8 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Parametric"))
         {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->parametrical();
         }
     }
   

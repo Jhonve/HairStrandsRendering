@@ -11,7 +11,8 @@
 class Strands : public Element
 {
 public:
-    typedef std::vector<std::vector<glm::vec3>> points;
+    typedef std::vector<std::vector<glm::vec3>> StrandsPoints;
+    typedef std::vector<glm::vec3> StrandPoints;
 
 public:
     Strands() : m_num_strands(0) {}
@@ -19,7 +20,7 @@ public:
     virtual ~Strands();
 
     bool load(const std::string& filepath);
-    void init(const points& points);
+    void init(const StrandsPoints& points);
     void smooth();
     void downsample();
     void parametrical();
@@ -37,8 +38,11 @@ public:
     int get_num_points() { return m_num_points; }
 
 private:
-    points load_bin(const std::string& filepath);
-    points load_usc_data(const std::string& filepath);
+    StrandsPoints load_bin(const std::string& filepath);
+    StrandsPoints load_usc_data(const std::string& filepath);
+
+    StrandPoints Hermit_spline(const glm::vec3 begin_pos, const glm::vec3 begin_tangent,
+                               const glm::vec3 end_pos, const glm::vec3 end_tangent, const int num_iter);
 
 private:
     // Buffers manager
@@ -47,12 +51,13 @@ private:
     // Vertices and indices
     int m_num_strands = 0;
     int m_num_points = 0;
-    points m_original_points;
-    points m_smoothed_points;
+    StrandsPoints m_original_points;
+    StrandsPoints m_smoothed_points;
     float m_downsample_sim_thres = 0.98f;
-    points m_downsampled_points;
-    points m_downsampled_tangents;   // should preserve original tangent
-    points m_parametric_points;
+    StrandsPoints m_downsampled_points;
+    StrandsPoints m_downsampled_tangents;   // should preserve original tangent
+    StrandsPoints m_parametric_points;
+    const int m_interp_points = 10;
 
     std::vector<StrandVertex> m_strands_vertices;
     std::vector<unsigned int> m_vertex_indices;
