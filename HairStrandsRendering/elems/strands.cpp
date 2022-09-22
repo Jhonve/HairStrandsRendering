@@ -314,7 +314,12 @@ Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
 
 bool Strands::save_bin(const std::string& filepath)
 {
-    FILE* f = fopen(filepath.c_str(), "wb");
+#ifdef _WIN32
+    FILE* f; 
+    fopen_s(&f, filepath.c_str(), "wb");
+#else
+    FILE* f = fopen(filepath.c_str(), "rb");
+#endif
     if (!f)
     {
         fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
@@ -345,7 +350,12 @@ bool Strands::save_bin(const std::string& filepath)
 
 bool Strands::save_usc_data(const std::string& filepath)
 {
-    FILE* f = fopen(filepath.c_str(), "wb");
+#ifdef _WIN32
+    FILE* f; 
+    fopen_s(&f, filepath.c_str(), "wb");
+#else
+    FILE* f = fopen(filepath.c_str(), "rb");
+#endif
     if (!f)
     {
         fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
