@@ -2,6 +2,8 @@
 #include "render/parameters.h"
 #include "render/buffer_manager.h"
 
+#include <string>
+
 Strands::~Strands()
 {
     delete_buffers();
@@ -410,8 +412,21 @@ bool Strands::load(const std::string& filepath)
 
 bool Strands::save()
 {
-    // TODO Shen
-    // std::string out_filepath = m_filepath.replace()
+    if (m_duplicated_points.size() == 0)
+        return false;
+
+    std::string out_filepath = m_filepath;
+
+    if (out_filepath[out_filepath.length() - 1] == 'n') // .bin
+    {
+        out_filepath.insert(out_filepath.length() - 4, "_out");
+        return save_bin(out_filepath);
+    }
+    else
+    {
+        out_filepath.insert(out_filepath.length() - 5, "_out");
+        return save_usc_data(out_filepath);
+    }
 }
 
 void Strands::create_buffers()

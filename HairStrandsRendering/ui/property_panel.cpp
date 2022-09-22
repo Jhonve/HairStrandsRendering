@@ -47,6 +47,8 @@ void PropertyPanel::render(SceneView* scene_view)
         }
         ImGui::SameLine(0, 5.0f);
         ImGui::Text(m_strands_current_file.c_str());
+        
+        ImGui::Text("Strands Processing");
         if(scene_view->get_strands())
         {
             std::string show_nums = "Num strs: " + std::to_string(scene_view->get_strands()->get_num_strands()) + 
@@ -70,11 +72,19 @@ void PropertyPanel::render(SceneView* scene_view)
             if(scene_view->get_strands())
                 scene_view->get_strands()->parametrical();
         }
-        ImGui::SameLine(0, 5.0f);
+        
+        ImGui::Text("Strands Duplication");
+        // ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Duplicate"))
         {
             if(scene_view->get_strands())
                 scene_view->get_strands()->duplicate();
+        }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Save Duplicated"))
+        {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->save();
         }
     }
   

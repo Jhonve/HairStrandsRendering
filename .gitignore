@@ -44,3 +44,7 @@ HairStrandsRendering/HairStrandsRendering
 
 # System
 .DS_Store
+
+# Output
+*_out.bin
+*_out.data
