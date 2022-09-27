@@ -312,7 +312,7 @@ Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
     return strands_points;
 }
 
-bool Strands::save_bin(const std::string& filepath)
+bool Strands::save_bin(const std::string& filepath, const StrandsPoints& strands_points)
 {
 #ifdef _WIN32
     FILE* f; 
@@ -330,11 +330,11 @@ bool Strands::save_bin(const std::string& filepath)
     
     fwrite(&m_num_strands, sizeof(int), 1, f);
     for (unsigned int i = 0; i < m_num_strands; i++) {
-        int num_points = m_duplicated_points[i].size();
+        int num_points = strands_points[i].size();
         fwrite(&num_points, sizeof(int), 1, f);
         // For each strand, first read all of the vertices
         for (unsigned int j = 0; j < num_points; j++) {
-            glm::vec3 pt = m_duplicated_points[i][j];
+            glm::vec3 pt = strands_points[i][j];
             fwrite(&pt.x, sizeof(float), 1, f);
             fwrite(&pt.y, sizeof(float), 1, f);
             fwrite(&pt.z, sizeof(float), 1, f);
@@ -348,7 +348,7 @@ bool Strands::save_bin(const std::string& filepath)
     return true;
 }
 
-bool Strands::save_usc_data(const std::string& filepath)
+bool Strands::save_usc_data(const std::string& filepath, const StrandsPoints& strands_points)
 {
 #ifdef _WIN32
     FILE* f; 
@@ -365,13 +365,13 @@ bool Strands::save_usc_data(const std::string& filepath)
     fwrite(&m_num_strands, 4, 1, f);
     for (int i = 0; i < m_num_strands; i++)
     {
-        int num_points = m_duplicated_points[i].size();
+        int num_points = strands_points[i].size();
         fwrite(&num_points, 4, 1, f);
         for (int j = 0; j < num_points; j++)
         {
-            fwrite(&m_duplicated_points[i][j].x, 4, 1, f);
-            fwrite(&m_duplicated_points[i][j].y, 4, 1, f);
-            fwrite(&m_duplicated_points[i][j].z, 4, 1, f);
+            fwrite(&strands_points[i][j].x, 4, 1, f);
+            fwrite(&strands_points[i][j].y, 4, 1, f);
+            fwrite(&strands_points[i][j].z, 4, 1, f);
         }
     }
     fclose(f);
@@ -420,23 +420,59 @@ bool Strands::load(const std::string& filepath)
     return false;
 }
 
-bool Strands::save()
+bool Strands::save(std::string mode)
 {
-    if (m_duplicated_points.size() == 0)
-        return false;
-
     std::string out_filepath = m_filepath;
+    
+    if (mode == "smoothed")
+    {
+        if (m_smoothed_points.size() == 0)
+            return false;
 
-    if (out_filepath[out_filepath.length() - 1] == 'n') // .bin
-    {
-        out_filepath.insert(out_filepath.length() - 4, "_out");
-        return save_bin(out_filepath);
+        if (out_filepath[out_filepath.length() - 1] == 'n')
+        {
+            out_filepath.insert(out_filepath.length() - 4, "_smoothed");
+            return save_bin(out_filepath, m_smoothed_points);
+        }
+        else
+        {
+            out_filepath.insert(out_filepath.length() - 5, "_smoothed");
+            return save_usc_data(out_filepath, m_smoothed_points);
+        }
     }
-    else
+    else if (mode == "downsampled")
     {
-        out_filepath.insert(out_filepath.length() - 5, "_out");
-        return save_usc_data(out_filepath);
+        if (m_downsampled_points.size() == 0)
+            return false;
+
+        if (out_filepath[out_filepath.length() - 1] == 'n')
+        {
+            out_filepath.insert(out_filepath.length() - 4, "_downsampled");
+            return save_bin(out_filepath, m_downsampled_points);
+        }
+        else
+        {
+            out_filepath.insert(out_filepath.length() - 5, "_downsampled");
+            return save_usc_data(out_filepath, m_downsampled_points);
+        }
     }
+    else if (mode == "duplicated")
+    {
+        if (m_duplicated_points.size() == 0)
+            return false;
+
+        if (out_filepath[out_filepath.length() - 1] == 'n')
+        {
+            out_filepath.insert(out_filepath.length() - 4, "_duplicated");
+            return save_bin(out_filepath, m_duplicated_points);
+        }
+        else
+        {
+            out_filepath.insert(out_filepath.length() - 5, "_duplicated");
+            return save_usc_data(out_filepath, m_duplicated_points);
+        }
+    }
+    return false;
 }
 
 void Strands::create_buffers()

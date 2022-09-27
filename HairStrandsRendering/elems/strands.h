@@ -20,7 +20,7 @@ public:
     virtual ~Strands();
 
     bool load(const std::string& filepath);
-    bool save();
+    bool save(std::string mode);
 
     void init(const StrandsPoints& points);
     void smooth();
@@ -43,8 +43,8 @@ public:
 private:
     StrandsPoints load_bin(const std::string& filepath);
     StrandsPoints load_usc_data(const std::string& filepath);
-    bool save_bin(const std::string& filepath);
-    bool save_usc_data(const std::string& filepath);
+    bool save_bin(const std::string& filepath, const StrandsPoints& strands_points);
+    bool save_usc_data(const std::string& filepath, const StrandsPoints& strands_points);
 
     StrandPoints Hermit_spline(const glm::vec3 begin_pos, const glm::vec3 begin_tangent,
                                const glm::vec3 end_pos, const glm::vec3 end_tangent, const int num_iter);

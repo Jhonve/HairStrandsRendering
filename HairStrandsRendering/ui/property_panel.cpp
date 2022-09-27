@@ -72,6 +72,17 @@ void PropertyPanel::render(SceneView* scene_view)
             if(scene_view->get_strands())
                 scene_view->get_strands()->parametrical();
         }
+        if (ImGui::Button("Save Smoothed"))
+        {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->save("smoothed");
+        }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Save Downsampled"))
+        {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->save("downsampled");
+        }
         
         ImGui::Text("Strands Duplication");
         // ImGui::SameLine(0, 5.0f);
@@ -84,7 +95,7 @@ void PropertyPanel::render(SceneView* scene_view)
         if (ImGui::Button("Save Duplicated"))
         {
             if(scene_view->get_strands())
-                scene_view->get_strands()->save();
+                scene_view->get_strands()->save("duplicated");
         }
     }
   
