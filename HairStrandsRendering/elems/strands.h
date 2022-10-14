@@ -1,3 +1,10 @@
+#if __INTELLISENSE__
+#undef __ARM_NEON
+#undef __ARM_NEON__
+#endif
+// Above is needed on macos vscode to decrease incorrcet errors when include eigen
+// refer to https://github.com/microsoft/vscode-cpptools/issues/7413
+
 #pragma once
 
 #include "render/render_base.h"
