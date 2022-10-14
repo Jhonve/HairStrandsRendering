@@ -318,7 +318,7 @@ bool Strands::save_bin(const std::string& filepath, const StrandsPoints& strands
     FILE* f; 
     fopen_s(&f, filepath.c_str(), "wb");
 #else
-    FILE* f = fopen(filepath.c_str(), "rb");
+    FILE* f = fopen(filepath.c_str(), "wb");
 #endif
     if (!f)
     {
