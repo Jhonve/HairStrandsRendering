@@ -20,6 +20,7 @@ class Strands : public Element
 public:
     typedef std::vector<std::vector<glm::vec3>> StrandsPoints;
     typedef std::vector<glm::vec3> StrandPoints;
+    std::shared_ptr<std::vector<glm::vec3>> m_strands_color;
 
 public:
     Strands() : m_num_strands(0) {}
@@ -49,6 +50,7 @@ public:
 
 private:
     StrandsPoints load_bin(const std::string& filepath);
+    StrandsPoints load_cin(const std::string& filepath);   // load color strands
     StrandsPoints load_usc_data(const std::string& filepath);
     bool save_bin(const std::string& filepath, const StrandsPoints& strands_points);
     bool save_usc_data(const std::string& filepath, const StrandsPoints& strands_points);

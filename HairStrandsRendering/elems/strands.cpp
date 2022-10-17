@@ -19,8 +19,14 @@ void Strands::init(const Strands::StrandsPoints& points)
         int num_points = points[i_strand].size();
         
         // add point and tangent
-        int random_color = k_strands_colors[i_strand % k_num_strands_colors];
-        glm::vec3 color = glm::vec3((random_color >> 16) / 255.0f, ((random_color >> 8) % 256) / 255.0f, (random_color % 256) / 255.0f);
+        glm::vec3 color;
+        if (m_strands_color)
+            color = m_strands_color->at(i_strand);
+        else
+        {
+            int random_color = k_strands_colors[i_strand % k_num_strands_colors];
+            color = glm::vec3((random_color >> 16) / 255.0f, ((random_color >> 8) % 256) / 255.0f, (random_color % 256) / 255.0f);
+        }
 
         for (int j_point = 0; j_point < num_points - 1; j_point++)
         {
@@ -266,6 +272,63 @@ Strands::StrandsPoints Strands::load_bin(const std::string& filepath)
     return strands_points;
 }
 
+Strands::StrandsPoints Strands::load_cin(const std::string& filepath)
+{
+    StrandsPoints strands_points;
+    m_strands_color = std::make_shared<std::vector<glm::vec3>>();
+
+#ifdef _WIN32
+    FILE* f; 
+    fopen_s(&f, filepath.c_str(), "rb");
+#else
+    FILE* f = fopen(filepath.c_str(), "rb");
+#endif
+    if (!f)
+    {
+        fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
+        return strands_points;
+    }
+
+    int num_strands = 0;
+    fread(&num_strands, 4, 1, f);
+    for (int i_strand = 0; i_strand < num_strands; i_strand++)
+    {
+        int num_points = 0;
+        fread(&num_points, 4, 1, f);
+        StrandPoints strand_points(num_points, glm::vec3(0));
+        glm::vec3 strand_color;
+        float dummy = 0.0f;
+        for (int j_point = 0; j_point < num_points; j_point++)
+        {
+            fread(&strand_points[j_point].x, 4, 1, f);
+            fread(&strand_points[j_point].y, 4, 1, f);
+            fread(&strand_points[j_point].z, 4, 1, f);
+            fread(&strand_color.x, 4, 1, f); // nx unused
+            fread(&strand_color.y, 4, 1, f); // ny unused
+            fread(&strand_color.z, 4, 1, f); // nz unused
+            fread(&dummy, 4, 1, f); // label unused
+        }
+        bool valid_strand = true;
+        for (int j_point = 0; j_point < num_points - 1; j_point++)
+        {
+            if (glm::length(strand_points[j_point] - strand_points[j_point + (size_t)1]) < 1.e-4)
+            {
+                valid_strand = false;
+                break;
+            }
+        }
+        if (valid_strand)
+        {
+            strands_points.push_back(strand_points);
+            m_strands_color->push_back(strand_color);
+            m_num_strands++;
+            m_num_points += num_points;
+        }
+    }
+    fclose(f);
+    return strands_points;
+}
+
 Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
 {
     StrandsPoints strands_points;
@@ -407,8 +470,10 @@ bool Strands::load(const std::string& filepath)
     m_num_points = 0;
     m_num_strands = 0;
     // check suffix
-    if (filepath[filepath.length() - 1] == 'n') // .bin
+    if (filepath[filepath.length() - 3] == 'b') // .bin
         m_original_points = load_bin(filepath);
+    else if (filepath[filepath.length() - 3] == 'c')
+        m_original_points = load_cin(filepath);
     else
         m_original_points = load_usc_data(filepath);
     
