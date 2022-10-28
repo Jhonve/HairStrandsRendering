@@ -365,6 +365,10 @@ Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
                 fread(&strand_points[j_point].x, 4, 1, f);
                 fread(&strand_points[j_point].y, 4, 1, f);
                 fread(&strand_points[j_point].z, 4, 1, f);
+
+                // TODO shen align USC hair salon to bin coord
+                strand_points[j_point] += glm::vec3(0.12f, -1.6f, 0.12f);
+                strand_points[j_point] *= 1000; // m -> mm
             }
             strands_points.push_back(strand_points);
             m_num_strands++;
