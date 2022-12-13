@@ -55,22 +55,37 @@ void PropertyPanel::render(SceneView* scene_view)
                         " Num pts: " + std::to_string(scene_view->get_strands()->get_num_points());
             ImGui::Text(show_nums.c_str());
         }
+
+        ImGui::PushItemWidth(64);
+        ImGui::InputFloat("Lap", &m_smooth_lap_const);
+        ImGui::SameLine(0, 5.0f);
+        ImGui::InputFloat("Pos", &m_smooth_pos_const);
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Smooth"))
         {
             if(scene_view->get_strands())
-                scene_view->get_strands()->smooth();
+                scene_view->get_strands()->smooth(m_smooth_lap_const, m_smooth_pos_const);
         }
+
+        ImGui::PushItemWidth(80);
+        ImGui::InputFloat("Similarity", &m_downsample_sim_thres);
+        ImGui::PopItemWidth();
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Downsample"))
         {
             if(scene_view->get_strands())
-                scene_view->get_strands()->downsample();
+                scene_view->get_strands()->downsample(m_downsample_sim_thres);
         }
+
+        ImGui::PushItemWidth(80);
+        ImGui::InputInt("Number Pts", &m_num_interp_pts);
+        ImGui::PopItemWidth();
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Parametric"))
         {
             if(scene_view->get_strands())
-                scene_view->get_strands()->parametrical();
+                scene_view->get_strands()->parametrical(m_num_interp_pts);
         }
         if (ImGui::Button("Save Smoothed"))
         {
@@ -85,13 +100,20 @@ void PropertyPanel::render(SceneView* scene_view)
         }
         
         ImGui::Text("Strands Duplication");
-        // ImGui::SameLine(0, 5.0f);
+
+        ImGui::PushItemWidth(70);
+        ImGui::InputInt("Lap", &m_dup_ratio);
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0, 5.0f);
+        ImGui::PushItemWidth(50);
+        ImGui::InputFloat("Pos", &m_dup_perturbation);
+        ImGui::PopItemWidth();
+        ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Duplicate"))
         {
             if(scene_view->get_strands())
-                scene_view->get_strands()->duplicate();
+                scene_view->get_strands()->duplicate(m_dup_ratio, m_dup_perturbation);
         }
-        ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Save Duplicated"))
         {
             if(scene_view->get_strands())

@@ -59,7 +59,7 @@ void Strands::init(const Strands::StrandsPoints& points)
     create_buffers();
 }
 
-void Strands::smooth()
+void Strands::smooth(float lap_const, float pos_const)
 {
     if (m_num_strands == 0)
         return;
@@ -81,7 +81,7 @@ void Strands::smooth()
             continue;
         }
 
-        LaplaceSmoothing lap_smooth(4.0f, 2.0f);
+        LaplaceSmoothing lap_smooth(lap_const, pos_const);
         lap_smooth.build_coeff_mat(num_points);
         lap_smooth.smooth(smoothed_strand);
 
@@ -92,7 +92,7 @@ void Strands::smooth()
     init(m_smoothed_points);
 }
 
-void Strands::downsample()
+void Strands::downsample(float ds_sim_thres)
 {
     if (m_smoothed_points.size() == 0)
         return;
@@ -128,7 +128,7 @@ void Strands::downsample()
 
             glm::vec3 tangent_1 = glm::normalize(point_2 - point_1);
 
-            if (glm::dot(tangent_1, tangent_0) < m_downsample_sim_thres)
+            if (glm::dot(tangent_1, tangent_0) < ds_sim_thres)
             {
                 strand_points.push_back(m_smoothed_points[i_strand][j_point]);
                 tangent_0 = tangent_1;
@@ -147,7 +147,7 @@ void Strands::downsample()
     init(m_downsampled_points);
 }
 
-void Strands::parametrical()
+void Strands::parametrical(int num_interp_pts)
 {
     if (m_downsampled_points.size() == 0)
         return;
@@ -170,7 +170,7 @@ void Strands::parametrical()
                 m_downsampled_tangents[i_strand][j_point],
                 m_downsampled_points[i_strand][j_point + 1],
                 m_downsampled_tangents[i_strand][j_point + 1],
-                m_interp_points);
+                num_interp_pts);
 
             strand_points.insert(strand_points.end(), interp_points.begin(), interp_points.end());
         }
@@ -181,7 +181,7 @@ void Strands::parametrical()
     init(m_parametric_points);
 }
 
-void Strands::duplicate()
+void Strands::duplicate(int dup_ratio, float dup_perturbation)
 {
     if (m_downsampled_points.size() == 0)
         return;
@@ -196,14 +196,14 @@ void Strands::duplicate()
         m_duplicated_points.push_back(strand_points);
 
         glm::vec3 start_tangent = m_downsampled_tangents[i_strand][0];
-        for (int j_sam = 0; j_sam < m_dup_ratio; j_sam++)
+        for (int j_sam = 0; j_sam < dup_ratio; j_sam++)
         {
             float rand_x = (float)rand() / RAND_MAX;
             float rand_y = (float)rand() / RAND_MAX;
 
             float orgo_z = -(rand_x * start_tangent.x + rand_y * start_tangent.y) / start_tangent.z;
 
-            float scale_ration =(float)rand() / RAND_MAX * m_dup_perturbation + m_dup_perturbation; 
+            float scale_ration =(float)rand() / RAND_MAX * dup_perturbation + dup_perturbation; 
             glm::vec3 rand_offset = glm::normalize(glm::vec3(rand_x, rand_y, orgo_z)) * scale_ration;
             
             StrandPoints dup_strand;
@@ -212,7 +212,7 @@ void Strands::duplicate()
 
             m_duplicated_points.push_back(dup_strand);
         }
-        m_num_points += (m_dup_ratio + 1) * num_points;
+        m_num_points += (dup_ratio + 1) * num_points;
     }
 
     m_num_strands = m_duplicated_points.size();
