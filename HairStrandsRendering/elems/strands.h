@@ -32,7 +32,7 @@ public:
 
     void init(const StrandsPoints& points);
     void smooth(float lap_const = 4.0f, float pos_const = 2.0f);
-    void downsample(float ds_sim_thres = 0.98f);
+    void downsample(float ds_sim_thres = 0.98f, int min_num_pts = 5);
     void parametrical(int num_interp_pts = 10);
     void duplicate(int dup_ratio = 10, float dup_perturbation = 1.0f);
 

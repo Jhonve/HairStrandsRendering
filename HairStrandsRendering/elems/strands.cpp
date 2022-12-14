@@ -3,6 +3,7 @@
 #include "render/buffer_manager.h"
 
 #include <string>
+#include <cmath>
 
 Strands::~Strands()
 {
@@ -92,7 +93,7 @@ void Strands::smooth(float lap_const, float pos_const)
     init(m_smoothed_points);
 }
 
-void Strands::downsample(float ds_sim_thres)
+void Strands::downsample(float ds_sim_thres, int min_num_pts)
 {
     if (m_smoothed_points.size() == 0)
         return;
@@ -106,42 +107,74 @@ void Strands::downsample(float ds_sim_thres)
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = m_smoothed_points[i_strand].size();
-        if (num_points < 3)
-        {
-            m_downsampled_points.push_back(m_smoothed_points[i_strand]);
-            m_num_points += num_points;
+        if(num_points <= 2)
             continue;
-        }
-
-        StrandPoints strand_points;
-        StrandPoints strand_tangents;
-        
-        // add the 1st point
-        strand_points.push_back(m_smoothed_points[i_strand][0]);
-        glm::vec3 tangent_0 = glm::normalize(m_smoothed_points[i_strand][1] -
-                                             m_smoothed_points[i_strand][0]);
-        strand_tangents.push_back(tangent_0);
-        for (int j_point = 1; j_point < num_points - 1; j_point++)
+        else if (num_points > 2 && num_points < min_num_pts)
         {
-            glm::vec3 point_1 = m_smoothed_points[i_strand][j_point];
-            glm::vec3 point_2 = m_smoothed_points[i_strand][j_point + 1];
-
-            glm::vec3 tangent_1 = glm::normalize(point_2 - point_1);
-
-            if (glm::dot(tangent_1, tangent_0) < ds_sim_thres)
+            StrandPoints strand_points;
+            StrandPoints strand_tangents;
+            
+            glm::vec3 tangent = glm::normalize(m_smoothed_points[i_strand][1] -
+                                                 m_smoothed_points[i_strand][0]);
+            for (int j_point = 0; j_point < num_points - 1; j_point++)
             {
-                strand_points.push_back(m_smoothed_points[i_strand][j_point]);
-                tangent_0 = tangent_1;
-                strand_tangents.push_back(tangent_0);
-                m_num_points++;
-            }
-        }
-        // add the last point
-        strand_points.push_back(m_smoothed_points[i_strand][num_points - 1]);
-        strand_tangents.push_back(tangent_0);
+                glm::vec3 point_0 = m_smoothed_points[i_strand][j_point];
+                glm::vec3 point_2 = m_smoothed_points[i_strand][j_point + 1];
 
-        m_downsampled_points.push_back(strand_points);
-        m_downsampled_tangents.push_back(strand_tangents);
+                glm::vec3 point_1 = (point_0 + point_2) / 2.f;
+
+                tangent = glm::normalize(point_2 - point_0);
+
+                strand_points.push_back(m_smoothed_points[i_strand][j_point]);
+                strand_tangents.push_back(tangent);
+                strand_points.push_back(point_1);
+                strand_tangents.push_back(tangent);
+                m_num_points += 2;
+            }
+            // add the last point
+            strand_points.push_back(m_smoothed_points[i_strand][num_points - 1]);
+            strand_tangents.push_back(tangent);
+
+            m_downsampled_points.push_back(strand_points);
+            m_downsampled_tangents.push_back(strand_tangents);
+        }
+        else
+        {
+            StrandPoints strand_points;
+            StrandPoints strand_tangents;
+
+            // add the 1st point
+            strand_points.push_back(m_smoothed_points[i_strand][0]);
+            glm::vec3 tangent_0 = glm::normalize(m_smoothed_points[i_strand][1] -
+                m_smoothed_points[i_strand][0]);
+            strand_tangents.push_back(tangent_0);
+            m_num_points++;
+
+            int num_segs = std::floor((double)(num_points - 2) / (double)(min_num_pts -2));
+
+            for (int j_point = 1; j_point < num_points - 1; j_point++)
+            {
+                glm::vec3 point_1 = m_smoothed_points[i_strand][j_point];
+                glm::vec3 point_2 = m_smoothed_points[i_strand][j_point + 1];
+
+                glm::vec3 tangent_1 = glm::normalize(point_2 - point_1);
+
+                if (glm::dot(tangent_1, tangent_0) < ds_sim_thres || j_point % num_segs == 0)
+                {
+                    strand_points.push_back(m_smoothed_points[i_strand][j_point]);
+                    tangent_0 = tangent_1;
+                    strand_tangents.push_back(tangent_0);
+                    m_num_points++;
+                }
+            }
+            // add the last point
+            strand_points.push_back(m_smoothed_points[i_strand][num_points - 1]);
+            strand_tangents.push_back(tangent_0);
+            m_num_points++;
+
+            m_downsampled_points.push_back(strand_points);
+            m_downsampled_tangents.push_back(strand_tangents);
+        }
     }
 
     init(m_downsampled_points);
@@ -303,9 +336,9 @@ Strands::StrandsPoints Strands::load_cin(const std::string& filepath)
             fread(&strand_points[j_point].x, 4, 1, f);
             fread(&strand_points[j_point].y, 4, 1, f);
             fread(&strand_points[j_point].z, 4, 1, f);
-            fread(&strand_color.x, 4, 1, f); // nx unused
-            fread(&strand_color.y, 4, 1, f); // ny unused
-            fread(&strand_color.z, 4, 1, f); // nz unused
+            fread(&strand_color.x, 4, 1, f);
+            fread(&strand_color.y, 4, 1, f);
+            fread(&strand_color.z, 4, 1, f);
             fread(&dummy, 4, 1, f); // label unused
         }
         bool valid_strand = true;
