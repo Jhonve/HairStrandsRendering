@@ -102,11 +102,11 @@ void PropertyPanel::render(SceneView* scene_view)
         ImGui::Text("Strands Duplication");
 
         ImGui::PushItemWidth(70);
-        ImGui::InputInt("Lap", &m_dup_ratio);
+        ImGui::InputInt("Dup", &m_dup_ratio);
         ImGui::PopItemWidth();
         ImGui::SameLine(0, 5.0f);
         ImGui::PushItemWidth(50);
-        ImGui::InputFloat("Pos", &m_dup_perturbation);
+        ImGui::InputFloat("Pert", &m_dup_perturbation);
         ImGui::PopItemWidth();
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Duplicate"))
