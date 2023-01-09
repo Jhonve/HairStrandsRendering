@@ -168,17 +168,17 @@ void PropertyPanel::render(SceneView* scene_view)
             if(m_mesh_loading)
             {
                 m_mesh_current_file = file_name.substr(file_name.find_last_of("/\\") + 1);
-                m_mesh_loading = false;
                 m_mesh_load_callback(file_name);
             }
             else if (m_strands_loading)
             {
                 m_strands_current_file = file_name.substr(file_name.find_last_of("/\\") + 1);
-                m_strands_loading = false;
                 m_strands_load_callback(file_name);
             }
             
         }
+        m_mesh_loading = false;
+        m_strands_loading = false;
         ImGuiFileDialog::Instance()->Close();
     }
 }
