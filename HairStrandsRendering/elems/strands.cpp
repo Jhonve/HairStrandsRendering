@@ -412,6 +412,54 @@ Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
     return strands_points;
 }
 
+Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
+{
+    StrandsPoints strands_points;
+#ifdef _WIN32
+    FILE* f; 
+    fopen_s(&f, filepath.c_str(), "rb");
+#else
+    FILE* f = fopen(filepath.c_str(), "rb");
+#endif
+    if (!f)
+    {
+        fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
+        return strands_points;
+    }
+
+    unsigned int num_strands = 0;
+    unsigned int points_count = 0;
+    fread(&num_strands, sizeof(unsigned int), 1, f);
+    fread(&points_count, sizeof(unsigned int), 1, f);
+
+    unsigned short* segments = new unsigned short[num_strands];
+    float* points = new float[points_count * 3];
+    fread(segments, sizeof(unsigned short) * num_strands, 1, f);
+    fread(points, sizeof(float) * points_count * 3, 1, f);
+    fclose(f);
+
+    for (int i_strand = 0; i_strand < num_strands; i_strand++)
+    {
+        int num_points = segments[i_strand];
+        StrandPoints strand_points(num_points, glm::vec3(0));
+        for (int j_point = 0; j_point < num_points; j_point++)
+        {
+            strand_points[j_point].x = points[m_num_points * 3 + j_point * 3];
+            strand_points[j_point].y = points[m_num_points * 3 + j_point * 3 + 1];
+            strand_points[j_point].z = points[m_num_points * 3 + j_point * 3 + 2];
+
+            // TODO shen align USC hair salon to bin coord
+            strand_points[j_point] += glm::vec3(0.12f, -1.6f, 0.12f);
+            strand_points[j_point] *= 1000; // m -> mm
+        }
+        strands_points.push_back(strand_points);
+        m_num_strands++;
+        m_num_points += num_points;
+    }
+    return strands_points;
+}
+
+
 bool Strands::save_bin(const std::string& filepath, const StrandsPoints& strands_points)
 {
 #ifdef _WIN32
@@ -511,8 +559,10 @@ bool Strands::load(const std::string& filepath)
         m_original_points = load_bin(filepath);
     else if (filepath[filepath.length() - 3] == 'c')
         m_original_points = load_cin(filepath);
-    else
+    else if (filepath[filepath.length() - 4] == 'd')
         m_original_points = load_usc_data(filepath);
+    else
+        m_original_points = load_hair(filepath);
     
     if (m_num_strands > 0)
     {

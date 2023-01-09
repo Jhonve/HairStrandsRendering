@@ -36,7 +36,7 @@ void PropertyPanel::render(SceneView* scene_view)
         {
             m_strands_loading = true;
             ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File",
-                                                    ".bin,.cin,.data", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
+                                                    ".bin,.cin,.data,.hair", "../Data/", 1, nullptr, ImGuiFileDialogFlags_Modal);
         }
         ImGui::SameLine(0, 5.0f);
         if (ImGui::Button("Clear Strands"))

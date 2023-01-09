@@ -52,6 +52,7 @@ private:
     StrandsPoints load_bin(const std::string& filepath);
     StrandsPoints load_cin(const std::string& filepath);   // load color strands
     StrandsPoints load_usc_data(const std::string& filepath);
+    StrandsPoints load_hair(const std::string& filepath);
     bool save_bin(const std::string& filepath, const StrandsPoints& strands_points);
     bool save_usc_data(const std::string& filepath, const StrandsPoints& strands_points);
 
