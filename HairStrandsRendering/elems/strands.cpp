@@ -517,9 +517,14 @@ bool Strands::save_usc_data(const std::string& filepath, const StrandsPoints& st
         fwrite(&num_points, 4, 1, f);
         for (int j = 0; j < num_points; j++)
         {
-            fwrite(&strands_points[i][j].x, 4, 1, f);
-            fwrite(&strands_points[i][j].y, 4, 1, f);
-            fwrite(&strands_points[i][j].z, 4, 1, f);
+            // TODO shen align USC hair salon to bin coord
+            glm::vec3 pt = strands_points[i][j];
+            pt /= 1000; // mm->m
+            pt -= glm::vec3(0.12f, -1.6f, 0.12f);
+
+            fwrite(&pt.x, 4, 1, f);
+            fwrite(&pt.y, 4, 1, f);
+            fwrite(&pt.z, 4, 1, f);
         }
     }
     fclose(f);
@@ -624,6 +629,33 @@ bool Strands::save(std::string mode)
             return save_usc_data(out_filepath, m_duplicated_points);
         }
     }
+    else if (mode == ".bin")
+    {
+        if (m_original_points.size() == 0)
+            return false;
+
+        if (out_filepath[out_filepath.length() - 1] == 'n')
+            out_filepath.replace(out_filepath.length() - 4, out_filepath.length() - 1, ".bin");
+        else
+            out_filepath.replace(out_filepath.length() - 5, out_filepath.length() - 1, ".bin");
+
+        printf("%s\n", out_filepath.c_str());
+        return save_bin(out_filepath, m_original_points);
+    }
+    else if (mode == ".data")
+    {
+        if (m_original_points.size() == 0)
+            return false;
+
+        if (out_filepath[out_filepath.length() - 1] == 'n')
+            out_filepath.replace(out_filepath.length() - 4, out_filepath.length() - 1, ".data");
+        else
+            out_filepath.replace(out_filepath.length() - 5, out_filepath.length() - 1, ".data");
+
+        printf("%s\n", out_filepath.c_str());
+        return save_usc_data(out_filepath, m_original_points);
+    }
+
     return false;
 }
 

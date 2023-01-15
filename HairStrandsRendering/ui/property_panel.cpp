@@ -26,7 +26,7 @@ void PropertyPanel::render(SceneView* scene_view)
                 scene_view->del_mesh();
             m_mesh_current_file = "< ... >";
         }
-        ImGui::SameLine(0, 5.0f);
+
         ImGui::Text(m_mesh_current_file.c_str());
     }
 
@@ -45,8 +45,20 @@ void PropertyPanel::render(SceneView* scene_view)
                 scene_view->del_strands();
             m_strands_current_file = "< ... >";
         }
-        ImGui::SameLine(0, 5.0f);
+
         ImGui::Text(m_strands_current_file.c_str());
+
+        if (ImGui::Button("Save as .bin"))
+        {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->save(".bin");
+        }
+        ImGui::SameLine(0, 5.0f);
+        if (ImGui::Button("Save as .data"))
+        {
+            if(scene_view->get_strands())
+                scene_view->get_strands()->save(".data");
+        }
         
         ImGui::Text("Strands Processing");
         if(scene_view->get_strands())
