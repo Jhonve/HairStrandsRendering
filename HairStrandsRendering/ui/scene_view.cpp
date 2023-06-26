@@ -334,7 +334,7 @@ void SceneView::render_shadow()
     }
     
     m_frame_buffers->get_shadow_depth_FBO().get_color_texture().unbind_texture_unit(0);
-    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 
     m_shadow_opacity_shader->disuse();
     m_frame_buffers->get_shadow_opacity_FBO().unbind_FBO();

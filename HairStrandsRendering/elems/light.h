@@ -107,7 +107,7 @@ public:
             m_view_mat.push_back(current_view_mat);
 
             // projection matrix
-            float xy_range = 0.0f, zmax = 0.0f, zmin = 0.0f;    // modified by shen
+            float xy_range = 0.0f, zmax = 0.0f, zmin = 0.0f;
             for (int j_bv = 0; j_bv < 8; j_bv++)
             {
                 glm::vec3 view_vert = current_view_mat * glm::vec4(bbox[j_bv], 1.0f);
@@ -143,9 +143,9 @@ private:
     std::vector<glm::vec3> m_ori_colors;
     std::vector<glm::vec3> m_ori_dirs;
 
-    // TODO Shen Setting the scene bound
-    glm::vec3 m_scene_min{-1.f, -1.f, -1.f};
-    glm::vec3 m_scene_max{1.f, 1.f, 1.f};
+    // TODO Shen Setting the scene bound accourding to the loaded load dynamically
+    glm::vec3 m_scene_min{-3.f, -3.f, -3.f};
+    glm::vec3 m_scene_max{3.f, 3.f, 3.f};
 
 public:
     int m_num_lights = 0;
