@@ -90,6 +90,8 @@ void SceneView::render_mesh_depth()
     m_frame_buffers->get_strands_FBO().get_texture_size(frame_width, frame_height);
     glViewport(0, 0, frame_width, frame_height);
 
+    m_lights->update(nullptr);
+
     m_frame_buffers->get_strands_FBO().bind_FBO();
     m_mesh_depth_shader->use();
 
@@ -218,7 +220,7 @@ void SceneView::render_transparency()
     // ImGui::Begin("Scene");
     // // add rendered texture to ImGUI scene window
     // uint32_t texture_id = m_frame_buffers->get_transparency_slab_FBO().get_color_texture().get_texture();
-    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_dock_size.x, m_dock_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
     // ImGui::End();
 }
 
@@ -227,8 +229,6 @@ void SceneView::render_shadow()
     int frame_width, frame_height;
     m_frame_buffers->get_shadow_depth_FBO().get_texture_size(frame_width, frame_height);
     glViewport(0, 0, frame_width, frame_height);
-
-    m_lights->update(nullptr);
     
     // renfer strands depth with lights
     m_frame_buffers->get_shadow_depth_FBO().bind_FBO();
@@ -343,7 +343,7 @@ void SceneView::render_shadow()
     // ImGui::Begin("Scene");
     // // add rendered texture to ImGUI scene window
     // uint32_t texture_id = m_frame_buffers->get_shadow_opacity_FBO().get_color_texture().get_texture();
-    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_dock_size.x, m_dock_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
     // ImGui::End();
 }
 
@@ -415,7 +415,7 @@ void SceneView::render_mesh()
     // ImGui::Begin("Scene");  // can move to the top of the function
     // // add rendered texture to ImGUI scene window
     // uint32_t texture_id = m_frame_buffers->get_mesh_FBO().get_color_texture().get_texture();
-    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_dock_size.x, m_dock_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
     // ImGui::End();
 }
 
@@ -507,6 +507,6 @@ void SceneView::render_strands()
     // ImGui::Begin("Scene");  // can move to the top of the function
     // // add rendered texture to ImGUI scene window
     // uint32_t texture_id = m_frame_buffers->get_strands_FBO().get_color_texture().get_texture();
-    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_size.x, m_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    // ImGui::Image(reinterpret_cast<void*>(texture_id), ImVec2{ m_dock_size.x, m_dock_size.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
     // ImGui::End();
 }

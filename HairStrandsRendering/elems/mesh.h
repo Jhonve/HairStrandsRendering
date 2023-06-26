@@ -21,15 +21,7 @@ public:
   
     std::vector<unsigned int> get_vertex_indices() { return m_vertex_indices; }
   
-    void update(Shader* shader) override
-    {
-        // pbr color
-        shader->set_vec3(m_color, "albedo");
-  
-        shader->set_f1(m_roughness, "roughness");
-        shader->set_f1(m_metallic, "metallic");
-        shader->set_f1(1.0f, "ao");
-    }
+    void update(Shader* shader) override { }
     
     glm::vec3 m_color = { 1.0f, 0.0f, 0.0f };
     float m_roughness = 0.2f;

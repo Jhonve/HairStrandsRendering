@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 class Lights : public Element
 {
@@ -59,12 +60,13 @@ public:
         glm::quat q(w, axis);
         q = glm::normalize(q);
 
-        glm::mat3 rot_mat = glm::toMat3(q); // forget about why we need this.
+        glm::mat3 rot_mat = glm::toMat3(q);
 
         for (int i_light = 0; i_light < m_num_lights; ++i_light)
         {
             m_colors[i_light] = m_ori_colors[i_light] * m_strength;
             m_ori_dirs[i_light] = rot_mat * m_ori_dirs[i_light];
+            m_ori_dirs[i_light] = glm::normalize(m_ori_dirs[i_light]);
             m_dirs[i_light] = m_ori_dirs[i_light];
         }
     }
@@ -127,14 +129,13 @@ public:
 
     void update(Shader* shader) override
     {
-        glm::mat4 rot_mat = glm::rotate(m_rot[0], glm::vec3(1.f, 0.f, 0.f));
-        rot_mat *= glm::rotate(m_rot[1], glm::vec3(0.f, 1.f, 0.f));
-        rot_mat *= glm::rotate(m_rot[2], glm::vec3(0.f, 0.f, 1.f));
+        glm::mat4 rot_mat = glm::eulerAngleXYZ(m_rot[0], m_rot[1], m_rot[2]);
 
         for (int i_light = 0; i_light <m_num_lights; i_light++)
         {
             m_colors[i_light] = m_ori_colors[i_light] * m_strength;
             m_dirs[i_light] = glm::mat3(rot_mat) * m_ori_dirs[i_light];
+            m_dirs[i_light] = glm::normalize(m_dirs[i_light]);
         }
     }
 
