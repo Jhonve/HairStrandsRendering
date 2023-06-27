@@ -5,17 +5,15 @@
 # You will need GLFW (http://www.glfw.org):
 # Linux:
 #   apt-get install libglfw-dev
+#   apt-get install libassimp-dev
 # Mac OS X:
 #   brew install glfw
-# MSYS2:
-#   pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-glfw
-#
+#   brew install assimp
 
 #CXX = g++
 #CXX = clang++
 
 EXE = HairStrandsRendering
-IMGUI_DIR = /Users/yuefan/Documents/3rdparty/imgui
 EIGEN_DIR = /Users/yuefan/Documents/3rdparty/eigen-3.4.0
 GLM_DIR = /Users/yuefan/Documents/3rdparty/glm
 # SOURCES = main.cpp viewer.cpp render/shader.cpp render/opengl_buffer_manager.cpp render/opengl_context.cpp render/ui_context.cpp elems/mesh.cpp ui/property_panel.cpp ui/scene_view.cpp

@@ -251,8 +251,7 @@ void main()
 
     vec3 main_color;
 
-    if (color.x == 0 && color.y == 0 && color.z == 0)
-    {
+    if (color.x < 0.003 && color.y < 0.003 && color.z < 0.003){
         main_color = fs_in.color;
     }
     else{

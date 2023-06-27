@@ -51,22 +51,23 @@ static const int k_strands_colors[256] =
 struct RenderParameters
 {
     float clear_color[3] = { 0.f, 0.f, 0.f };
-    float mesh_color[3] = { 238 / 255.0, 207 / 255.0f, 161 / 255.0f };
+    // float mesh_color[3] = { 238 / 255.0, 207 / 255.0f, 161 / 255.0f };
+    float mesh_color[3] = { 200 / 255.0, 200 / 255.0f, 200 / 255.0f };
     float strands_color[3] = { 0.f, 0.f, 0.f };
-    float light = 0.45f;
+    float light = 0.5f;
     float gamma = 1.5f;
-    float mesh_ambient = 0.2f;
-    float mesh_diffuse = 0.9f;
-    float mesh_specular = 0.1f;
-    float strands_ambient = 0.1f;
-    float strands_diffuse = 0.8f;
+    float mesh_ambient = 0.32f;
+    float mesh_diffuse = 0.64f;
+    float mesh_specular = 0.06f;
+    float strands_ambient = 0.3f;
+    float strands_diffuse = 0.7f;
     float strands_specular = 0.7f;
-    float mesh_self_shadow = 0.3f;
-    float mesh_strands_shadow = 0.5f;
-    float strands_self_shadow = 0.6f;
-    float strands_mesh_shadow = 0.3f;
-    float strands_alpha = 0.25f;
-    int strands_width = 4;
+    float mesh_self_shadow = 0.16f;
+    float mesh_strands_shadow = 0.16f;
+    float strands_self_shadow = 0.3f;
+    float strands_mesh_shadow = 0.1f;
+    float strands_alpha = 0.5f;
+    int strands_width = 2;
 };
 
 struct OriginalLightsParameters

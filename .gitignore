@@ -32,7 +32,7 @@
 *.app
 
 # VS
-*.user
+# *.user
 
 # Folfers
 .vs/
