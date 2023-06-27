@@ -26,8 +26,8 @@ We suggest editing the `HairStrandsRendering/HairStrandsRendering.vcxproj` for a
 ### Linux
 Taking ubuntu as an example:
 ```shell
-apt get install libglfw-dev
-apt get install libassimp-dev
+apt-get install libglfw-dev
+apt-get install libassimp-dev
 ```
 Modify the `HairStrandsRendering/Makefile` to set the include path of two header-only libraries [glm](https://github.com/g-truc/glm) and [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page).
 ```shell
@@ -69,4 +69,4 @@ Please feel free to open an issue or pull request if you have any questions or s
 ## License
 MIT License
 ## Acknowledgments
-We are using [USC-HairSalon](http://www-scf.usc.edu/~liwenhu/SHM/database.html) as our demo data. Thanks to the authors for providing the data.
+We are using [USC-HairSalon](http://www-scf.usc.edu/~liwenhu/SHM/database.html) as our demo data. Thanks to the authors for providing the data. Part of the hair shaders and rendering parameters are based on [Menglei Chai](https://mlchai.com/)'s earlier works. Thanks for his excellent work.
