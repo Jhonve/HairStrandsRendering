@@ -44,8 +44,8 @@ make -j
 ### MacOS
 Please install [Homebrew](https://brew.sh/) first.
 ```shell
-brew install libglfw-dev
-brew install libassimp-dev
+brew install glfw
+brew install assimp
 ```
 Modify the `HairStrandsRendering/Makefile` to set the include path of two header-only libraries [glm](https://github.com/g-truc/glm) and [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page).
 ```shell
