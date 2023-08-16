@@ -502,7 +502,7 @@ bool Strands::save_usc_data(const std::string& filepath, const StrandsPoints& st
     FILE* f; 
     fopen_s(&f, filepath.c_str(), "wb");
 #else
-    FILE* f = fopen(filepath.c_str(), "rb");
+    FILE* f = fopen(filepath.c_str(), "wb");
 #endif
     if (!f)
     {
