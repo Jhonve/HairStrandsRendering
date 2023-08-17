@@ -1,8 +1,6 @@
 #include "property_panel.h"
 #include "ui/imguiplugins/ImGuiFileDialog.h"
 
-#include <format>
-
 void PropertyPanel::render(SceneView* scene_view)
 {
     auto render_param = scene_view->get_render_param();

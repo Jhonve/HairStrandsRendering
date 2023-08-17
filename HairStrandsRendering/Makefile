@@ -14,8 +14,8 @@
 #CXX = clang++
 
 EXE = HairStrandsRendering
-EIGEN_DIR = /Users/yuefan/Documents/3rdparty/eigen-3.4.0
-GLM_DIR = /Users/yuefan/Documents/3rdparty/glm
+EIGEN_DIR = ./eigen
+GLM_DIR = ./glm
 # SOURCES = main.cpp viewer.cpp render/shader.cpp render/opengl_buffer_manager.cpp render/opengl_context.cpp render/ui_context.cpp elems/mesh.cpp ui/property_panel.cpp ui/scene_view.cpp
 SOURCES = $(wildcard glad/*.c) $(wildcard imgui/*.cpp) $(wildcard ui/imguiplugins/*.cpp) $(wildcard ./*.cpp) $(wildcard elems/*.cpp) $(wildcard render/*.cpp) $(wildcard ui/*.cpp)
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
@@ -42,14 +42,15 @@ ifeq ($(UNAME_S), Linux) #LINUX
 	ECHO_MESSAGE = "Linux"
 	LIBS += $(LINUX_GL_LIBS) `pkg-config --static --libs glfw3`
 
-	CXXFLAGS += `-I. pkg-config --cflags glfw3`
+	CXXFLAGS += -I. `pkg-config --cflags glfw3`
 	CFLAGS = $(CXXFLAGS)
 endif
 
 ifeq ($(UNAME_S), Darwin) #APPLE
 	ECHO_MESSAGE = "Mac OS X"
 	LIBS += -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
-	LIBS += -L/usr/local/lib -L/opt/homebrew/lib
+	LIBS += -L/opt/homebrew/lib
+	LIBS += -L/usr/local/lib
 	# LIBS += -L/opt/local/lib 
 	# LIBS += -lglfw3
 	LIBS += -lglfw
