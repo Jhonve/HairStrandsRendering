@@ -4,6 +4,12 @@ This is a simple cross-platform hair rendering tool based on OpenGL and [Dear Im
 <img src="./assets/interface.png" alt="Logo" width="100%">
 
 ## Installation
+
+Clone with `--recursive` flag so that some additional third-party libraries can be downloaded.
+```shell
+git clone --recursive https://github.com/Jhonve/HairStrandsRendering
+```
+
 ### Third-Party Libraries
 - [assimp](https://github.com/assimp/assimp)
 - [glfw](https://github.com/glfw/glfw)

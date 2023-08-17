@@ -1,0 +1,6 @@
+[submodule "HairStrandsRendering/glm"]
+	path = HairStrandsRendering/glm
+	url = https://github.com/g-truc/glm
+[submodule "HairStrandsRendering/eigen"]
+	path = HairStrandsRendering/eigen
+	url = https://gitlab.com/libeigen/eigen.git
