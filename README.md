@@ -30,7 +30,7 @@ We suggest editing the `HairStrandsRendering/HairStrandsRendering.vcxproj` for a
 ```
 
 ### Linux
-Taking ubuntu as an example:
+Take Ubuntu as an example:
 ```shell
 apt-get install libglfw-dev
 apt-get install libassimp-dev
@@ -67,12 +67,12 @@ make -j
 ```
 
 ## Usage
-I think our interface is already easy-to-use now. The only thing I need to mention is that, in the scene widget, I use the right mouse button to control the view.
+Several kinds of data are allowed including [USC-HairSalon](http://www-scf.usc.edu/~liwenhu/SHM/database.html) and [Cem Yuksel's hair models](http://www.cemyuksel.com/research/hairmodels/). Please refer to their pages for more cases. I think our interface is already easy-to-use now. The only thing I need to mention is that, in the scene widget, I use the right mouse button to control the view.
 
 ## Development
-Please feel free to open an issue or pull request if you have any questions or suggestions.
+Please feel free to open an issue or pull requests if you have any questions or suggestions.
 
 ## License
 MIT License
 ## Acknowledgments
-We are using [USC-HairSalon](http://www-scf.usc.edu/~liwenhu/SHM/database.html) as our demo data. Thanks to the authors for providing the data. Part of the hair shaders and rendering parameters are based on [Menglei Chai](https://mlchai.com/)'s earlier works. Thanks for his excellent work.
+We are using [USC-HairSalon](http://www-scf.usc.edu/~liwenhu/SHM/database.html) and [Cem Yuksel's hair models](http://www.cemyuksel.com/research/hairmodels/) as our demo data. Thanks to the authors for providing the data. Part of the hair shaders and rendering parameters are based on [Menglei Chai](https://mlchai.com/)'s earlier works. Thanks for his excellent work.

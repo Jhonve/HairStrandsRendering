@@ -48,3 +48,6 @@ HairStrandsRendering/HairStrandsRendering
 # Output
 *_out.bin
 *_out.data
+
+# cyhair
+*.hair

@@ -426,37 +426,114 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
         fprintf(stderr, "Couldn't open %s\n", filepath.c_str());
         return strands_points;
     }
-
-    unsigned int num_strands = 0;
-    unsigned int points_count = 0;
-    fread(&num_strands, sizeof(unsigned int), 1, f);
-    fread(&points_count, sizeof(unsigned int), 1, f);
-
-    unsigned short* segments = new unsigned short[num_strands];
-    float* points = new float[points_count * 3];
-    fread(segments, sizeof(unsigned short) * num_strands, 1, f);
-    fread(points, sizeof(float) * points_count * 3, 1, f);
-    fclose(f);
-
-    for (int i_strand = 0; i_strand < num_strands; i_strand++)
+    
+    char header[4];
+    fread(&header, 4, 1, f);
+    if (header[0] == 'H' && header[1] == 'A' && header[2] == 'I' && header[3] == 'R')
     {
-        int num_points = segments[i_strand];
-        StrandPoints strand_points(num_points, glm::vec3(0));
-        for (int j_point = 0; j_point < num_points; j_point++)
-        {
-            strand_points[j_point].x = points[m_num_points * 3 + j_point * 3];
-            strand_points[j_point].y = points[m_num_points * 3 + j_point * 3 + 1];
-            strand_points[j_point].z = points[m_num_points * 3 + j_point * 3 + 2];
+		// fprintf(stderr, "Read Cem Yuksel's hairstyles\n");   // http://www.cemyuksel.com/research/hairmodels/
+        // refer to https://github.com/cemyuksel/cyCodeBase/blob/master/cyHairFile.h
 
-            // TODO shen align USC hair salon to bin coord
-            strand_points[j_point] += glm::vec3(0.12f, -1.6f, 0.12f);
-            strand_points[j_point] *= 1000; // m -> mm
+        unsigned int cy_hair_file_segments_bit = 1;
+        unsigned int cy_hair_file_points_bit = 2;
+
+        unsigned int num_strands = 0;
+        unsigned int points_count = 0;
+        fread(&num_strands, sizeof(unsigned int), 1, f);
+        fread(&points_count, sizeof(unsigned int), 1, f);
+
+        unsigned int bit_array;
+        fread(&bit_array, sizeof(unsigned int), 1, f);
+
+        if (bit_array < 0 || !(bit_array & cy_hair_file_points_bit))
+        {
+            fprintf(stderr, "Error: cyHairFile::LoadFromFile - Invalid file.\n");
+			return strands_points;
+		}
+        
+        unsigned int default_num_seg = 0;
+        if (!(bit_array & cy_hair_file_segments_bit))
+        {
+            fread(&default_num_seg, sizeof(unsigned int), 1, f);
         }
-        strands_points.push_back(strand_points);
-        m_num_strands++;
-        m_num_points += num_points;
+        
+        rewind(f);
+        unsigned int dummy_header[128];
+        fread(&dummy_header, 128, 1, f);
+
+        unsigned short* segments = new unsigned short[num_strands];
+        float* points = new float[points_count * 3];
+        if (default_num_seg == 0)
+        {
+            fread(segments, sizeof(unsigned short) * num_strands, 1, f);
+            fread(points, sizeof(float) * points_count * 3, 1, f);
+        }
+        else
+        {
+			for (int i_strand = 0; i_strand < num_strands; i_strand++)
+				segments[i_strand] = default_num_seg;
+			fread(points, sizeof(float) * points_count * 3, 1, f);
+        }
+
+        for (int i_strand = 0; i_strand < num_strands; i_strand++)
+        {
+            int num_points = segments[i_strand] + 1;
+            StrandPoints strand_points(num_points, glm::vec3(0));
+            for (int j_point = 0; j_point < num_points; j_point++)
+            {
+                strand_points[j_point].x = points[m_num_points * 3 + j_point * 3];
+                strand_points[j_point].y = points[m_num_points * 3 + j_point * 3 + 1];
+                strand_points[j_point].z = points[m_num_points * 3 + j_point * 3 + 2];
+                
+                // TODO shen align to bin coord
+                strand_points[j_point] += glm::vec3(33.3f, 33.3f, 33.3f);
+                strand_points[j_point] *= 3.6;
+            }
+            strands_points.push_back(strand_points);
+            m_num_strands++;
+            m_num_points += num_points;
+        }
+
+        return strands_points;
     }
-    return strands_points;
+	else
+	{
+        // zju hair format
+
+		rewind(f);
+
+        unsigned int num_strands = 0;
+        unsigned int points_count = 0;
+        fread(&num_strands, sizeof(unsigned int), 1, f);
+        fread(&points_count, sizeof(unsigned int), 1, f);
+
+        unsigned short* segments = new unsigned short[num_strands];
+        float* points = new float[points_count * 3];
+        fread(segments, sizeof(unsigned short) * num_strands, 1, f);
+        fread(points, sizeof(float) * points_count * 3, 1, f);
+        fclose(f);
+
+        for (int i_strand = 0; i_strand < num_strands; i_strand++)
+        {
+            int num_points = segments[i_strand];
+            StrandPoints strand_points(num_points, glm::vec3(0));
+            for (int j_point = 0; j_point < num_points; j_point++)
+            {
+                strand_points[j_point].x = points[m_num_points * 3 + j_point * 3];
+                strand_points[j_point].y = points[m_num_points * 3 + j_point * 3 + 1];
+                strand_points[j_point].z = points[m_num_points * 3 + j_point * 3 + 2];
+
+                // TODO shen align ZJU hair to bin coord
+                strand_points[j_point] += glm::vec3(0.12f, -1.6f, 0.12f);
+                strand_points[j_point] *= 1000; // m -> mm
+            }
+            strands_points.push_back(strand_points);
+            m_num_strands++;
+            m_num_points += num_points;
+        }
+
+        return strands_points;
+	}
 }
 
 
