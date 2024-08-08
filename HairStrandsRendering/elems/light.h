@@ -3,6 +3,8 @@
 #include "elems/element.h"
 #include "render/parameters.h"
 #include <vector>
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
