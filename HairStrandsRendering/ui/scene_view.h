@@ -137,4 +137,6 @@ private:
 
     glm::vec2 m_win_size;
     glm::vec2 m_dock_size;
+
+    std::string m_mesh_file_path = "";
 };

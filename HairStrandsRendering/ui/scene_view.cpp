@@ -24,16 +24,27 @@ void SceneView::load_mesh(const std::string& filepath)
 {
     if(!m_mesh)
         m_mesh = std::make_shared<Mesh>();
-  
-    m_mesh->load(filepath);
+    
+    if (!m_strands)
+        m_mesh->load(filepath);
+    else
+        m_mesh->reload(filepath,
+                       m_strands->m_original_min_pos,
+                       m_strands->m_original_max_pos);
+
+    m_mesh_file_path = filepath;
 }
 
 void SceneView::load_strands(const std::string& filepath)
 {
     if (!m_strands)
         m_strands = std::make_shared<Strands>();
-  
+    
     m_strands->load(filepath);
+    if (m_mesh)
+        m_mesh->reload(m_mesh_file_path,
+                       m_strands->m_original_min_pos,
+                       m_strands->m_original_max_pos);
 }
 
 void SceneView::render()

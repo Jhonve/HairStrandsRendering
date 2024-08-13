@@ -14,6 +14,7 @@ public:
     virtual ~Mesh();
   
     bool load(const std::string& filepath);
+    bool reload(const std::string& filepath, const glm::vec3& min_pos, const glm::vec3& max_pos);
   
     void add_vertex(const Vertex& vertex) { m_vertices.push_back(vertex);  }
   

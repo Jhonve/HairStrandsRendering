@@ -48,6 +48,9 @@ public:
     int get_num_strands() { return m_num_strands; }
     int get_num_points() { return m_num_points; }
 
+    glm::vec3 m_original_min_pos;
+    glm::vec3 m_original_max_pos;
+
 private:
     StrandsPoints load_bin(const std::string& filepath);
     StrandsPoints load_cin(const std::string& filepath);   // load color strands

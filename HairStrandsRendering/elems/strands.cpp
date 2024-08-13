@@ -15,6 +15,10 @@ void Strands::init(const Strands::StrandsPoints& points)
     m_strands_vertices.clear();
     m_vertex_indices.clear();
     int index_count = 0;
+    
+    glm::vec3 centric_pos = (m_original_min_pos + m_original_max_pos) / 2.f;
+    float unit_scale = glm::length(m_original_max_pos - m_original_min_pos) / 2.f;
+    float view_scale = (1.f / unit_scale) * 2.5f;
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = points[i_strand].size();
@@ -32,10 +36,10 @@ void Strands::init(const Strands::StrandsPoints& points)
         for (int j_point = 0; j_point < num_points - 1; j_point++)
         {
             StrandVertex strand_vertex;
-            strand_vertex.m_pos = points[i_strand][j_point] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);   // TODO Shen
+            strand_vertex.m_pos = (points[i_strand][j_point] - centric_pos) * view_scale;
             strand_vertex.m_color = color;
 
-            glm::vec3 tangent = points[i_strand][j_point + (size_t)1] -  points[i_strand][j_point];
+            glm::vec3 tangent = points[i_strand][j_point + (size_t)1] - points[i_strand][j_point];
             strand_vertex.m_tangent = glm::normalize(tangent);
             
             m_strands_vertices.push_back(strand_vertex);
@@ -45,7 +49,7 @@ void Strands::init(const Strands::StrandsPoints& points)
         }
 
         StrandVertex strand_vertex;
-        strand_vertex.m_pos = points[i_strand][num_points - (size_t)1] * 0.006f - glm::vec3(0.6f, 0.6f, 0.6f);    //  TODO Shen
+        strand_vertex.m_pos = (points[i_strand][num_points - (size_t)1] - centric_pos) * view_scale;
         strand_vertex.m_color = color;
         strand_vertex.m_tangent = m_strands_vertices[m_strands_vertices.size() - 1].m_tangent;
         m_strands_vertices.push_back(strand_vertex);
@@ -284,6 +288,9 @@ Strands::StrandsPoints Strands::load_bin(const std::string& filepath)
             fread(&dummy, 4, 1, f); // ny unused
             fread(&dummy, 4, 1, f); // nz unused
             fread(&dummy, 4, 1, f); // label unused
+
+            m_original_min_pos = glm::min(m_original_min_pos, strand_points[j_point]);
+            m_original_max_pos = glm::max(m_original_max_pos, strand_points[j_point]);
         }
         bool valid_strand = true;
         for (int j_point = 0; j_point < num_points - 1; j_point++)
@@ -340,6 +347,9 @@ Strands::StrandsPoints Strands::load_cin(const std::string& filepath)
             fread(&strand_color.y, 4, 1, f);
             fread(&strand_color.z, 4, 1, f);
             fread(&dummy, 4, 1, f); // label unused
+
+            m_original_min_pos = glm::min(m_original_min_pos, strand_points[j_point]);
+            m_original_max_pos = glm::max(m_original_max_pos, strand_points[j_point]);
         }
         bool valid_strand = true;
         for (int j_point = 0; j_point < num_points - 1; j_point++)
@@ -399,9 +409,8 @@ Strands::StrandsPoints Strands::load_usc_data(const std::string& filepath)
                 fread(&strand_points[j_point].y, 4, 1, f);
                 fread(&strand_points[j_point].z, 4, 1, f);
 
-                // TODO shen align USC hair salon to bin coord
-                strand_points[j_point] += glm::vec3(0.12f, -1.6f, 0.12f);
-                strand_points[j_point] *= 1000; // m -> mm
+                m_original_min_pos = glm::min(m_original_min_pos, strand_points[j_point]);
+                m_original_max_pos = glm::max(m_original_max_pos, strand_points[j_point]);
             }
             strands_points.push_back(strand_points);
             m_num_strands++;
@@ -431,7 +440,7 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
     fread(&header, 4, 1, f);
     if (header[0] == 'H' && header[1] == 'A' && header[2] == 'I' && header[3] == 'R')
     {
-		// fprintf(stderr, "Read Cem Yuksel's hairstyles\n");   // http://www.cemyuksel.com/research/hairmodels/
+        // fprintf(stderr, "Read Cem Yuksel's hairstyles\n");   // http://www.cemyuksel.com/research/hairmodels/
         // refer to https://github.com/cemyuksel/cyCodeBase/blob/master/cyHairFile.h
 
         unsigned int cy_hair_file_segments_bit = 1;
@@ -448,8 +457,8 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
         if (bit_array < 0 || !(bit_array & cy_hair_file_points_bit))
         {
             fprintf(stderr, "Error: cyHairFile::LoadFromFile - Invalid file.\n");
-			return strands_points;
-		}
+            return strands_points;
+        }
         
         unsigned int default_num_seg = 0;
         if (!(bit_array & cy_hair_file_segments_bit))
@@ -470,9 +479,9 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
         }
         else
         {
-			for (int i_strand = 0; i_strand < num_strands; i_strand++)
-				segments[i_strand] = default_num_seg;
-			fread(points, sizeof(float) * points_count * 3, 1, f);
+            for (int i_strand = 0; i_strand < num_strands; i_strand++)
+                segments[i_strand] = default_num_seg;
+            fread(points, sizeof(float) * points_count * 3, 1, f);
         }
 
         for (int i_strand = 0; i_strand < num_strands; i_strand++)
@@ -484,10 +493,9 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
                 strand_points[j_point].x = points[m_num_points * 3 + j_point * 3];
                 strand_points[j_point].y = points[m_num_points * 3 + j_point * 3 + 1];
                 strand_points[j_point].z = points[m_num_points * 3 + j_point * 3 + 2];
-                
-                // TODO shen align to bin coord
-                strand_points[j_point] += glm::vec3(33.3f, 33.3f, 33.3f);
-                strand_points[j_point] *= 3.6;
+
+                m_original_min_pos = glm::min(m_original_min_pos, strand_points[j_point]);
+                m_original_max_pos = glm::max(m_original_max_pos, strand_points[j_point]);
             }
             strands_points.push_back(strand_points);
             m_num_strands++;
@@ -496,11 +504,11 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
 
         return strands_points;
     }
-	else
-	{
+    else
+    {
         // zju hair format
 
-		rewind(f);
+        rewind(f);
 
         unsigned int num_strands = 0;
         unsigned int points_count = 0;
@@ -523,9 +531,8 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
                 strand_points[j_point].y = points[m_num_points * 3 + j_point * 3 + 1];
                 strand_points[j_point].z = points[m_num_points * 3 + j_point * 3 + 2];
 
-                // TODO shen align ZJU hair to bin coord
-                strand_points[j_point] += glm::vec3(0.12f, -1.6f, 0.12f);
-                strand_points[j_point] *= 1000; // m -> mm
+                m_original_min_pos = glm::min(m_original_min_pos, strand_points[j_point]);
+                m_original_max_pos = glm::max(m_original_max_pos, strand_points[j_point]);
             }
             strands_points.push_back(strand_points);
             m_num_strands++;
@@ -533,7 +540,7 @@ Strands::StrandsPoints Strands::load_hair(const std::string& filepath)
         }
 
         return strands_points;
-	}
+    }
 }
 
 
@@ -594,11 +601,7 @@ bool Strands::save_usc_data(const std::string& filepath, const StrandsPoints& st
         fwrite(&num_points, 4, 1, f);
         for (int j = 0; j < num_points; j++)
         {
-            // TODO shen align USC hair salon to bin coord
             glm::vec3 pt = strands_points[i][j];
-            pt /= 1000; // mm->m
-            pt -= glm::vec3(0.12f, -1.6f, 0.12f);
-
             fwrite(&pt.x, 4, 1, f);
             fwrite(&pt.y, 4, 1, f);
             fwrite(&pt.z, 4, 1, f);
@@ -634,6 +637,8 @@ bool Strands::load(const std::string& filepath)
 {
     m_filepath = filepath;
     m_original_points.clear();
+    m_original_min_pos = glm::vec3(FLT_MAX);
+    m_original_max_pos = glm::vec3(FLT_MIN);
     m_num_points = 0;
     m_num_strands = 0;
     // check suffix

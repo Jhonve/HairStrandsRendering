@@ -81,8 +81,6 @@ void GLWindow::render()
 
 void GLWindow::handle_input()
 {
-    // TODO: move this and camera to scene UI component?
-
     if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
     {
         m_scene_view->on_mouse_wheel(-0.4f);
@@ -93,7 +91,7 @@ void GLWindow::handle_input()
         m_scene_view->on_mouse_wheel(0.4f);
     }
 
-    if (glfwGetKey(m_window, GLFW_KEY_F) == GLFW_PRESS)
+    if (glfwGetKey(m_window, GLFW_KEY_R) == GLFW_PRESS)
     {
         m_scene_view->reset_view();
     }
