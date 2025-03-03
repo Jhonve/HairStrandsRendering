@@ -111,7 +111,7 @@ void Strands::downsample(float ds_sim_thres, int min_num_pts)
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = m_smoothed_points[i_strand].size();
-        if(num_points <= 2)
+        if (num_points <= 2)
             continue;
         else if (num_points > 2 && num_points < min_num_pts)
         {
@@ -180,7 +180,8 @@ void Strands::downsample(float ds_sim_thres, int min_num_pts)
             m_downsampled_tangents.push_back(strand_tangents);
         }
     }
-
+    
+    m_num_strands = m_downsampled_points.size();
     init(m_downsampled_points);
 }
 
