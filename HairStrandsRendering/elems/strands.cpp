@@ -19,6 +19,7 @@ void Strands::init(const Strands::StrandsPoints& points)
     glm::vec3 centric_pos = (m_original_min_pos + m_original_max_pos) / 2.f;
     float unit_scale = glm::length(m_original_max_pos - m_original_min_pos) / 2.f;
     float view_scale = (1.f / unit_scale) * 2.5f;
+    // printf("centric_pos: %f %f, %f, unit_scale: %f, view_scale: %f\n", centric_pos.x, centric_pos.y, centric_pos.z, unit_scale, view_scale);
     for (int i_strand = 0; i_strand < m_num_strands; i_strand++)
     {
         int num_points = points[i_strand].size();
@@ -274,6 +275,7 @@ Strands::StrandsPoints Strands::load_bin(const std::string& filepath)
 
     int num_strands = 0;
     fread(&num_strands, 4, 1, f);
+    // printf("num_strands: %d\n", num_strands);
     for (int i_strand = 0; i_strand < num_strands; i_strand++)
     {
         int num_points = 0;
@@ -296,7 +298,7 @@ Strands::StrandsPoints Strands::load_bin(const std::string& filepath)
         bool valid_strand = true;
         for (int j_point = 0; j_point < num_points - 1; j_point++)
         {
-            if (glm::length(strand_points[j_point] - strand_points[j_point + (size_t)1]) < 1.e-4)
+            if (glm::length(strand_points[j_point] - strand_points[j_point + (size_t)1]) < 1.e-6)
             {
                 valid_strand = false;
                 break;
